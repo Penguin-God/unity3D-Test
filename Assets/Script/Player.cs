@@ -31,5 +31,9 @@ public class Player : MonoBehaviour
         // 애니메이션
         animator.SetBool("IsRun", MoveVec != Vector3.zero); // Vector3.zero = Vector3(0, 0, 0); 즉 모든 Vector값이 0이 아니면 "IsRun"은 true
         animator.SetBool("IsWalk", Walk);
+
+        // 회전
+        // player가 나아가는 방향을 바라보는 코드
+        transform.LookAt(transform.position + MoveVec); // LookAt() : 지정된 백터를 향해서 회전시켜주는 함수 
     }
 }
