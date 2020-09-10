@@ -20,10 +20,20 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        GetInput();
+        PlayerMove();
+        PlayerTurn();
+    }
+    
+    void GetInput()
+    {
         xAxis = Input.GetAxisRaw("Horizontal");
         hAxis = Input.GetAxisRaw("Vertical");
         Walk = Input.GetButton("Walk");
+    }
 
+    void PlayerMove()
+    {
         // 이동
         MoveVec = new Vector3(xAxis, 0, hAxis).normalized; // normalized : 방향 값이 1로 보정된 백터(저걸 안하면 대각선 이동 시 평소보다 더 빠르게 이동함)
         transform.position += MoveVec * speed * (Walk ? 0.3f : 1f) * Time.deltaTime; // transform이동은 Time.dalraTime을 넣어줘야 함
@@ -31,8 +41,10 @@ public class Player : MonoBehaviour
         // 애니메이션
         animator.SetBool("IsRun", MoveVec != Vector3.zero); // Vector3.zero = Vector3(0, 0, 0); 즉 모든 Vector값이 0이 아니면 "IsRun"은 true
         animator.SetBool("IsWalk", Walk);
+    }
 
-        // 회전
+    void PlayerTurn() // 회전
+    {
         // player가 나아가는 방향을 바라보는 코드
         transform.LookAt(transform.position + MoveVec); // LookAt() : 지정된 백터를 향해서 회전시켜주는 함수 
     }
