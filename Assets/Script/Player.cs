@@ -11,8 +11,10 @@ public class Player : MonoBehaviour
     bool WalkKey;
     bool JumpKey;
     bool isJump;
+    private bool isDodje;
 
     Vector3 MoveVec;
+    Vector3 DodgeVector;
     Animator animator;
     new Rigidbody rigidbody;
 
@@ -28,6 +30,7 @@ public class Player : MonoBehaviour
         PlayerMove();
         PlayerTurn();
         Jump();
+        Dodge();
     }
     
     void GetInput()
@@ -41,7 +44,10 @@ public class Player : MonoBehaviour
     void PlayerMove()
     {
         // 이동
-        MoveVec = new Vector3(xAxis, 0, hAxis).normalized; // normalized : 방향 값이 1로 보정된 백터(저걸 안하면 대각선 이동 시 평소보다 더 빠르게 이동함)
+        if (isDodje)
+            MoveVec = DodgeVector;
+        else
+            MoveVec = new Vector3(xAxis, 0, hAxis).normalized; // normalized : 방향 값이 1로 보정된 백터(저걸 안하면 대각선 이동 시 평소보다 더 빠르게 이동함)
         transform.position += MoveVec * speed * (WalkKey ? 0.3f : 1f) * Time.deltaTime; // transform이동은 Time.dalraTime을 넣어줘야 함
 
         // 애니메이션
@@ -57,7 +63,7 @@ public class Player : MonoBehaviour
 
     void Jump()
     {
-        if (JumpKey && !isJump)
+        if (JumpKey && !isJump && MoveVec == Vector3.zero && !isDodje) // 가만히 있을때만 점프가능
         {
             // .AddForce(힘, 유형) : Rigidbody에 힘을 추가한다   Impulse : 질량을 사용하여 리지드 바디에 순간적인 힘 임펄스를 추가
             rigidbody.AddForce(Vector3.up * 13, ForceMode.Impulse); // 편집 -> 프로젝트 세팅-> 물리에가면 중력값 조정 가능
@@ -67,6 +73,24 @@ public class Player : MonoBehaviour
         }
     }
 
+    void Dodge() // 회피(구르기)
+    {
+        if (JumpKey && !isJump && MoveVec != Vector3.zero && !isDodje) // 움직이고 있을떄만 구르기 사용
+        {
+            DodgeVector = MoveVec;
+            speed *= 2;
+            animator.SetTrigger("DoDodge");
+            isDodje = true;
+            
+            Invoke("DodgeOut", 0.5f); // Invoke("함수명", time) : time후에 ""안에 함수가 실행됨, Invoke없이 바로 함수 쓰면 안 빨라지는 것처럼 보임
+        }
+    }
+
+    void DodgeOut()
+    {
+        isDodje = false;
+        speed *= 0.5f;
+    }
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("바닥"))
