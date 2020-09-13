@@ -1010,6 +1010,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 15
+  "\uBB34\uAE30": []
+  "\uBB34\uAE30\uBCF4\uC720": 000000
 --- !u!136 &1559496318
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1527,6 +1529,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 30
       objectReference: {fileID: 0}
+    - target: {fileID: 8333516239895448097, guid: 0abe0440c0f933a4c83cb972c897a4d9,
+        type: 3}
+      propertyPath: value
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0abe0440c0f933a4c83cb972c897a4d9, type: 3}
 --- !u!1001 &8573926867784530562
@@ -1540,6 +1547,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Weapon SubMachineGun
+      objectReference: {fileID: 0}
+    - target: {fileID: 8573926867460284459, guid: b6eefa564f322bc4e82c571b48f21cda,
+        type: 3}
+      propertyPath: value
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8804401193033771867, guid: b6eefa564f322bc4e82c571b48f21cda,
         type: 3}

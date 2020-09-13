@@ -5,18 +5,23 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public float speed;
+    public GameObject[] 무기;
+    public bool[] 무기보유;
 
     private float hAxis;
     private float xAxis;
     bool WalkKey;
     bool JumpKey;
     bool isJump;
-    private bool isDodje;
+    bool isDodje;
+    bool GetItemKey;
 
     Vector3 MoveVec;
     Vector3 DodgeVector;
     Animator animator;
     new Rigidbody rigidbody;
+
+    GameObject ItemObject;
 
     private void Awake()
     {
@@ -31,6 +36,7 @@ public class Player : MonoBehaviour
         PlayerTurn();
         Jump();
         Dodge();
+        GetItem();
     }
     
     void GetInput()
@@ -39,6 +45,7 @@ public class Player : MonoBehaviour
         hAxis = Input.GetAxisRaw("Vertical");
         WalkKey = Input.GetButton("Walk");
         JumpKey = Input.GetButtonDown("Jump");
+        GetItemKey = Input.GetButtonDown("GetItem");
     }
 
     void PlayerMove()
@@ -91,12 +98,43 @@ public class Player : MonoBehaviour
         isDodje = false;
         speed *= 0.5f;
     }
+
+    void GetItem()
+    {
+        if(GetItemKey && ItemObject != null)
+        {
+            if(ItemObject.tag == "무기")
+            {
+                Item item = ItemObject.GetComponent<Item>();
+                int weaponIndex = item.value;
+                무기보유[weaponIndex] = true;
+                Destroy(ItemObject);
+            }
+        }
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("바닥"))
         {
             isJump = false;
             animator.SetBool("IsJump", isJump);
+        }
+    }
+
+    private void OnTriggerStay(Collider other) // OnTriggerStay : 트리거가 다른(이 프로젝트는 Player)Collider 에 계속 닿아있는 동안 "거의"매 프레임 호출됨
+    {
+        if(other.tag == "무기")
+        {
+            ItemObject = other.gameObject;
+        }
+    }
+
+    private void OnTriggerExit(Collider other) // OnTriggerExit : Collider가 /other/의 트리거에 닿는 것을 중지했을 때 호출됩니다.
+    {
+        if (other.tag == "무기")
+        {
+            ItemObject = null;
         }
     }
 }
