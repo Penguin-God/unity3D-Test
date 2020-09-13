@@ -31,4 +31,10 @@ public class Item : MonoBehaviour
             sphereCollider.enabled = false; // enabled : 활성화된 콜라이더는 다른 콜라이더와 충돌하고 비활성화된 콜라이더는 충돌하지 않음
         }
     }
+
+    public void 충돌방지(GameObject item)
+    {
+        rigidbody.isKinematic = true;
+        sphereCollider.enabled = false;
+    }
 }

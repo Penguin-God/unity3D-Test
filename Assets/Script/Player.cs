@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public Item[] Item;
     public float speed;
     public GameObject[] 무기;
     public bool[] 무기보유;
@@ -15,6 +16,10 @@ public class Player : MonoBehaviour
     bool isJump;
     bool isDodje;
     bool GetItemKey;
+    bool SwapWeapon1;
+    bool SwapWeapon3;
+    bool SwapWeapon2;
+    int EquipObjcetIndex = -1;
 
     Vector3 MoveVec;
     Vector3 DodgeVector;
@@ -22,6 +27,7 @@ public class Player : MonoBehaviour
     new Rigidbody rigidbody;
 
     GameObject ItemObject;
+    GameObject EquipObject;
 
     private void Awake()
     {
@@ -37,6 +43,7 @@ public class Player : MonoBehaviour
         Jump();
         Dodge();
         GetItem();
+        WeaponSwap();
     }
     
     void GetInput()
@@ -46,6 +53,9 @@ public class Player : MonoBehaviour
         WalkKey = Input.GetButton("Walk");
         JumpKey = Input.GetButtonDown("Jump");
         GetItemKey = Input.GetButtonDown("GetItem");
+        SwapWeapon1 = Input.GetButtonDown("Swap1");
+        SwapWeapon2 = Input.GetButtonDown("Swap2");
+        SwapWeapon3 = Input.GetButtonDown("Swap3");
     }
 
     void PlayerMove()
@@ -98,6 +108,33 @@ public class Player : MonoBehaviour
         isDodje = false;
         speed *= 0.5f;
     }
+
+    void WeaponSwap()
+    {
+        if (SwapWeapon1 && (!무기보유[0] || EquipObjcetIndex == 0))
+            return;
+        if (SwapWeapon2 && (!무기보유[1] || EquipObjcetIndex == 1))
+            return;
+        if (SwapWeapon3 && (!무기보유[2] || EquipObjcetIndex == 2))
+            return;
+
+        int WeaponIndex = -1;
+        if (SwapWeapon1) WeaponIndex = 0;
+        if (SwapWeapon2) WeaponIndex = 1;
+        if (SwapWeapon3) WeaponIndex = 2;
+
+        if ((SwapWeapon1 || SwapWeapon2 || SwapWeapon3) && !isDodje)
+        {
+            if(EquipObject != null)
+                EquipObject.SetActive(false);
+            EquipObjcetIndex = WeaponIndex;
+            EquipObject = 무기[WeaponIndex];
+            EquipObject.SetActive(true);
+            Item[WeaponIndex].충돌방지(EquipObject);
+            animator.SetTrigger("WeaponSwap");
+        }
+    }
+
 
     void GetItem()
     {
