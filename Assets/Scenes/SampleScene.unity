@@ -1358,11 +1358,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5244399a487eab14fbb04593a2c6a5b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 15
   Item:
   - {fileID: 57862364}
   - {fileID: 1149881218}
   - {fileID: 2095634811}
-  speed: 15
   "\uBB34\uAE30":
   - {fileID: 57862363}
   - {fileID: 1149881217}
@@ -1715,7 +1715,7 @@ PrefabInstance:
     - target: {fileID: 1006017995968420452, guid: cc9da6b79bb1b39499cb810dca740281,
         type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1006017995968420452, guid: cc9da6b79bb1b39499cb810dca740281,
         type: 3}
@@ -1991,7 +1991,7 @@ PrefabInstance:
     - target: {fileID: 7791173207270457685, guid: 0abe0440c0f933a4c83cb972c897a4d9,
         type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 7791173207270457685, guid: 0abe0440c0f933a4c83cb972c897a4d9,
         type: 3}

@@ -32,7 +32,7 @@ public class Item : MonoBehaviour
         }
     }
 
-    public void 충돌방지(GameObject item)
+    public void 충돌방지() // 아이템의 물리효과를 없애는 함수
     {
         rigidbody.isKinematic = true;
         sphereCollider.enabled = false;

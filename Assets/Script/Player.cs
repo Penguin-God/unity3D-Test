@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public Item[] Item;
     public float speed;
+
+    public Item[] Item;
     public GameObject[] 무기;
     public bool[] 무기보유;
 
@@ -13,8 +14,10 @@ public class Player : MonoBehaviour
     private float xAxis;
     bool WalkKey;
     bool JumpKey;
+
     bool isJump;
     bool isDodje;
+
     bool GetItemKey;
     bool SwapWeapon1;
     bool SwapWeapon3;
@@ -46,21 +49,23 @@ public class Player : MonoBehaviour
         WeaponSwap();
     }
     
-    void GetInput()
+    void GetInput() // 마우스, 키보드 등 입력받기
     {
         xAxis = Input.GetAxisRaw("Horizontal");
         hAxis = Input.GetAxisRaw("Vertical");
+        // 느리게 걷기(left shift)
         WalkKey = Input.GetButton("Walk");
         JumpKey = Input.GetButtonDown("Jump");
+        // 아이템 줍기(e)
         GetItemKey = Input.GetButtonDown("GetItem");
+        // 무기 변경입력(1, 2, 3)
         SwapWeapon1 = Input.GetButtonDown("Swap1");
         SwapWeapon2 = Input.GetButtonDown("Swap2");
         SwapWeapon3 = Input.GetButtonDown("Swap3");
     }
 
-    void PlayerMove()
+    void PlayerMove() // 이동
     {
-        // 이동
         if (isDodje)
             MoveVec = DodgeVector;
         else
@@ -103,14 +108,15 @@ public class Player : MonoBehaviour
         }
     }
 
-    void DodgeOut()
+    void DodgeOut() // 구르기 끝내기 함수
     {
         isDodje = false;
         speed *= 0.5f;
     }
 
-    void WeaponSwap()
+    void WeaponSwap() // 무기 변경 함수
     {
+        // 무기미보유상태, 변경하려는 무기가 현재 장착중일 때 작동안함
         if (SwapWeapon1 && (!무기보유[0] || EquipObjcetIndex == 0))
             return;
         if (SwapWeapon2 && (!무기보유[1] || EquipObjcetIndex == 1))
@@ -118,6 +124,7 @@ public class Player : MonoBehaviour
         if (SwapWeapon3 && (!무기보유[2] || EquipObjcetIndex == 2))
             return;
 
+        // WeaponIndex에 현재들고있는 무기 값을 부여
         int WeaponIndex = -1;
         if (SwapWeapon1) WeaponIndex = 0;
         if (SwapWeapon2) WeaponIndex = 1;
@@ -127,18 +134,19 @@ public class Player : MonoBehaviour
         {
             if(EquipObject != null)
                 EquipObject.SetActive(false);
-            EquipObjcetIndex = WeaponIndex;
-            EquipObject = 무기[WeaponIndex];
-            EquipObject.SetActive(true);
-            Item[WeaponIndex].충돌방지(EquipObject);
-            animator.SetTrigger("WeaponSwap");
+
+            EquipObjcetIndex = WeaponIndex; // 조건에 맞을때 작동을 안하기 위해 값을 넣어줌
+            EquipObject = 무기[WeaponIndex]; // EquipObject에 현재 장착중인 무기를 넣음
+            EquipObject.SetActive(true); // 장착한 무기 보여줌
+            Item[WeaponIndex].충돌방지(); // 현재 장착한 무기의 물리효과를 없앰
+            animator.SetTrigger("WeaponSwap"); 
         }
     }
 
 
     void GetItem()
     {
-        if(GetItemKey && ItemObject != null)
+        if(GetItemKey && ItemObject != null) // Item오브젝트에 닿아있을 때 E키 입력시 아이템 획득
         {
             if(ItemObject.tag == "무기")
             {
@@ -150,7 +158,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter(Collision collision) // 점프 후 바닥에 닿을시
     {
         if (collision.gameObject.CompareTag("바닥"))
         {
@@ -161,7 +169,7 @@ public class Player : MonoBehaviour
 
     private void OnTriggerStay(Collider other) // OnTriggerStay : 트리거가 다른(이 프로젝트는 Player)Collider 에 계속 닿아있는 동안 "거의"매 프레임 호출됨
     {
-        if(other.tag == "무기")
+        if(other.tag == "무기") // 무기에 콜라이더에 닿아있을 때
         {
             ItemObject = other.gameObject;
         }
@@ -169,7 +177,7 @@ public class Player : MonoBehaviour
 
     private void OnTriggerExit(Collider other) // OnTriggerExit : Collider가 /other/의 트리거에 닿는 것을 중지했을 때 호출됩니다.
     {
-        if (other.tag == "무기")
+        if (other.tag == "무기") // 무기 콜라이더에서 벗어났을때
         {
             ItemObject = null;
         }
