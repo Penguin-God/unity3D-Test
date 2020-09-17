@@ -5,24 +5,35 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public float speed;
-
-    public Item[] Item;
+    // 아이템 관련 변수
+    public Item[] 무기물리;
     public GameObject[] 무기;
     public bool[] 무기보유;
+    
+    public int 총알;
+    public int coin;
+    public int playerhp;
+    public int 수류탄;
+    public int Max총알;
+    public int MaxCoin;
+    public int MaxPlayerhp;
+    public int Max수류탄;
 
+    int EquipObjcetIndex = -1; // 보유중인 무기
+
+    // 애니메이션
+    bool isJump;
+    bool isDodje;
+
+    // 키입력
     private float hAxis;
     private float xAxis;
     bool WalkKey;
     bool JumpKey;
-
-    bool isJump;
-    bool isDodje;
-
     bool GetItemKey;
     bool SwapWeapon1;
     bool SwapWeapon3;
     bool SwapWeapon2;
-    int EquipObjcetIndex = -1;
 
     Vector3 MoveVec;
     Vector3 DodgeVector;
@@ -138,7 +149,7 @@ public class Player : MonoBehaviour
             EquipObjcetIndex = WeaponIndex; // 조건에 맞을때 작동을 안하기 위해 값을 넣어줌
             EquipObject = 무기[WeaponIndex]; // EquipObject에 현재 장착중인 무기를 넣음
             EquipObject.SetActive(true); // 장착한 무기 보여줌
-            Item[WeaponIndex].충돌방지(); // 현재 장착한 무기의 물리효과를 없앰
+            무기물리[WeaponIndex].충돌방지(); // 현재 장착한 무기의 물리효과를 없앰
             animator.SetTrigger("WeaponSwap"); 
         }
     }
@@ -164,6 +175,38 @@ public class Player : MonoBehaviour
         {
             isJump = false;
             animator.SetBool("IsJump", isJump);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "아이템")
+        {
+            Item item = other.GetComponent<Item>(); // item에 닿은 아이템의 Item스크립트를 넣음
+            switch (item.type)
+            {
+                case Item.Type.Ammo:
+                    총알 += item.value;
+                    if (총알 > Max총알)
+                        총알 = Max총알;
+                    break;
+                case Item.Type.Coin:
+                    coin += item.value;
+                    if (coin > MaxCoin)
+                        coin = MaxCoin;
+                    break;
+                case Item.Type.Heart:
+                    playerhp += item.value;
+                    if (playerhp > MaxPlayerhp)
+                        playerhp = MaxPlayerhp;
+                    break;
+                case Item.Type.수류탄:
+                    수류탄 += item.value;
+                    if (수류탄 > Max수류탄)
+                        수류탄 = Max수류탄;
+                    break;
+            }
+            Destroy(other.gameObject); // 아이템 먹고 보유량 올라간 후에 먹은 아이템 삭제
         }
     }
 
