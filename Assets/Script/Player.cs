@@ -202,9 +202,10 @@ public class Player : MonoBehaviour
                         playerhp = MaxPlayerhp;
                     break;
                 case Item.Type.수류탄:
+                    if (수류탄 == Max수류탄)
+                        return;
+                    보유수류탄[수류탄].SetActive(true); // 더하기 전에 활성화 시키는 거라서 -1 안해도 됨
                     수류탄 += item.value;
-                    if (수류탄 > Max수류탄)
-                        수류탄 = Max수류탄;
                     break;
             }
             Destroy(other.gameObject); // 아이템 먹고 보유량 올라간 후에 먹은 아이템 삭제
