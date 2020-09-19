@@ -9,7 +9,8 @@ public class Player : MonoBehaviour
     public Item[] 무기물리;
     public GameObject[] 무기;
     public bool[] 무기보유;
-    
+    public GameObject[] 보유수류탄;
+
     public int 총알;
     public int coin;
     public int playerhp;
@@ -160,16 +161,16 @@ public class Player : MonoBehaviour
         if(GetItemKey && ItemObject != null) // Item오브젝트에 닿아있을 때 E키 입력시 아이템 획득
         {
             if(ItemObject.tag == "무기")
-            {
+            { 
                 Item item = ItemObject.GetComponent<Item>();
                 int weaponIndex = item.value;
-                무기보유[weaponIndex] = true;
+                무기보유[weaponIndex] = true; 
                 Destroy(ItemObject);
             }
         }
     }
 
-    private void OnCollisionEnter(Collision collision) // 점프 후 바닥에 닿을시
+    private void OnCollisionEnter(Collision collision) // 점프 후 바닥에 닿을시 애니미이션
     {
         if (collision.gameObject.CompareTag("바닥"))
         {
