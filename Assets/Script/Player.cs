@@ -22,9 +22,10 @@ public class Player : MonoBehaviour
 
     int EquipObjcetIndex = -1; // 보유중인 무기
 
-    // 애니메이션
+    // 상태확인
     bool isJump;
     bool isDodje;
+    bool isSwap;
 
     // 키입력
     private float hAxis;
@@ -35,6 +36,11 @@ public class Player : MonoBehaviour
     bool SwapWeapon1;
     bool SwapWeapon3;
     bool SwapWeapon2;
+    bool MeleeDown;
+
+    // 근접공격 관련 변수
+    bool MeleeReady = true;
+    float MeleeDelay = 0.5f; // 처음 무기를 장착한 순간부터 MeleeDelay += Time.datatime코드가 실행되서 순간적으로 MeleeReady가 false가 되어 이동을 못하게 되므로 기초값을 공속보다 높게 조정함 
 
     Vector3 MoveVec;
     Vector3 DodgeVector;
@@ -42,7 +48,7 @@ public class Player : MonoBehaviour
     new Rigidbody rigidbody;
 
     GameObject ItemObject;
-    GameObject EquipObject;
+    Weapons EquipObject;
 
     private void Awake()
     {
@@ -59,6 +65,7 @@ public class Player : MonoBehaviour
         Jump();
         GetItem();
         WeaponSwap();
+        Attack();
     }
     
     void GetInput() // 마우스, 키보드 등 입력받기
@@ -74,6 +81,8 @@ public class Player : MonoBehaviour
         SwapWeapon1 = Input.GetButtonDown("Swap1");
         SwapWeapon2 = Input.GetButtonDown("Swap2");
         SwapWeapon3 = Input.GetButtonDown("Swap3");
+        //근접공격 입력
+        MeleeDown = Input.GetButtonDown("Fire1");
     }
 
     void PlayerMove() // 이동
@@ -82,6 +91,9 @@ public class Player : MonoBehaviour
             MoveVec = DodgeVector;
         else
             MoveVec = new Vector3(xAxis, 0, hAxis).normalized; // normalized : 방향 값이 1로 보정된 백터(저걸 안하면 대각선 이동 시 평소보다 더 빠르게 이동함)
+
+        if (!MeleeReady) // 공격중일 때는 이동 못함
+            MoveVec = Vector3.zero;
         transform.position += MoveVec * speed * (WalkKey ? 0.3f : 1f) * Time.deltaTime; // transform이동은 Time.dalraTime을 넣어줘야 함
 
         // 애니메이션
@@ -109,7 +121,7 @@ public class Player : MonoBehaviour
 
     void Dodge() // 회피(구르기)
     {
-        if (JumpKey && !isJump && !isDodje) // 움직이고 있을떄만 구르기 사용
+        if (JumpKey && !isJump && !isDodje && MoveVec != Vector3.zero) // 움직이고 있을떄만 구르기 사용
         {
             DodgeVector = MoveVec;
             speed *= 2;
@@ -145,13 +157,21 @@ public class Player : MonoBehaviour
         if ((SwapWeapon1 || SwapWeapon2 || SwapWeapon3) && !isDodje)
         {
             if(EquipObject != null)
-                EquipObject.SetActive(false);
+                EquipObject.gameObject.SetActive(false);
 
             EquipObjcetIndex = WeaponIndex; // 조건에 맞을때 작동을 안하기 위해 값을 넣어줌
-            EquipObject = 무기[WeaponIndex]; // EquipObject에 현재 장착중인 무기를 넣음
-            EquipObject.SetActive(true); // 장착한 무기 보여줌
-            animator.SetTrigger("WeaponSwap"); 
+            EquipObject = 무기[WeaponIndex].GetComponent<Weapons>(); // EquipObject에 현재 장착중인 무기를 넣음
+            EquipObject.gameObject.SetActive(true); // 장착한 무기 보여줌
+            animator.SetTrigger("WeaponSwap");
+
+            isSwap = true;
+            Invoke("SwapOut", 0.4f);
         }
+    }
+
+    void SwapOut()
+    {
+        isSwap = false;
     }
 
 
@@ -166,6 +186,22 @@ public class Player : MonoBehaviour
                 무기보유[weaponIndex] = true; 
                 Destroy(ItemObject);
             }
+        }
+    }
+
+
+    void Attack()
+    {
+        if (EquipObject == null)
+            return;
+        // Time.datatime : 지난 프레임이 완료되는 데 까지 걸리는시간을 나타내며 단위는 초를사용(Update함수에서 1프레임이 아닌 1초당 어떤 행동을 하고 싶을 때 델타타임을 곱함)
+        MeleeDelay += Time.deltaTime; // Melee에 매 프레임 소비한 시간을 더함
+        MeleeReady = EquipObject.공속 < MeleeDelay;
+        if(MeleeDown && MeleeReady && !isSwap && !isDodje)
+        {
+            EquipObject.Use();
+            animator.SetTrigger("DoSwing");
+            MeleeDelay = 0;
         }
     }
 

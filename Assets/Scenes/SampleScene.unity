@@ -137,7 +137,7 @@ PrefabInstance:
     - target: {fileID: 485764946322866398, guid: cc9da6b79bb1b39499cb810dca740281,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1006017995968420452, guid: cc9da6b79bb1b39499cb810dca740281,
         type: 3}
@@ -272,9 +272,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   Damge: 25
-  "\uACF5\uC18D": 0.4
-  AttackRange: {fileID: 0}
-  trailEffect: {fileID: 0}
+  "\uACF5\uC18D": 0.6
+  AttackRange: {fileID: 57862366}
+  trailEffect: {fileID: 658644348}
 --- !u!65 &57862366
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -630,6 +630,11 @@ PrefabInstance:
       propertyPath: m_TagString
       value: "\uC544\uC774\uD15C"
       objectReference: {fileID: 0}
+    - target: {fileID: 4222065797064882686, guid: 5b0b6a4da9e81d644b5700f38f814705,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6817101114769311420, guid: 5b0b6a4da9e81d644b5700f38f814705,
         type: 3}
       propertyPath: type
@@ -901,7 +906,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 0.5
+  m_Time: 0.1
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -2559,6 +2564,11 @@ PrefabInstance:
       propertyPath: m_TagString
       value: "\uC544\uC774\uD15C"
       objectReference: {fileID: 0}
+    - target: {fileID: 4222065797064882686, guid: 5b0b6a4da9e81d644b5700f38f814705,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6817101114769311420, guid: 5b0b6a4da9e81d644b5700f38f814705,
         type: 3}
       propertyPath: type
@@ -2643,6 +2653,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TagString
       value: "\uC544\uC774\uD15C"
+      objectReference: {fileID: 0}
+    - target: {fileID: 4222065797064882686, guid: 5b0b6a4da9e81d644b5700f38f814705,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6817101114769311420, guid: 5b0b6a4da9e81d644b5700f38f814705,
         type: 3}
@@ -3302,6 +3317,11 @@ PrefabInstance:
       propertyPath: m_TagString
       value: "\uC544\uC774\uD15C"
       objectReference: {fileID: 0}
+    - target: {fileID: 7836519618963256980, guid: 8bcd4c018c7eca74283efcf5326081d1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8bcd4c018c7eca74283efcf5326081d1, type: 3}
 --- !u!1001 &6388991452289508756
@@ -3450,6 +3470,11 @@ PrefabInstance:
       propertyPath: m_TagString
       value: "\uC544\uC774\uD15C"
       objectReference: {fileID: 0}
+    - target: {fileID: 4222065797064882686, guid: 5b0b6a4da9e81d644b5700f38f814705,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6817101114769311420, guid: 5b0b6a4da9e81d644b5700f38f814705,
         type: 3}
       propertyPath: type
@@ -3468,6 +3493,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Weapon HandGun
+      objectReference: {fileID: 0}
+    - target: {fileID: 7445609533966506991, guid: 0abe0440c0f933a4c83cb972c897a4d9,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7791173207270457685, guid: 0abe0440c0f933a4c83cb972c897a4d9,
         type: 3}
@@ -3542,6 +3572,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Weapon SubMachineGun
+      objectReference: {fileID: 0}
+    - target: {fileID: 8170748602893595105, guid: b6eefa564f322bc4e82c571b48f21cda,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8573926867460284459, guid: b6eefa564f322bc4e82c571b48f21cda,
         type: 3}
@@ -3636,6 +3671,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TagString
       value: "\uC544\uC774\uD15C"
+      objectReference: {fileID: 0}
+    - target: {fileID: 8254776570407138610, guid: 315ea5d27f4d2aa469c72bb6e4c688c7,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8774431691837403016, guid: 315ea5d27f4d2aa469c72bb6e4c688c7,
         type: 3}
