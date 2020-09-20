@@ -53,10 +53,10 @@ public class Player : MonoBehaviour
     void Update()
     {
         GetInput();
+        Dodge();
         PlayerMove();
         PlayerTurn();
         Jump();
-        Dodge();
         GetItem();
         WeaponSwap();
     }
@@ -97,7 +97,7 @@ public class Player : MonoBehaviour
 
     void Jump()
     {
-        if (JumpKey && !isJump && MoveVec == Vector3.zero && !isDodje) // 가만히 있을때만 점프가능
+        if (JumpKey && !isJump && MoveVec == Vector3.zero) // 가만히 있을때만 점프가능
         {
             // .AddForce(힘, 유형) : Rigidbody에 힘을 추가한다   Impulse : 질량을 사용하여 리지드 바디에 순간적인 힘 임펄스를 추가
             rigidbody.AddForce(Vector3.up * 13, ForceMode.Impulse); // 편집 -> 프로젝트 세팅-> 물리에가면 중력값 조정 가능
@@ -109,13 +109,13 @@ public class Player : MonoBehaviour
 
     void Dodge() // 회피(구르기)
     {
-        if (JumpKey && !isJump && MoveVec != Vector3.zero && !isDodje) // 움직이고 있을떄만 구르기 사용
+        if (JumpKey && !isJump && !isDodje) // 움직이고 있을떄만 구르기 사용
         {
             DodgeVector = MoveVec;
             speed *= 2;
             animator.SetTrigger("DoDodge");
             isDodje = true;
-            
+
             Invoke("DodgeOut", 0.5f); // Invoke("함수명", time) : time후에 ""안에 함수가 실행됨, Invoke없이 바로 함수 쓰면 안 빨라지는 것처럼 보임
         }
     }
@@ -150,7 +150,6 @@ public class Player : MonoBehaviour
             EquipObjcetIndex = WeaponIndex; // 조건에 맞을때 작동을 안하기 위해 값을 넣어줌
             EquipObject = 무기[WeaponIndex]; // EquipObject에 현재 장착중인 무기를 넣음
             EquipObject.SetActive(true); // 장착한 무기 보여줌
-            무기물리[WeaponIndex].충돌방지(); // 현재 장착한 무기의 물리효과를 없앰
             animator.SetTrigger("WeaponSwap"); 
         }
     }

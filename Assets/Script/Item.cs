@@ -31,10 +31,4 @@ public class Item : MonoBehaviour
             sphereCollider.enabled = false; // enabled : 활성화된 콜라이더는 다른 콜라이더와 충돌하고 비활성화된 콜라이더는 충돌하지 않음
         }
     }
-
-    public void 충돌방지() // 아이템의 물리효과를 없애는 함수
-    {
-        rigidbody.isKinematic = true;
-        sphereCollider.enabled = false;
-    }
 }
