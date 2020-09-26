@@ -27,7 +27,7 @@ public class Player : MonoBehaviour
     bool isJump;
     bool isDodje;
     bool isSwap;
-    public bool isAttack;
+    public bool isMelee;
 
     // 키입력
     private float hAxis;
@@ -90,12 +90,12 @@ public class Player : MonoBehaviour
 
     void PlayerMove() // 이동
     {
-        if (isDodje || isAttack) // 구르기나 공격중에는 행동 전 백터값으로 직진함
+        if (isDodje || isMelee) // 구르기나 공격중에는 행동 전 백터값으로 직진함
             MoveVec = DodgeVector;
         else
             MoveVec = new Vector3(xAxis, 0, hAxis).normalized; // normalized : 방향 값이 1로 보정된 백터(저걸 안하면 대각선 이동 시 평소보다 더 빠르게 이동함)
 
-        if (!MeleeReady && EquipObject.type == Weapons.Type.Range) // 원거리 공격중일 때는 이동 못함
+        if ((!MeleeReady || AttackDown) && EquipObject.type == Weapons.Type.Range) // 원거리 공격중일 때는 이동 못함
             MoveVec = Vector3.zero;
         transform.position += MoveVec * speed * (WalkKey ? 0.3f : 1f) * Time.deltaTime; // transform이동은 Time.dalraTime을 넣어줘야 함
 
@@ -157,7 +157,7 @@ public class Player : MonoBehaviour
         if (SwapWeapon2) WeaponIndex = 1;
         if (SwapWeapon3) WeaponIndex = 2;
 
-        if ((SwapWeapon1 || SwapWeapon2 || SwapWeapon3) && !isDodje && MeleeReady)
+        if ((SwapWeapon1 || SwapWeapon2 || SwapWeapon3) && !isDodje && MeleeReady) // 공격중일 때 스왑하면 들고있는 무기관련함수가 캔슬되서 공격중에 스왑막음
         {
             if(EquipObject != null)
                 EquipObject.gameObject.SetActive(false);

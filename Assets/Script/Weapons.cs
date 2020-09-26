@@ -35,7 +35,7 @@ public class Weapons : MonoBehaviour
 
     IEnumerator Melee()
     {
-        player.isAttack = true;
+        player.isMelee = true;
         player.speed *= 0.5f;
         yield return new WaitForSeconds(0.1f);
         AttackRange.enabled = true; // 콜라이더 두개 활성화
@@ -43,7 +43,7 @@ public class Weapons : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
         AttackRange.enabled = false;
         yield return new WaitForSeconds(0.3f);
-        player.isAttack = false;
+        player.isMelee = false;
         player.speed *= 2f;
         trailEffect.enabled = false;
     }
