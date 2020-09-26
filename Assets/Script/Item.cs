@@ -8,6 +8,7 @@ public class Item : MonoBehaviour
     public enum Type {Ammo, 수류탄, Heart, Coin, Waepon };
     public Type type; // enum은 하나의 타입이므로 담을 변수가 따로 필요
     public int value;
+    public bool 장착무기;
 
     new Rigidbody rigidbody;
     SphereCollider sphereCollider;
@@ -20,7 +21,8 @@ public class Item : MonoBehaviour
 
     private void Update()
     {
-        transform.Rotate(Vector3.up * 20 * Time.deltaTime);
+        if(!장착무기)
+            transform.Rotate(Vector3.up * 20 * Time.deltaTime);
     }
 
     private void OnCollisionEnter(Collision collision)
