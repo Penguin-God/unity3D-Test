@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Weapons : MonoBehaviour
 {
+    public Player player;
     public enum Type { Melee, Range};
     public Type type;
     public int Damge;
@@ -26,6 +27,8 @@ public class Weapons : MonoBehaviour
 
     IEnumerator Melee()
     {
+        player.isAttack = true;
+        player.speed *= 0.5f;
         yield return new WaitForSeconds(0.1f);
         AttackRange.enabled = true; // 콜라이더 두개 활성화
         trailEffect.enabled = true;
@@ -33,6 +36,8 @@ public class Weapons : MonoBehaviour
         AttackRange.enabled = false;
         yield return new WaitForSeconds(0.3f);
         trailEffect.enabled = false;
+        player.isAttack = false;
+        player.speed *= 2f;
 
     }
 }

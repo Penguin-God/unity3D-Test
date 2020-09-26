@@ -26,6 +26,7 @@ public class Player : MonoBehaviour
     bool isJump;
     bool isDodje;
     bool isSwap;
+    public bool isAttack;
 
     // 키입력
     private float hAxis;
@@ -44,6 +45,7 @@ public class Player : MonoBehaviour
 
     Vector3 MoveVec;
     Vector3 DodgeVector;
+
     Animator animator;
     new Rigidbody rigidbody;
 
@@ -87,13 +89,13 @@ public class Player : MonoBehaviour
 
     void PlayerMove() // 이동
     {
-        if (isDodje)
+        if (isDodje || isAttack) // 구르기나 공격중에는 행동 전 백터값으로 직진함
             MoveVec = DodgeVector;
         else
             MoveVec = new Vector3(xAxis, 0, hAxis).normalized; // normalized : 방향 값이 1로 보정된 백터(저걸 안하면 대각선 이동 시 평소보다 더 빠르게 이동함)
 
-        if (!MeleeReady) // 공격중일 때는 이동 못함
-            MoveVec = Vector3.zero;
+        //if (!MeleeReady) // 공격중일 때는 이동 못함
+        //    MoveVec = Vector3.zero;
         transform.position += MoveVec * speed * (WalkKey ? 0.3f : 1f) * Time.deltaTime; // transform이동은 Time.dalraTime을 넣어줘야 함
 
         // 애니메이션
@@ -180,7 +182,7 @@ public class Player : MonoBehaviour
         if(GetItemKey && ItemObject != null) // Item오브젝트에 닿아있을 때 E키 입력시 아이템 획득
         {
             if(ItemObject.tag == "무기")
-            { 
+            {
                 Item item = ItemObject.GetComponent<Item>();
                 int weaponIndex = item.value;
                 무기보유[weaponIndex] = true; 
@@ -199,6 +201,7 @@ public class Player : MonoBehaviour
         MeleeReady = EquipObject.공속 < MeleeDelay;
         if(MeleeDown && MeleeReady && !isSwap && !isDodje)
         {
+            DodgeVector = MoveVec; // DodgeVector에 공격하기 전 백터값을 넣음
             EquipObject.Use();
             animator.SetTrigger("DoSwing");
             MeleeDelay = 0;

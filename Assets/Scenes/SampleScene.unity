@@ -270,6 +270,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ead1b4f45b769134880f45cf6ce188fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 1559496317}
   type: 0
   Damge: 25
   "\uACF5\uC18D": 0.6
@@ -1772,6 +1773,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ead1b4f45b769134880f45cf6ce188fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
   type: 0
   Damge: 0
   "\uACF5\uC18D": 0
@@ -2386,6 +2388,7 @@ MonoBehaviour:
   MaxCoin: 1000000
   MaxPlayerhp: 100
   "Max\uC218\uB958\uD0C4": 4
+  isAttack: 0
 --- !u!136 &1559496318
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2981,6 +2984,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ead1b4f45b769134880f45cf6ce188fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
   type: 0
   Damge: 0
   "\uACF5\uC18D": 0
