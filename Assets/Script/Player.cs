@@ -95,7 +95,7 @@ public class Player : MonoBehaviour
         else
             MoveVec = new Vector3(xAxis, 0, hAxis).normalized; // normalized : 방향 값이 1로 보정된 백터(저걸 안하면 대각선 이동 시 평소보다 더 빠르게 이동함)
 
-        if ((!MeleeReady || AttackDown) && EquipObject.type == Weapons.Type.Range) // 원거리 공격중일 때는 이동 못함
+        if ((!MeleeReady || AttackDown) && EquipObject != null && EquipObject.type == Weapons.Type.Range)  // 원거리 공격중일 때는 이동 못함
             MoveVec = Vector3.zero;
         transform.position += MoveVec * speed * (WalkKey ? 0.3f : 1f) * Time.deltaTime; // transform이동은 Time.dalraTime을 넣어줘야 함
 
