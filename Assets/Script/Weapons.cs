@@ -43,9 +43,9 @@ public class Weapons : MonoBehaviour
         yield return new WaitForSeconds(0.3f);
         AttackRange.enabled = false;
         yield return new WaitForSeconds(0.3f);
-        player.isMelee = false;
         player.speed *= 2f;
         trailEffect.enabled = false;
+        player.isMelee = false;
     }
 
     IEnumerator Shot()

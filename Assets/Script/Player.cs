@@ -157,7 +157,7 @@ public class Player : MonoBehaviour
         if (SwapWeapon2) WeaponIndex = 1;
         if (SwapWeapon3) WeaponIndex = 2;
 
-        if ((SwapWeapon1 || SwapWeapon2 || SwapWeapon3) && !isDodje && MeleeReady) // 공격중일 때 스왑하면 들고있는 무기관련함수가 캔슬되서 공격중에 스왑막음
+        if ((SwapWeapon1 || SwapWeapon2 || SwapWeapon3) && !isDodje && !isMelee) // 공격중일 때 스왑하면 들고있는 무기관련함수가 캔슬되서 공격중에 스왑막음
         {
             if(EquipObject != null)
                 EquipObject.gameObject.SetActive(false);
