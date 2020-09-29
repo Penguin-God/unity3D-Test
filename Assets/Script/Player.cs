@@ -41,7 +41,7 @@ public class Player : MonoBehaviour
     bool AttackDown;
 
     // 근접공격 관련 변수
-    bool MeleeReady = true;
+    bool MeleeReady = true; 
     float MeleeDelay = 0.5f; // 처음 무기를 장착한 순간부터 MeleeDelay += Time.datatime코드가 실행되서 순간적으로 MeleeReady가 false가 되어 이동을 못하게 되므로 기초값을 공속보다 높게 조정함 
 
     Vector3 MoveVec;
@@ -95,7 +95,7 @@ public class Player : MonoBehaviour
         else
             MoveVec = new Vector3(xAxis, 0, hAxis).normalized; // normalized : 방향 값이 1로 보정된 백터(저걸 안하면 대각선 이동 시 평소보다 더 빠르게 이동함)
 
-        if ((!MeleeReady || AttackDown) && EquipObject != null && EquipObject.type == Weapons.Type.Range)  // 원거리 공격중일 때는 이동 못함
+        if (!MeleeReady && EquipObject != null && EquipObject.type == Weapons.Type.Range)  // 원거리 공격중일 때는 이동 못함
             MoveVec = Vector3.zero;
         transform.position += MoveVec * speed * (WalkKey ? 0.3f : 1f) * Time.deltaTime; // transform이동은 Time.dalraTime을 넣어줘야 함
 
