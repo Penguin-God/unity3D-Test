@@ -9,6 +9,9 @@ public class Weapons : MonoBehaviour
     public Type type;
     public int Damge;
     public float 공속;
+    public int Max총알;
+    public int 장전된총알;
+
     public BoxCollider AttackRange;
     public TrailRenderer trailEffect;
 
@@ -28,8 +31,11 @@ public class Weapons : MonoBehaviour
     {
         if (type == Type.Melee)
             StartCoroutine("Melee");
-        else if (type == Type.Range)
+        else if (type == Type.Range && 0 < 장전된총알)
+        {
+            장전된총알--;
             StartCoroutine("Shot");
+        }
         // StopCoroutine("Melee"); : 코루틴 멈추는 함수
     }
 

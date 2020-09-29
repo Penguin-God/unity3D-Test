@@ -12,22 +12,24 @@ public class Player : MonoBehaviour
     public bool[] 무기보유;
     public GameObject[] 보유수류탄;
 
-    public int 총알;
-    public int coin;
-    public int playerhp;
-    public int 수류탄;
+    public int 보유총알;
     public int Max총알;
+    public int coin;
     public int MaxCoin;
+    public int playerhp;
     public int MaxPlayerhp;
+    public int 수류탄;
     public int Max수류탄;
 
-    int EquipObjcetIndex = -1; // 보유중인 무기
+    int EquipObjcetIndex = -1; // 보유중인 무기 숫자
 
     // 상태확인
     bool isJump;
     bool isDodje;
     bool isSwap;
+    bool isReload;
     public bool isMelee;
+
 
     // 키입력
     private float hAxis;
@@ -39,6 +41,7 @@ public class Player : MonoBehaviour
     bool SwapWeapon3;
     bool SwapWeapon2;
     bool AttackDown;
+    bool ReloadDown;
 
     // 근접공격 관련 변수
     bool MeleeReady = true; 
@@ -51,7 +54,7 @@ public class Player : MonoBehaviour
     new Rigidbody rigidbody;
 
     GameObject ItemObject;
-    Weapons EquipObject;
+    Weapons EquipObject; // Weapons script를 가져옴
 
     private void Awake()
     {
@@ -69,23 +72,23 @@ public class Player : MonoBehaviour
         GetItem();
         WeaponSwap();
         Attack();
+        Reload();
     }
     
     void GetInput() // 마우스, 키보드 등 입력받기
     {
         xAxis = Input.GetAxisRaw("Horizontal");
         hAxis = Input.GetAxisRaw("Vertical");
-        // 느리게 걷기(left shift)
-        WalkKey = Input.GetButton("Walk");
+        WalkKey = Input.GetButton("Walk"); // 느리게 걷기(left shift)
         JumpKey = Input.GetButtonDown("Jump");
-        // 아이템 줍기(e)
-        GetItemKey = Input.GetButtonDown("GetItem");
-        // 무기 변경입력(1, 2, 3)
+        GetItemKey = Input.GetButtonDown("GetItem"); // 아이템 줍기(e)
+        // 무기 교체입력(1, 2, 3)
         SwapWeapon1 = Input.GetButtonDown("Swap1");
         SwapWeapon2 = Input.GetButtonDown("Swap2");
         SwapWeapon3 = Input.GetButtonDown("Swap3");
-        //근접공격 입력
-        AttackDown = Input.GetButton("Fire1");
+        
+        AttackDown = Input.GetButton("Fire1"); // 공격 입력
+        ReloadDown = Input.GetButtonDown("Reload"); // 장전
     }
 
     void PlayerMove() // 이동
@@ -95,7 +98,7 @@ public class Player : MonoBehaviour
         else
             MoveVec = new Vector3(xAxis, 0, hAxis).normalized; // normalized : 방향 값이 1로 보정된 백터(저걸 안하면 대각선 이동 시 평소보다 더 빠르게 이동함)
 
-        if (!MeleeReady && EquipObject != null && EquipObject.type == Weapons.Type.Range)  // 원거리 공격중일 때는 이동 못함
+        if ((!MeleeReady && EquipObjcetIndex == 1) || (EquipObjcetIndex == 2 && AttackDown))  // 원거리 공격중일 때는 이동 못함
             MoveVec = Vector3.zero;
         transform.position += MoveVec * speed * (WalkKey ? 0.3f : 1f) * Time.deltaTime; // transform이동은 Time.dalraTime을 넣어줘야 함
 
@@ -124,7 +127,7 @@ public class Player : MonoBehaviour
 
     void Dodge() // 회피(구르기)
     {
-        if (JumpKey && !isJump && !isDodje && MoveVec != Vector3.zero) // 움직이고 있을떄만 구르기 사용
+        if (JumpKey && !isJump && !isDodje && MoveVec != Vector3.zero && !isReload) // 움직이고 있을떄만 구르기 사용
         {
             DodgeVector = MoveVec;
             speed *= 2;
@@ -157,7 +160,7 @@ public class Player : MonoBehaviour
         if (SwapWeapon2) WeaponIndex = 1;
         if (SwapWeapon3) WeaponIndex = 2;
 
-        if ((SwapWeapon1 || SwapWeapon2 || SwapWeapon3) && !isDodje && !isMelee) // 공격중일 때 스왑하면 들고있는 무기관련함수가 캔슬되서 공격중에 스왑막음
+        if ((SwapWeapon1 || SwapWeapon2 || SwapWeapon3) && !isDodje && !isMelee && !isReload) // 공격중일 때 스왑하면 들고있는 무기관련함수가 캔슬되서 공격중에 스왑막음
         {
             if(EquipObject != null)
                 EquipObject.gameObject.SetActive(false);
@@ -168,7 +171,7 @@ public class Player : MonoBehaviour
             animator.SetTrigger("WeaponSwap");
 
             isSwap = true;
-            Invoke("SwapOut", 0.4f);
+            Invoke("SwapOut", 0.4f); // 머신건 쏠 때는 애니메이션 빠르게 동작하는거 구현하자
         }
     }
 
@@ -200,13 +203,37 @@ public class Player : MonoBehaviour
         // Time.datatime : 지난 프레임이 완료되는 데 까지 걸리는시간을 나타내며 단위는 초를사용(Update함수에서 1프레임이 아닌 1초당 어떤 행동을 하고 싶을 때 델타타임을 곱함)
         MeleeDelay += Time.deltaTime; // Melee에 매 프레임 소비한 시간을 더함
         MeleeReady = EquipObject.공속 < MeleeDelay; // 공격한 후 지정한 공속보다 시간이 더 지나면 다시 공격할 수 있음
-        if(AttackDown && MeleeReady && !isSwap && !isDodje)
+        if(AttackDown && MeleeReady && !isSwap && !isDodje && !isReload)
         {
             DodgeVector = MoveVec; // DodgeVector에 공격하기 전 백터값을 넣음
             EquipObject.Use();
             animator.SetTrigger(EquipObject.type == Weapons.Type.Melee ? "DoSwing" : "DoShot"); // 장착한 무기에 따라 다른 애니메이션 실행
             MeleeDelay = 0; // 공격 후 바로 공격 못하게 딜레이를 공속보다 낮게 0으로 만듬
         }
+    }
+
+    void Reload()
+    {
+        if (보유총알 == 0 || EquipObject == null || EquipObject.type == Weapons.Type.Melee)
+            return;
+
+        if(ReloadDown && !isDodje && !isSwap && MeleeReady)
+        {
+            animator.SetTrigger("DoReload");
+            speed *= 0.5f;
+            isReload = true;
+            
+            Invoke("ReloadOut", 3f);
+        }
+    }
+
+    void ReloadOut()
+    {
+        int ReloadAmmo = 보유총알 > this.Max총알 ? this.Max총알 : 보유총알; // 총알 보유상태에 따라 충전할 총알의 수를 정함
+        EquipObject.장전된총알 = ReloadAmmo; // Weapons script의 변수에 총알을 더함
+        보유총알 -= ReloadAmmo;
+        isReload = false;
+        speed *= 2;
     }
 
     private void OnCollisionEnter(Collision collision) // 점프 후 바닥에 닿을시 애니미이션
@@ -226,9 +253,9 @@ public class Player : MonoBehaviour
             switch (item.type)
             {
                 case Item.Type.Ammo:
-                    총알 += item.value;
-                    if (총알 > Max총알)
-                        총알 = Max총알;
+                    보유총알 += item.value;
+                    if (보유총알 > Max총알)
+                        보유총알 = Max총알;
                     break;
                 case Item.Type.Coin:
                     coin += item.value;
