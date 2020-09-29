@@ -11,6 +11,6 @@ public class 총알 : MonoBehaviour
         if (collision.gameObject.tag == "바닥")
             Destroy(gameObject, 3); // 바닥과 닿을경우 3초뒤에 삭제
         else if (collision.gameObject.tag == "벽")
-            Destroy(gameObject);
+            Destroy(gameObject); // 벽에 닿을경우 바로 삭제
     }
 }

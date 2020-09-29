@@ -199,13 +199,13 @@ public class Player : MonoBehaviour
             return;
         // Time.datatime : 지난 프레임이 완료되는 데 까지 걸리는시간을 나타내며 단위는 초를사용(Update함수에서 1프레임이 아닌 1초당 어떤 행동을 하고 싶을 때 델타타임을 곱함)
         MeleeDelay += Time.deltaTime; // Melee에 매 프레임 소비한 시간을 더함
-        MeleeReady = EquipObject.공속 < MeleeDelay;
+        MeleeReady = EquipObject.공속 < MeleeDelay; // 공격한 후 지정한 공속보다 시간이 더 지나면 다시 공격할 수 있음
         if(AttackDown && MeleeReady && !isSwap && !isDodje)
         {
             DodgeVector = MoveVec; // DodgeVector에 공격하기 전 백터값을 넣음
             EquipObject.Use();
             animator.SetTrigger(EquipObject.type == Weapons.Type.Melee ? "DoSwing" : "DoShot"); // 장착한 무기에 따라 다른 애니메이션 실행
-            MeleeDelay = 0;
+            MeleeDelay = 0; // 공격 후 바로 공격 못하게 딜레이를 공속보다 낮게 0으로 만듬
         }
     }
 
