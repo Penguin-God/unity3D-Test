@@ -7,10 +7,10 @@ public class Player : MonoBehaviour
 {
     public float speed;
     // 아이템 관련 변수
-    //public Item[] 무기물리;
     public GameObject[] 무기;
     public bool[] 무기보유;
     public GameObject[] 보유수류탄;
+    public Camera followCamera;
 
     public int 보유총알;
     public int Max총알;
@@ -54,7 +54,7 @@ public class Player : MonoBehaviour
     new Rigidbody rigidbody;
 
     GameObject ItemObject;
-    Weapons EquipObject; // Weapons script를 가져옴
+    Weapons EquipObject; 
 
     private void Awake()
     {
@@ -98,9 +98,9 @@ public class Player : MonoBehaviour
         else
             MoveVec = new Vector3(xAxis, 0, hAxis).normalized; // normalized : 방향 값이 1로 보정된 백터(저걸 안하면 대각선 이동 시 평소보다 더 빠르게 이동함)
 
-        if ((!MeleeReady && EquipObjcetIndex == 1) || (EquipObjcetIndex == 2 && AttackDown))  // 원거리 공격중일 때는 이동 못함
+        if ((!MeleeReady && EquipObjcetIndex == 1) || (EquipObjcetIndex == 2 && (AttackDown || !MeleeReady)))  // 원거리 공격중일 때는 이동 못함
             MoveVec = Vector3.zero;
-        transform.position += MoveVec * speed * (WalkKey ? 0.3f : 1f) * Time.deltaTime; // transform이동은 Time.dalraTime을 넣어줘야 함
+        transform.position += MoveVec * speed * (WalkKey ? 0.3f : 1f) * Time.deltaTime; // Time.dataTime : 안넣으면 프레임당 움직임 넣으면 초당 움직임
 
         // 애니메이션
         animator.SetBool("IsRun", MoveVec != Vector3.zero); // Vector3.zero = Vector3(0, 0, 0); 즉 모든 Vector값이 0이 아니면 "IsRun"은 true
@@ -110,7 +110,20 @@ public class Player : MonoBehaviour
     void PlayerTurn() // 회전
     {
         // player가 나아가는 방향을 바라보는 코드
-        transform.LookAt(transform.position + MoveVec); // LookAt() : 지정된 백터를 향해서 회전시켜주는 함수 
+        transform.LookAt(transform.position + MoveVec); // LookAt() :  백터가 지정한 방향으로 회전시켜주는 함수 
+
+        // 마우스에 의한 회전
+        if (AttackDown && !isDodje && EquipObject != null && EquipObject.type == Weapons.Type.Range) // 마우스 클릭시에만 마우스 포인터를 바라봄
+        {
+            Ray CameraRay = followCamera.ScreenPointToRay(Input.mousePosition); // 카메라에서 마우스 누른곳에 Ray를 쏨
+            RaycastHit rayHit;
+            if (Physics.Raycast(CameraRay, out rayHit, 100)) // out : ray에 닿은 물체를 리턴함
+            {
+                Vector3 nextVec = rayHit.point - transform.position; // 마우스를 클릭한 지점에서 현재 플레이어 위치를 뺀 값을 넣음
+                nextVec.y = 0; // y축으로도 도는거 방지
+                transform.LookAt(transform.position + nextVec);
+            }
+        }
     }
 
     void Jump()
