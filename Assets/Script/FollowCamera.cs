@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Camera : MonoBehaviour
+public class FollowCamera : MonoBehaviour
 {
     public Transform target; // 카메라가 따라갈 목표
     public Vector3 offset; // 카메라의 현재 위치(보정값)
