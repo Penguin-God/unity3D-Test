@@ -214,7 +214,7 @@ public class Player : MonoBehaviour
 
     void Reload()
     {
-        if (보유총알 == 0 || EquipObject == null || EquipObject.type == Weapons.Type.Melee)
+        if (보유총알 == 0 || EquipObject == null || EquipObject.type == Weapons.Type.Melee || isReload)
             return;
 
         if(ReloadDown && !isDodje && !isSwap && MeleeReady)
@@ -229,7 +229,7 @@ public class Player : MonoBehaviour
 
     void ReloadOut()
     {
-        int ReloadAmmo = 보유총알 > this.Max총알 ? this.Max총알 : 보유총알; // 총알 보유상태에 따라 충전할 총알의 수를 정함
+        int ReloadAmmo = 보유총알 > EquipObject.Max총알 ? EquipObject.Max총알 : 보유총알; // 총알 보유상태에 따라 충전할 총알의 수를 정함
         EquipObject.장전된총알 = ReloadAmmo; // Weapons script의 변수에 총알을 더함
         보유총알 -= ReloadAmmo;
         isReload = false;

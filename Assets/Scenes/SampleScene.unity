@@ -1837,7 +1837,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1559496317}
   type: 1
-  Damge: 0
+  Damge: 30
   "\uACF5\uC18D": 0.4
   "Max\uCD1D\uC54C": 12
   "\uC7A5\uC804\uB41C\uCD1D\uC54C": 12
@@ -3080,7 +3080,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1559496317}
   type: 1
-  Damge: 0
+  Damge: 15
   "\uACF5\uC18D": 0.15
   "Max\uCD1D\uC54C": 30
   "\uC7A5\uC804\uB41C\uCD1D\uC54C": 30
