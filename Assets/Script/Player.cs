@@ -29,6 +29,7 @@ public class Player : MonoBehaviour
     bool isSwap;
     bool isReload;
     public bool isMelee;
+    bool isBorder; // 벽에 닿으면 true
 
 
     // 키입력
@@ -75,16 +76,6 @@ public class Player : MonoBehaviour
         Reload();
     }
 
-    private void FixedUpdate()
-    {
-        회전방지();
-    }
-
-    void 회전방지()
-    {
-        rigidbody.angularVelocity = Vector3.zero; // angularVelocity : 물리회전속도
-    }
-
     void GetInput() // 마우스, 키보드 등 입력받기
     {
         xAxis = Input.GetAxisRaw("Horizontal");
@@ -110,7 +101,9 @@ public class Player : MonoBehaviour
 
         if ((!MeleeReady && EquipObjcetIndex == 1) || (EquipObjcetIndex == 2 && (AttackDown || !MeleeReady)))  // 원거리 공격중일 때는 이동 못함
             MoveVec = Vector3.zero;
-        transform.position += MoveVec * speed * (WalkKey ? 0.3f : 1f) * Time.deltaTime; // Time.dataTime : 안넣으면 프레임당 움직임 넣으면 초당 움직임
+
+        if(!isBorder) // 벽과 닿을때 Vector3.zero로 만들어 버리면 회전도 못해서 아예정지해 버리기 때문에 트랜스폼에 백터를 더해서 이동하는 것만 제한함
+            transform.position += MoveVec * speed * (WalkKey ? 0.3f : 1f) * Time.deltaTime; // Time.dataTime : 안넣으면 프레임당 움직임 넣으면 초당 움직임
 
         // 애니메이션
         animator.SetBool("IsRun", MoveVec != Vector3.zero); // Vector3.zero = Vector3(0, 0, 0); 즉 모든 Vector값이 0이 아니면 "IsRun"은 true
@@ -262,6 +255,27 @@ public class Player : MonoBehaviour
         speed *= 2;
     }
 
+
+
+    private void FixedUpdate()
+    {
+        회전방지();
+        StopToWall();
+    }
+
+    void 회전방지()
+    {
+        rigidbody.angularVelocity = Vector3.zero; // angularVelocity : 물리회전속도
+    }
+
+    void StopToWall()
+    {
+        Debug.DrawRay(transform.position, transform.forward * 3, Color.green); // Debug.DrawRay(시작점, 쏘는방향 * 길이, 색깔); : Scene 내에서 Ray를 보여주는 함수
+        isBorder = Physics.Raycast(transform.position, transform.forward, 3, LayerMask.GetMask("벽")); // Raycast(시작점, 쏘는방향, 길이, 가져올오브젝트레이어) : Ray를 쏘아 닿는 오브젝트를 감지하는 함수  
+    }
+
+
+
     private void OnCollisionEnter(Collision collision) // 점프 후 바닥에 닿을시 애니미이션
     {
         if (collision.gameObject.CompareTag("바닥"))
@@ -271,7 +285,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other) // other : 닿은 오브젝트
+    private void OnTriggerEnter(Collider other) // 아이템하고 닿으면 먹는 로직, other : 닿은 오브젝트
     {
         if(other.tag == "아이템")
         {
