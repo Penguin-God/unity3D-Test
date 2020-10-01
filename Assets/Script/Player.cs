@@ -128,7 +128,7 @@ public class Player : MonoBehaviour
 
     void Jump()
     {
-        if (JumpKey && !isJump && MoveVec == Vector3.zero) // 가만히 있을때만 점프가능
+        if (JumpKey && !isJump && MoveVec == Vector3.zero && MeleeReady) // 가만히 있을때만 점프가능
         {
             // .AddForce(힘, 유형) : Rigidbody에 힘을 추가한다   Impulse : 질량을 사용하여 리지드 바디에 순간적인 힘 임펄스를 추가
             rigidbody.AddForce(Vector3.up * 13, ForceMode.Impulse); // 편집 -> 프로젝트 세팅-> 물리에가면 중력값 조정 가능
@@ -220,7 +220,10 @@ public class Player : MonoBehaviour
         {
             DodgeVector = MoveVec; // DodgeVector에 공격하기 전 백터값을 넣음
             EquipObject.Use();
-            animator.SetTrigger(EquipObject.type == Weapons.Type.Melee ? "DoSwing" : "DoShot"); // 장착한 무기에 따라 다른 애니메이션 실행
+            if (EquipObject.type == Weapons.Type.Melee) // 장착한 무기에 따라 다른 애니메이션 실행
+                animator.SetTrigger("DoSwing");
+            else
+                animator.SetTrigger(EquipObjcetIndex == 1 ? "DoShot" : "DoMachineGunShot");
             MeleeDelay = 0; // 공격 후 바로 공격 못하게 딜레이를 공속보다 낮게 0으로 만듬
         }
     }
