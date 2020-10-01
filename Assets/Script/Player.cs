@@ -74,7 +74,17 @@ public class Player : MonoBehaviour
         Attack();
         Reload();
     }
-    
+
+    private void FixedUpdate()
+    {
+        회전방지();
+    }
+
+    void 회전방지()
+    {
+        rigidbody.angularVelocity = Vector3.zero; // angularVelocity : 물리회전속도
+    }
+
     void GetInput() // 마우스, 키보드 등 입력받기
     {
         xAxis = Input.GetAxisRaw("Horizontal");
