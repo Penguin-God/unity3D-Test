@@ -116,7 +116,7 @@ public class Player : MonoBehaviour
         transform.LookAt(transform.position + MoveVec); // LookAt() :  백터가 지정한 방향으로 회전시켜주는 함수 
 
         // 마우스에 의한 회전
-        if (AttackDown && !isDodje && EquipObject != null && EquipObject.type == Weapons.Type.Range) // 마우스 클릭시에만 마우스 포인터를 바라봄
+        if (AttackDown && !isDodje && EquipObject != null) // 마우스 클릭시에만 마우스 포인터를 바라봄
         {
             Ray CameraRay = followCamera.ScreenPointToRay(Input.mousePosition); // 카메라에서 마우스 누른곳에 Ray를 쏨
             RaycastHit rayHit;
