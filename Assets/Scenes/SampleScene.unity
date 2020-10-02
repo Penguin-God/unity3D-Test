@@ -313,6 +313,12 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 4, y: 4, z: 1}
   m_Center: {x: 0.2, y: 2, z: 0}
+--- !u!1 &68376447 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4222065797064882686, guid: 5b0b6a4da9e81d644b5700f38f814705,
+    type: 3}
+  m_PrefabInstance: {fileID: 462744991}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &103397170
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -413,7 +419,7 @@ PrefabInstance:
     - target: {fileID: 5903297864969995812, guid: 8f5e135a19626f544908fc8f156144b9,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5903297864969995812, guid: 8f5e135a19626f544908fc8f156144b9,
         type: 3}
@@ -583,6 +589,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   "\uACF5\uC804\uCD95\uC911\uC2EC": {fileID: 1559496320}
   "\uACF5\uC804\uC18D\uB3C4": 10
+--- !u!1 &202284277 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4222065797064882686, guid: 5b0b6a4da9e81d644b5700f38f814705,
+    type: 3}
+  m_PrefabInstance: {fileID: 2050658593}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &280136024
 GameObject:
   m_ObjectHideFlags: 0
@@ -607,7 +619,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 280136024}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -16.02, y: 3.54, z: -0.12}
+  m_LocalPosition: {x: 0, y: 3.28, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1782062806}
@@ -881,7 +893,7 @@ PrefabInstance:
     - target: {fileID: 4222065797064882686, guid: 5b0b6a4da9e81d644b5700f38f814705,
         type: 3}
       propertyPath: m_Name
-      value: Weapon Grenade(1)
+      value: "\uC11C-Grenade"
       objectReference: {fileID: 0}
     - target: {fileID: 4222065797064882686, guid: 5b0b6a4da9e81d644b5700f38f814705,
         type: 3}
@@ -966,6 +978,11 @@ PrefabInstance:
     - target: {fileID: 6817101114769311409, guid: 5b0b6a4da9e81d644b5700f38f814705,
         type: 3}
       propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6817101114769311420, guid: 5b0b6a4da9e81d644b5700f38f814705,
+        type: 3}
+      propertyPath: "\uC7A5\uCC29\uBB34\uAE30"
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6817101114769311422, guid: 5b0b6a4da9e81d644b5700f38f814705,
@@ -1350,6 +1367,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   "\uACF5\uC804\uCD95\uC911\uC2EC": {fileID: 1559496320}
   "\uACF5\uC804\uC18D\uB3C4": 10
+--- !u!1 &903132432 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4222065797064882686, guid: 5b0b6a4da9e81d644b5700f38f814705,
+    type: 3}
+  m_PrefabInstance: {fileID: 1460150106}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -2183,7 +2206,7 @@ PrefabInstance:
     - target: {fileID: 4222065797064882686, guid: 5b0b6a4da9e81d644b5700f38f814705,
         type: 3}
       propertyPath: m_Name
-      value: Weapon Grenade(2)
+      value: "\uB0A8-Grenade"
       objectReference: {fileID: 0}
     - target: {fileID: 4222065797064882686, guid: 5b0b6a4da9e81d644b5700f38f814705,
         type: 3}
@@ -2258,6 +2281,11 @@ PrefabInstance:
     - target: {fileID: 6817101114769311409, guid: 5b0b6a4da9e81d644b5700f38f814705,
         type: 3}
       propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6817101114769311420, guid: 5b0b6a4da9e81d644b5700f38f814705,
+        type: 3}
+      propertyPath: "\uC7A5\uCC29\uBB34\uAE30"
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6817101114769311422, guid: 5b0b6a4da9e81d644b5700f38f814705,
@@ -2464,7 +2492,7 @@ PrefabInstance:
     - target: {fileID: 4222065797064882686, guid: 5b0b6a4da9e81d644b5700f38f814705,
         type: 3}
       propertyPath: m_Name
-      value: Weapon Grenade(0)
+      value: "\uB3D9-Grenade"
       objectReference: {fileID: 0}
     - target: {fileID: 4222065797064882686, guid: 5b0b6a4da9e81d644b5700f38f814705,
         type: 3}
@@ -2541,6 +2569,11 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6817101114769311420, guid: 5b0b6a4da9e81d644b5700f38f814705,
+        type: 3}
+      propertyPath: "\uC7A5\uCC29\uBB34\uAE30"
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6817101114769311422, guid: 5b0b6a4da9e81d644b5700f38f814705,
         type: 3}
       propertyPath: m_Enabled
@@ -2583,7 +2616,11 @@ MonoBehaviour:
   - {fileID: 1149881217}
   - {fileID: 2095634810}
   "\uBB34\uAE30\uBCF4\uC720": 000000
-  "\uBCF4\uC720\uC218\uB958\uD0C4": []
+  "\uBCF4\uC720\uC218\uB958\uD0C4":
+  - {fileID: 903132432}
+  - {fileID: 68376447}
+  - {fileID: 1997725145}
+  - {fileID: 202284277}
   followCamera: {fileID: 963194227}
   "\uBCF4\uC720\uCD1D\uC54C": 0
   "Max\uCD1D\uC54C": 300
@@ -2898,6 +2935,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5b0b6a4da9e81d644b5700f38f814705, type: 3}
+--- !u!1 &1997725145 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4222065797064882686, guid: 5b0b6a4da9e81d644b5700f38f814705,
+    type: 3}
+  m_PrefabInstance: {fileID: 1235236573}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2033814421 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5427038432460853493, guid: 257827fcd311c19409cd41b3cfe6dd4a,
@@ -2974,7 +3017,7 @@ PrefabInstance:
     - target: {fileID: 4222065797064882686, guid: 5b0b6a4da9e81d644b5700f38f814705,
         type: 3}
       propertyPath: m_Name
-      value: Weapon Grenade(3)
+      value: "\uBD81-Grenade"
       objectReference: {fileID: 0}
     - target: {fileID: 4222065797064882686, guid: 5b0b6a4da9e81d644b5700f38f814705,
         type: 3}
@@ -3049,6 +3092,11 @@ PrefabInstance:
     - target: {fileID: 6817101114769311409, guid: 5b0b6a4da9e81d644b5700f38f814705,
         type: 3}
       propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6817101114769311420, guid: 5b0b6a4da9e81d644b5700f38f814705,
+        type: 3}
+      propertyPath: "\uC7A5\uCC29\uBB34\uAE30"
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6817101114769311422, guid: 5b0b6a4da9e81d644b5700f38f814705,
