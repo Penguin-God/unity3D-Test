@@ -24,7 +24,7 @@ public class Player : MonoBehaviour
     int EquipObjcetIndex = -1; // 보유중인 무기 숫자
 
     // 상태확인
-    bool isJump;
+    public bool isJump;
     bool isDodje;
     bool isSwap;
     bool isReload;
