@@ -7,7 +7,7 @@ public class Weapons : MonoBehaviour
     public Player player;
     public enum Type { Melee, Range};
     public Type type;
-    public int Damge;
+    public int Damage;
     public float 공속;
     public int Max총알;
     public int 장전된총알;
@@ -49,9 +49,8 @@ public class Weapons : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         AttackRange.enabled = true; // 콜라이더 두개 활성화
         trailEffect.enabled = true;
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.6f);
         AttackRange.enabled = false;
-        yield return new WaitForSeconds(0.3f);
         player.speed *= isJumpAttack ? 1f : 2f;
         trailEffect.enabled = false;
         player.isMelee = false;

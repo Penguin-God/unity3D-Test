@@ -8,6 +8,8 @@ TagManager:
   - "\uC544\uC774\uD15C"
   - "\uBB34\uAE30"
   - "\uBCBD"
+  - Melee
+  - "\uCD1D\uC54C"
   layers:
   - Default
   - TransparentFX
