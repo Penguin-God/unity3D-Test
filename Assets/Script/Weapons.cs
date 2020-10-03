@@ -21,8 +21,6 @@ public class Weapons : MonoBehaviour
     public Transform 탄피배출위치;
     public GameObject 탄피;
 
-    bool isJumpAttack; // 점프하면서 공격할 때 true인 변수
-
     // 일반적인 함수( Use() ) : 메인루틴( Use() ) -> 서브루틴( Melee() ) ->메인루틴 -> 교차실행
     // 코루틴 : 메인루틴 + 서브루틴(같이 실행됨)   코루틴(co-op) : 함께라는 뜻
     // yield : 결과를 전달하는 키워드 코루틴 내에서 꼭 하나는 있어야함
@@ -33,7 +31,7 @@ public class Weapons : MonoBehaviour
     {
         if (type == Type.Melee)
             StartCoroutine("Melee");
-        else if (type == Type.Range && 0 < 장전된총알)
+        else if (type == Type.Range && 0 < 장전된총알 && !player.isJump)
         {
             장전된총알--;
             StartCoroutine("Shot");
@@ -44,17 +42,14 @@ public class Weapons : MonoBehaviour
     IEnumerator Melee()
     {
         player.isMelee = true;
-        isJumpAttack = player.isJump ? true : false;
-        player.speed *= isJumpAttack ? 1f : 0.5f;
-        yield return new WaitForSeconds(0.1f);
-        AttackRange.enabled = true; // 콜라이더 두개 활성화
+        yield return new WaitForSeconds(0.1f); // 콜라이더,이펙트 활성화
         trailEffect.enabled = true;
-        yield return new WaitForSeconds(0.6f);
+        yield return new WaitForSeconds(0.25f);
+        AttackRange.enabled = true; 
+        yield return new WaitForSeconds(0.35f);
         AttackRange.enabled = false;
-        player.speed *= isJumpAttack ? 1f : 2f;
         trailEffect.enabled = false;
         player.isMelee = false;
-        isJumpAttack = false;
     }
 
     IEnumerator Shot()

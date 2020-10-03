@@ -94,15 +94,15 @@ public class Player : MonoBehaviour
 
     void PlayerMove() // 이동
     {
-        if (isDodje || isMelee) // 구르기나 공격중에는 행동 전 백터값으로 직진함
+        if (isDodje) // 구르기나 공격중에는 행동 전 백터값으로 직진함
             MoveVec = DodgeVector;
         else
             MoveVec = new Vector3(xAxis, 0, hAxis).normalized; // normalized : 방향 값이 1로 보정된 백터(저걸 안하면 대각선 이동 시 평소보다 더 빠르게 이동함)
 
-        if ((!MeleeReady && EquipObjcetIndex == 1) || (EquipObjcetIndex == 2 && (AttackDown || !MeleeReady)))  // 원거리 공격중일 때는 이동 못함
-            MoveVec = Vector3.zero;
+       if ((AttackDown || !MeleeReady) && !isJump) // 원거리 공격중일 때는 이동 못함 
+                MoveVec = Vector3.zero;
 
-        if(!isBorder) // 벽과 닿을때 Vector3.zero로 만들어 버리면 회전도 못해서 아예정지해 버리기 때문에 트랜스폼에 백터를 더해서 이동하는 것만 제한함
+        if (!isBorder) // 벽과 닿을때 Vector3.zero로 만들어 버리면 회전도 못해서 아예정지해 버리기 때문에 트랜스폼에 백터를 더해서 이동하는 것만 제한함
             transform.position += MoveVec * speed * (WalkKey ? 0.3f : 1f) * Time.deltaTime; // Time.dataTime : 안넣으면 프레임당 움직임 넣으면 초당 움직임
 
         // 애니메이션
@@ -115,8 +115,8 @@ public class Player : MonoBehaviour
         // player가 나아가는 방향을 바라보는 코드
         transform.LookAt(transform.position + MoveVec); // LookAt() :  백터가 지정한 방향으로 회전시켜주는 함수 
 
-        // 마우스에 의한 회전
-        if (AttackDown && !isDodje && EquipObject != null) // 마우스 클릭시에만 마우스 포인터를 바라봄
+        // 마우스에 클릭에 의한 회전
+        if (AttackDown && !isDodje && EquipObject != null && !isJump && !isMelee) 
         {
             Ray CameraRay = followCamera.ScreenPointToRay(Input.mousePosition); // 카메라에서 마우스 누른곳에 Ray를 쏨
             RaycastHit rayHit;
@@ -219,13 +219,12 @@ public class Player : MonoBehaviour
         // Time.datatime : 지난 프레임이 완료되는 데 까지 걸리는시간을 나타내며 단위는 초를사용(Update함수에서 1프레임이 아닌 1초당 어떤 행동을 하고 싶을 때 델타타임을 곱함)
         MeleeDelay += Time.deltaTime; // Melee에 매 프레임 소비한 시간을 더함
         MeleeReady = EquipObject.공속 < MeleeDelay; // 공격한 후 지정한 공속보다 시간이 더 지나면 다시 공격할 수 있음
-        if(AttackDown && MeleeReady && !isSwap && !isDodje && !isReload)
+        if(AttackDown && MeleeReady && !isSwap && !isDodje && !isReload )
         {
-            DodgeVector = MoveVec; // DodgeVector에 공격하기 전 백터값을 넣음
             EquipObject.Use();
             if (EquipObject.type == Weapons.Type.Melee) // 장착한 무기에 따라 다른 애니메이션 실행
                 animator.SetTrigger("DoSwing");
-            else
+            else if(!isJump)
                 animator.SetTrigger(EquipObjcetIndex == 1 ? "DoShot" : "DoMachineGunShot");
             MeleeDelay = 0; // 공격 후 바로 공격 못하게 딜레이를 공속보다 낮게 0으로 만듬
         }

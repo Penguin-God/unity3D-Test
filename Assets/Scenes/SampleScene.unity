@@ -295,8 +295,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1559496317}
   type: 0
-  Damage: 80
-  "\uACF5\uC18D": 0.6
+  Damage: 90
+  "\uACF5\uC18D": 0.8
   "Max\uCD1D\uC54C": 0
   "\uC7A5\uC804\uB41C\uCD1D\uC54C": 0
   AttackRange: {fileID: 57862366}
