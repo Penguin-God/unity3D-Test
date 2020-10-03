@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     public GameObject[] 무기;
     public bool[] 무기보유;
     public GameObject[] 보유수류탄;
+    public GameObject 수류탄Object;
     public Camera followCamera;
 
     public int 보유총알;
@@ -42,6 +43,7 @@ public class Player : MonoBehaviour
     bool SwapWeapon3;
     bool SwapWeapon2;
     bool AttackDown;
+    bool GrenadeDown;
     bool ReloadDown;
 
     // 근접공격 관련 변수
@@ -74,6 +76,7 @@ public class Player : MonoBehaviour
         WeaponSwap();
         Attack();
         Reload();
+        수류탄투척();
     }
 
     void GetInput() // 마우스, 키보드 등 입력받기
@@ -89,6 +92,7 @@ public class Player : MonoBehaviour
         SwapWeapon3 = Input.GetButtonDown("Swap3");
         
         AttackDown = Input.GetButton("Fire1"); // 공격 입력
+        GrenadeDown = Input.GetButtonDown("Fire2"); 
         ReloadDown = Input.GetButtonDown("Reload"); // 장전
     }
 
@@ -211,6 +215,30 @@ public class Player : MonoBehaviour
         }
     }
 
+    void 수류탄투척()
+    {
+        if (수류탄 == 0 || isMelee || AttackDown || isReload || isSwap)
+            return;
+
+        if (GrenadeDown)
+        {
+            Ray CameraRay = followCamera.ScreenPointToRay(Input.mousePosition); // 카메라에서 마우스 누른곳에 Ray를 쏨
+            RaycastHit rayHit;
+            if (Physics.Raycast(CameraRay, out rayHit, 100)) // out : ray에 닿은 물체를 리턴함
+            {
+                Vector3 nextVec = rayHit.point - transform.position; // 마우스를 클릭한 지점에서 현재 플레이어 위치를 뺀 값을 넣음
+                nextVec.y = 15; // y축으로도 도는거 방지
+
+                GameObject 생성수류탄 = Instantiate(수류탄Object, transform.position, transform.rotation);
+                Rigidbody RigidGrenade = 생성수류탄.GetComponent<Rigidbody>();
+                RigidGrenade.AddForce(nextVec, ForceMode.Impulse);
+                RigidGrenade.AddTorque(Vector3.back * 10, ForceMode.Impulse);
+
+                수류탄--;
+                보유수류탄[수류탄].SetActive(false);
+            }
+        }
+    }
 
     void Attack()
     {

@@ -3126,6 +3126,8 @@ MonoBehaviour:
   - {fileID: 68376447}
   - {fileID: 1997725145}
   - {fileID: 202284277}
+  "\uC218\uB958\uD0C4Object": {fileID: 8816250269653105110, guid: 50ab6495f2d02814ba74da69ecf23267,
+    type: 3}
   followCamera: {fileID: 963194227}
   "\uBCF4\uC720\uCD1D\uC54C": 0
   "Max\uCD1D\uC54C": 300
@@ -4286,7 +4288,7 @@ PrefabInstance:
     - target: {fileID: 4222065797064882686, guid: 5b0b6a4da9e81d644b5700f38f814705,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6817101114769311420, guid: 5b0b6a4da9e81d644b5700f38f814705,
         type: 3}

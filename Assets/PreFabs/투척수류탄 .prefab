@@ -198,7 +198,7 @@ GameObject:
   - component: {fileID: 2185762913019951729}
   - component: {fileID: 2185762913019951734}
   m_Layer: 10
-  m_Name: "\uC218\uB958\uD0C4 "
+  m_Name: "\uD22C\uCC99\uC218\uB958\uD0C4 "
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -265,6 +265,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1599315238913598529, guid: 46ffadbb188f9ab498b623c4290ef656,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3322664071572938699, guid: 46ffadbb188f9ab498b623c4290ef656,
         type: 3}
