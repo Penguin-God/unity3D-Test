@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4919970205424414185}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8147658532941800300}
@@ -197,6 +197,7 @@ GameObject:
   - component: {fileID: 8147658532941800300}
   - component: {fileID: 2185762913019951729}
   - component: {fileID: 2185762913019951734}
+  - component: {fileID: -8472466529289049145}
   m_Layer: 10
   m_Name: "\uD22C\uCC99\uC218\uB958\uD0C4 "
   m_TagString: Untagged
@@ -249,6 +250,21 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.7
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-8472466529289049145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8816250269653105110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65613e93abc2c5c49811256da52d7168, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MashObj: {fileID: 4919970205424414185}
+  EffectObj: {fileID: 604761587472815649}
+  rigidbody: {fileID: 2185762913019951729}
 --- !u!1001 &2185762912592605792
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -333,6 +349,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 46ffadbb188f9ab498b623c4290ef656, type: 3}
+--- !u!1 &604761587472815649 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1599315238913598529, guid: 46ffadbb188f9ab498b623c4290ef656,
+    type: 3}
+  m_PrefabInstance: {fileID: 2185762912592605792}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3479341426154728875 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3322664071572938699, guid: 46ffadbb188f9ab498b623c4290ef656,
