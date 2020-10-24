@@ -47,8 +47,9 @@ public class Weapons : MonoBehaviour
         trailEffect.enabled = true;
         yield return new WaitForSeconds(0.25f);
         AttackRange.enabled = true; 
-        yield return new WaitForSeconds(0.35f);
+        yield return new WaitForSeconds(0.15f);
         AttackRange.enabled = false;
+        yield return new WaitForSeconds(0.25f);
         trailEffect.enabled = false;
         player.isMelee = false;
     }
