@@ -27,6 +27,7 @@ public class Weapons : MonoBehaviour
     // 1
     //yield return null; ; // 1실행 후 1프레임 대기 후 2실행
     // 2
+
     public void Use()
     {
         if (type == Type.Melee)
@@ -65,7 +66,7 @@ public class Weapons : MonoBehaviour
         GameObject 배출할탄피 = Instantiate(탄피, 탄피배출위치.position, 탄피배출위치.rotation); // 탄피 생성
         배출할탄피.transform.SetParent(탄피배출위치.transform);
         Rigidbody BulletCaseRigid = 배출할탄피.GetComponent<Rigidbody>(); 
-        Vector3 CaseVec = 탄피배출위치.forward * Random.Range(-3f, -1.5f) + Vector3.up * Random.Range(3f, 1.5f); // 탄피가 얼마나 튈지 정도 설정
+        Vector3 CaseVec = 탄피배출위치.forward * Random.Range(-3f, -1.5f) + Vector3.up * Random.Range(3f, 1.5f); // 탄피가 생성위치에서 얼마나 튈지 설정
         // Z축의 반대쪽에 힘을주기위해 forward에 -값을 곱하고 탄피가 튀는것을 좀 더 느낌있게 보여주기 위해서 Vector.up의 양수값을 더함
 
         BulletCaseRigid.AddForce(CaseVec, ForceMode.Impulse); // 위에서 설정한 백터값만큼 탄피에 힘을 줌

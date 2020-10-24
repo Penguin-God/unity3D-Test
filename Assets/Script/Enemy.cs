@@ -25,20 +25,28 @@ public class Enemy : MonoBehaviour
             Weapons weapon = other.GetComponent<Weapons>();
             CurrentHp -= weapon.Damage;
 
-            Vector3 DamageVec = transform.position - other.transform.position; // 몬스터 입장에서 맞은방향 계산
+            Vector3 DamageVec = this.transform.position - other.transform.position; // 몬스터 입장에서 맞은방향 계산
             StartCoroutine(OnDamage(DamageVec));
         }
         else if(other.tag == "총알")
         {
             총알 총알 = other.GetComponent<총알>();
             CurrentHp -= 총알.Damage;
-            Vector3 DamageVec = transform.position - other.transform.position;
+            Vector3 DamageVec = this.transform.position - other.transform.position;
             Destroy(other.gameObject);
             StartCoroutine(OnDamage(DamageVec));
         }
     }
 
-    IEnumerator OnDamage(Vector3 DamageVec)
+    public void HitByGrenade(Vector3 BoomVec)
+    {
+        CurrentHp -= 100;
+        Vector3 DamageVec = this.transform.position - BoomVec;
+        Debug.Log(DamageVec);
+        StartCoroutine(OnDamage(BoomVec, true));
+    }
+
+    IEnumerator OnDamage(Vector3 DamageVec, bool Grenade = false) // 받은 백터값을 조정해 넉백을 줌
     {
         Mat.color = Color.red;
         DamageVec = DamageVec.normalized; // normalized : 백터의 방향은 같지만 크기는 1.0을 반환함
@@ -46,14 +54,26 @@ public class Enemy : MonoBehaviour
         yield return new WaitForSeconds(0.15f);
         if (CurrentHp > 0)
         {
-            Mat.color = Color.white;
-            rigid.AddForce(DamageVec * Random.Range(1f, 2f), ForceMode.Impulse);
+            if (Grenade) // 수류탄 피격 시 넉백
+            {
+                DamageVec += Vector3.up * 2.5f;
+                Mat.color = Color.white;
+
+                rigid.freezeRotation = false; // 회전방지 해제
+                rigid.AddForce(DamageVec * 5, ForceMode.Impulse);
+                rigid.AddTorque(DamageVec * 15, ForceMode.Impulse); // Torque : 회전력(회전하는 힘)
+            }
+            else
+            {
+                Mat.color = Color.white;
+                rigid.AddForce(DamageVec * Random.Range(1f, 2f), ForceMode.Impulse);
+            }
         }
-        else
+        else // 사망 시 넉백
         {
             Mat.color = Color.gray;
             gameObject.layer = 14; // 죽으면 EnemyDead로 레이어 변경 
-            rigid.AddForce(DamageVec * Random.Range(7f, 15f), ForceMode.Impulse);
+            rigid.AddForce(DamageVec * Random.Range(7f, 11f), ForceMode.Impulse);
 
             Destroy(gameObject, 3);
         }
