@@ -57,7 +57,7 @@ public class Player : MonoBehaviour
     new Rigidbody rigidbody;
 
     GameObject ItemObject;
-    Weapons EquipObject; 
+    Weapons Weapons; 
 
     private void Awake()
     {
@@ -103,7 +103,7 @@ public class Player : MonoBehaviour
         else
             MoveVec = new Vector3(xAxis, 0, hAxis).normalized; // normalized : 방향 값이 1로 보정된 백터(저걸 안하면 대각선 이동 시 평소보다 더 빠르게 이동함)
 
-       if ((AttackDown || !MeleeReady) && !isJump) // 원거리 공격중일 때는 이동 못함 
+       if ((AttackDown || !MeleeReady) && !isJump && !isDodje) // 공격중일 때는 이동 못함  단 점프나 닷지중일 때는 이동가능
                 MoveVec = Vector3.zero;
 
         if (!isBorder) // 벽과 닿을때 Vector3.zero로 만들어 버리면 회전도 못해서 아예정지해 버리기 때문에 트랜스폼에 백터를 더해서 이동하는 것만 제한함
@@ -120,28 +120,16 @@ public class Player : MonoBehaviour
         transform.LookAt(transform.position + MoveVec); // LookAt() :  백터가 지정한 방향으로 회전시켜주는 함수 
 
         // 마우스에 클릭에 의한 회전
-        if (AttackDown && !isDodje && EquipObject != null && !isJump && !isMelee) 
+        if (AttackDown && !isDodje && Weapons != null && !isJump && !isMelee) 
         {
             Ray CameraRay = followCamera.ScreenPointToRay(Input.mousePosition); // 카메라에서 마우스 누른곳에 Ray를 쏨
             RaycastHit rayHit;
             if (Physics.Raycast(CameraRay, out rayHit, 100)) // out : ray에 닿은 물체를 리턴함
             {
-                Vector3 nextVec = rayHit.point - transform.position; // 마우스를 클릭한 지점에서 현재 플레이어 위치를 뺀 값을 넣음
+                Vector3 nextVec = rayHit.point; // 마우스를 클릭한 지점에서 현재 플레이어 위치를 뺀 값을 넣음
                 nextVec.y = 0; // y축으로도 도는거 방지
-                transform.LookAt(transform.position + nextVec);
+                transform.LookAt(nextVec); // 실제 회전
             }
-        }
-    }
-
-    void Jump()
-    {
-        if (JumpKey && !isJump && MoveVec == Vector3.zero && MeleeReady) // 가만히 있을때만 점프가능
-        {
-            // .AddForce(힘, 유형) : Rigidbody에 힘을 추가한다   Impulse : 질량을 사용하여 리지드 바디에 순간적인 힘 임펄스를 추가
-            rigidbody.AddForce(Vector3.up * 13, ForceMode.Impulse); // 편집 -> 프로젝트 세팅-> 물리에가면 중력값 조정 가능
-            isJump = true;
-            animator.SetBool("IsJump", isJump);
-            animator.SetTrigger("DoJump"); // Trigger : 트리거가 호출되는 순간에 한 번 켜지고, 트리거 조건이 있는 트랜지션을 통과하면 자동으로 꺼지기 때문에 별다른 세부 조건이 없다.
         }
     }
 
@@ -182,12 +170,12 @@ public class Player : MonoBehaviour
 
         if ((SwapWeapon1 || SwapWeapon2 || SwapWeapon3) && !isDodje && !isMelee && !isReload) // 공격중일 때 스왑하면 들고있는 무기관련함수가 캔슬되서 공격중에 스왑막음
         {
-            if(EquipObject != null)
-                EquipObject.gameObject.SetActive(false);
+            if(Weapons != null) // 무기 교체 전에 착용중인 무기 안보이게하기
+                Weapons.gameObject.SetActive(false);
 
             EquipObjcetIndex = WeaponIndex; // 조건에 맞을때 작동을 안하기 위해 값을 넣어줌
-            EquipObject = 무기[WeaponIndex].GetComponent<Weapons>(); // EquipObject에 현재 장착중인 무기를 넣음
-            EquipObject.gameObject.SetActive(true); // 장착한 무기 보여줌
+            Weapons = 무기[WeaponIndex].GetComponent<Weapons>(); // Weapons에 현재 장착중인 무기의 Weapons script를 넣음
+            Weapons.gameObject.SetActive(true); // 장착한 무기 보여줌
             animator.SetTrigger("WeaponSwap");
 
             isSwap = true;
@@ -242,15 +230,15 @@ public class Player : MonoBehaviour
 
     void Attack()
     {
-        if (EquipObject == null)
+        if (Weapons == null)
             return;
         // Time.datatime : 지난 프레임이 완료되는 데 까지 걸리는시간을 나타내며 단위는 초를사용(Update함수에서 1프레임이 아닌 1초당 어떤 행동을 하고 싶을 때 델타타임을 곱함)
         MeleeDelay += Time.deltaTime; // Melee에 매 프레임 소비한 시간을 더함
-        MeleeReady = EquipObject.공속 < MeleeDelay; // 공격한 후 지정한 공속보다 시간이 더 지나면 다시 공격할 수 있음
+        MeleeReady = Weapons.공속 < MeleeDelay; // 공격한 후 지정한 공속보다 시간이 더 지나면 다시 공격할 수 있음
         if(AttackDown && MeleeReady && !isSwap && !isDodje && !isReload )
         {
-            EquipObject.Use();
-            if (EquipObject.type == Weapons.Type.Melee) // 장착한 무기에 따라 다른 애니메이션 실행
+            Weapons.Use();
+            if (Weapons.type == Weapons.Type.Melee) // 장착한 무기에 따라 다른 애니메이션 실행
                 animator.SetTrigger("DoSwing");
             else if(!isJump)
                 animator.SetTrigger(EquipObjcetIndex == 1 ? "DoShot" : "DoMachineGunShot");
@@ -260,7 +248,7 @@ public class Player : MonoBehaviour
 
     void Reload()
     {
-        if (보유총알 == 0 || EquipObject == null || EquipObject.type == Weapons.Type.Melee || isReload)
+        if (보유총알 == 0 || Weapons == null || Weapons.type == Weapons.Type.Melee || isReload)
             return;
 
         if(ReloadDown && !isDodje && !isSwap && MeleeReady)
@@ -275,8 +263,8 @@ public class Player : MonoBehaviour
 
     void ReloadOut()
     {
-        int ReloadAmmo = 보유총알 > EquipObject.Max총알 ? EquipObject.Max총알 : 보유총알; // 총알 보유상태에 따라 충전할 총알의 수를 정함
-        EquipObject.장전된총알 = ReloadAmmo; // Weapons script의 변수에 총알을 더함
+        int ReloadAmmo = 보유총알 > Weapons.Max총알 ? Weapons.Max총알 : 보유총알; // 총알 보유상태에 따라 충전할 총알의 수를 정함
+        Weapons.장전된총알 = ReloadAmmo; // Weapons script의 변수에 총알을 더함
         보유총알 -= ReloadAmmo;
         isReload = false;
         speed *= 2;
@@ -301,7 +289,17 @@ public class Player : MonoBehaviour
         isBorder = Physics.Raycast(transform.position, transform.forward, 3, LayerMask.GetMask("벽")); // Raycast(시작점, 쏘는방향, 길이, 가져올오브젝트레이어) : Ray를 쏘아 닿는 오브젝트를 감지하는 함수  
     }
 
-
+    void Jump()
+    {
+        if (JumpKey && !isJump && MoveVec == Vector3.zero && MeleeReady) // 가만히 있을때만 점프가능
+        {
+            // .AddForce(힘, 유형) : Rigidbody에 힘을 추가한다   Impulse : 질량을 사용하여 리지드 바디에 순간적인 힘 임펄스를 추가
+            rigidbody.AddForce(Vector3.up * 13, ForceMode.Impulse); // 편집 -> 프로젝트 세팅-> 물리에가면 중력값 조정 가능
+            isJump = true;
+            animator.SetBool("IsJump", isJump);
+            animator.SetTrigger("DoJump"); // Trigger : 트리거가 호출되는 순간에 한 번 켜지고, 트리거 조건이 있는 트랜지션을 통과하면 자동으로 꺼지기 때문에 별다른 세부 조건이 없다.
+        }
+    }
 
     private void OnCollisionEnter(Collision collision) // 점프 후 바닥에 닿을시 애니미이션
     {
