@@ -72,5 +72,9 @@ public class Weapons : MonoBehaviour
         // Z축의 반대쪽에 힘을주기위해 forward에 -값을 곱하고 탄피가 튀는것을 좀 더 느낌있게 보여주기 위해서 Vector.up의 양수값을 더함
 
         BulletCaseRigid.AddForce(CaseVec, ForceMode.Impulse); // 위에서 설정한 백터값만큼 탄피에 힘을 줌
+
+        yield return new WaitForSeconds(5f); // 5초가 지나도 총알이 있으면 삭제
+        if (발사할총알) 
+            Destroy(발사할총알);
     }
 }
