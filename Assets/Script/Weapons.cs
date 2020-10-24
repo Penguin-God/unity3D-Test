@@ -56,16 +56,18 @@ public class Weapons : MonoBehaviour
     {
         // 1. 총알발사, Instantiate(생성할 오브젝트, 생성위치, 오브젝트각도) : 게임오브젝트생성
         GameObject 발사할총알 = Instantiate(총알, 총알발사위치.position, 총알발사위치.rotation); // 총알 생성
+        발사할총알.transform.SetParent(총알발사위치.transform); // 생성된 GameObject를 하이라키 창에서 생성될 위치를 가지고있는 오브젝트에 상속시킴
         Rigidbody BulletRigid = 발사할총알.GetComponent<Rigidbody>(); // 총알의 리지드바디를 가져옴
         BulletRigid.velocity = 총알발사위치.forward * 50; // forward : Z축  총알발사위치부터 z축으로 50의 속도로 총알이 날라가게 함
         yield return null;
 
         // 2. 탄피배출
         GameObject 배출할탄피 = Instantiate(탄피, 탄피배출위치.position, 탄피배출위치.rotation); // 탄피 생성
+        배출할탄피.transform.SetParent(탄피배출위치.transform);
         Rigidbody BulletCaseRigid = 배출할탄피.GetComponent<Rigidbody>(); 
         Vector3 CaseVec = 탄피배출위치.forward * Random.Range(-3f, -1.5f) + Vector3.up * Random.Range(3f, 1.5f); // 탄피가 얼마나 튈지 정도 설정
         // Z축의 반대쪽에 힘을주기위해 forward에 -값을 곱하고 탄피가 튀는것을 좀 더 느낌있게 보여주기 위해서 Vector.up의 양수값을 더함
+
         BulletCaseRigid.AddForce(CaseVec, ForceMode.Impulse); // 위에서 설정한 백터값만큼 탄피에 힘을 줌
-        //BulletCaseRigid.AddTorque(Vector3.up * Random.Range(1, 3)); // AddTorque : 회전함수
     }
 }
