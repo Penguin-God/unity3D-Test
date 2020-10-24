@@ -30,7 +30,7 @@ public class Enemy : MonoBehaviour
         }
         else if(other.tag == "총알")
         {
-            총알 총알 = other.GetComponent<총알>();
+            총알삭제 총알 = other.GetComponent<총알삭제>();
             CurrentHp -= 총알.Damage;
             Vector3 DamageVec = this.transform.position - other.transform.position;
             Destroy(other.gameObject);
