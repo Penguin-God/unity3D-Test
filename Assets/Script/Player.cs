@@ -215,12 +215,12 @@ public class Player : MonoBehaviour
             if (Physics.Raycast(CameraRay, out rayHit, 100)) // out : ray에 닿은 물체를 리턴함
             {
                 Vector3 nextVec = rayHit.point - transform.position; // 마우스를 클릭한 지점에서 현재 플레이어 위치를 뺀 값을 넣음
-                nextVec.y = 15; // y축으로도 도는거 방지
+                nextVec.y = 8;
 
                 GameObject 생성수류탄 = Instantiate(수류탄Object, transform.position, transform.rotation);
                 Rigidbody RigidGrenade = 생성수류탄.GetComponent<Rigidbody>();
                 RigidGrenade.AddForce(nextVec, ForceMode.Impulse);
-                RigidGrenade.AddTorque(Vector3.back * 10, ForceMode.Impulse);
+                RigidGrenade.AddTorque(Vector3.back * 5, ForceMode.Impulse);
 
                 수류탄--;
                 보유수류탄[수류탄].SetActive(false);
