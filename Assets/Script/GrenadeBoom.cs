@@ -31,6 +31,6 @@ public class GrenadeBoom : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(this.transform.position, 10);
+        Gizmos.DrawWireSphere(this.transform.position, 10); // Boom 코루틴에 있는 rayHits Draw
     }
 }
