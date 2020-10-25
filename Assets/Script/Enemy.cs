@@ -25,7 +25,7 @@ public class Enemy : MonoBehaviour
             Weapons weapon = other.GetComponent<Weapons>();
             CurrentHp -= weapon.Damage;
 
-            Vector3 DamageVec = this.transform.position - other.transform.position; // 몬스터 입장에서 맞은방향 계산
+            Vector3 DamageVec = this.transform.position - other.transform.position; // 몬스터 포지션 - 입장에서 맞은방향 계산
             StartCoroutine(OnDamage(DamageVec));
         }
         else if(other.tag == "총알")
@@ -40,10 +40,9 @@ public class Enemy : MonoBehaviour
 
     public void HitByGrenade(Vector3 BoomVec)
     {
-        CurrentHp -= 100;
+        CurrentHp -=50;
         Vector3 DamageVec = this.transform.position - BoomVec;
-        Debug.Log(DamageVec);
-        StartCoroutine(OnDamage(BoomVec, true));
+        StartCoroutine(OnDamage(DamageVec, true));
     }
 
     IEnumerator OnDamage(Vector3 DamageVec, bool Grenade = false) // 받은 백터값을 조정해 넉백을 줌
