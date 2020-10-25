@@ -21,10 +21,16 @@ public class GrenadeBoom : MonoBehaviour
         MashObj.SetActive(false);
         EffectObj.SetActive(true);
 
-        RaycastHit[] rayHits = Physics.SphereCastAll(this.transform.position, 15, Vector3.up, 0f, LayerMask.GetMask("Enemy")); // 구 모양의 Ray를 쏨
+        RaycastHit[] rayHits = Physics.SphereCastAll(this.transform.position, 10, Vector3.up, 0f, LayerMask.GetMask("Enemy")); // 구 모양의 Ray를 쏨
         foreach(RaycastHit hitObjs in rayHits)
         {
             hitObjs.transform.GetComponent<Enemy>().HitByGrenade(this.transform.position);
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(this.transform.position, 10);
     }
 }
