@@ -40,7 +40,7 @@ public class Enemy : MonoBehaviour
 
     public void HitByGrenade(Vector3 BoomVec)
     {
-        CurrentHp -=50;
+        CurrentHp -= 50;
         Vector3 DamageVec = this.transform.position - BoomVec;
         StartCoroutine(OnDamage(DamageVec, true));
     }
@@ -51,30 +51,35 @@ public class Enemy : MonoBehaviour
         DamageVec = DamageVec.normalized; // normalized : 백터의 방향은 같지만 크기는 1.0을 반환함
         DamageVec += Vector3.up * 0.5f; // Vector3.up : Vector(0, 1, 0) 
         yield return new WaitForSeconds(0.15f);
-        if (CurrentHp > 0)
+        if (Grenade) // 수류탄 피격 시 넉백
         {
-            if (Grenade) // 수류탄 피격 시 넉백
+            if (CurrentHp <= 0) 
             {
-                DamageVec += Vector3.up * 2.5f;
-                Mat.color = Color.white;
-
-                rigid.freezeRotation = false; // 회전방지 해제
-                rigid.AddForce(DamageVec * 5, ForceMode.Impulse);
-                rigid.AddTorque(DamageVec * 15, ForceMode.Impulse); // Torque : 회전력(회전하는 힘)
+                Mat.color = Color.gray;
+                gameObject.layer = 14; // 죽으면 EnemyDead로 레이어 변경 
             }
             else
+                Mat.color = Color.white;
+            DamageVec += Vector3.up * 2.5f;
+            rigid.freezeRotation = false; // 회전방지 해제
+            rigid.AddForce(DamageVec * 5, ForceMode.Impulse);
+            rigid.AddTorque(DamageVec * 15, ForceMode.Impulse); // Torque : 회전력(회전하는 힘)
+        }
+        else // 피격 시 넉백
+        {
+            if(CurrentHp > 0)
             {
                 Mat.color = Color.white;
                 rigid.AddForce(DamageVec * Random.Range(1f, 2f), ForceMode.Impulse);
             }
-        }
-        else // 사망 시 넉백
-        {
-            Mat.color = Color.gray;
-            gameObject.layer = 14; // 죽으면 EnemyDead로 레이어 변경 
-            rigid.AddForce(DamageVec * Random.Range(7f, 11f), ForceMode.Impulse);
+            else // 피격으로 사망 시 넉백
+            {
+                Mat.color = Color.gray;
+                gameObject.layer = 14; // 죽으면 EnemyDead로 레이어 변경 
+                rigid.AddForce(DamageVec * Random.Range(7f, 11f), ForceMode.Impulse);
 
-            Destroy(gameObject, 3);
+                Destroy(gameObject, 3);
+            }
         }
     }
 }
