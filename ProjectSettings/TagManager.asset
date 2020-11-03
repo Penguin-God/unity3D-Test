@@ -10,6 +10,7 @@ TagManager:
   - "\uBCBD"
   - Melee
   - "\uCD1D\uC54C"
+  - Enemy
   layers:
   - Default
   - TransparentFX
