@@ -1,21 +1,30 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI; // NavMeshAgent를 사용하기 위함 
 
 public class Enemy : MonoBehaviour
 {
     public int MaxHP;
     public int CurrentHp;
+    public Transform Target;
 
     BoxCollider box;
     Rigidbody rigid;
     Material Mat;
+    NavMeshAgent nav;
 
     private void Awake()
     {
         box = GetComponent<BoxCollider>();
         rigid = GetComponent<Rigidbody>();
         Mat = GetComponentInChildren<MeshRenderer>().material; // Material은 MeshRenderer에서 가져와야 됨
+        nav = GetComponent<NavMeshAgent>();
+    }
+
+    private void Update()
+    {
+        nav.SetDestination(Target.position); // 도착할 목표의 위치를 지정하는 함수
     }
 
     private void OnTriggerEnter(Collider other)
