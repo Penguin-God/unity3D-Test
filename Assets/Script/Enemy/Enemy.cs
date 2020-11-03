@@ -57,6 +57,7 @@ public class Enemy : MonoBehaviour
             {
                 Mat.color = Color.gray;
                 gameObject.layer = 14; // 죽으면 EnemyDead로 레이어 변경 
+                Destroy(gameObject, 3);
             }
             else
                 Mat.color = Color.white;
