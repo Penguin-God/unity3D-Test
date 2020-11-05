@@ -8,11 +8,13 @@ public class Enemy : MonoBehaviour
     public int MaxHP;
     public int CurrentHp;
     public Transform Target;
+    public bool isChase; // chase : 추적
 
     BoxCollider box;
     Rigidbody rigid;
     Material Mat;
     NavMeshAgent nav;
+    Animator animator;
 
     private void Awake()
     {
@@ -20,11 +22,21 @@ public class Enemy : MonoBehaviour
         rigid = GetComponent<Rigidbody>();
         Mat = GetComponentInChildren<MeshRenderer>().material; // Material은 MeshRenderer에서 가져와야 됨
         nav = GetComponent<NavMeshAgent>();
+        animator = GetComponentInChildren<Animator>();
+
+        Invoke("SetChase", 2);
     }
 
     private void Update()
     {
-        nav.SetDestination(Target.position); // 도착할 목표의 위치를 지정하는 함수
+        if(isChase)
+            nav.SetDestination(Target.position); // 도착할 목표의 위치를 지정하는 함수
+    }
+
+    void SetChase()
+    {
+        isChase = true;
+        animator.SetBool("isWalk", true);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -84,6 +96,8 @@ public class Enemy : MonoBehaviour
             }
             else // 피격으로 사망 시 넉백
             {
+                isChase = false;
+                animator.SetTrigger("doDie");
                 Mat.color = Color.gray;
                 gameObject.layer = 14; // 죽으면 EnemyDead로 레이어 변경 
                 rigid.AddForce(DamageVec * Random.Range(7f, 11f), ForceMode.Impulse);
