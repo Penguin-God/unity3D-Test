@@ -70,18 +70,29 @@ public class Enemy : MonoBehaviour
     {
         Mat.color = Color.red;
         DamageVec = DamageVec.normalized; // normalized : 백터의 방향은 같지만 크기는 1.0을 반환함
-        DamageVec += Vector3.up * 0.5f; // Vector3.up : Vector(0, 1, 0) 
-        yield return new WaitForSeconds(0.15f);
+        DamageVec += Vector3.up * 0.5f; // 더 큰 리액션을 위해 Vector.y값을 높임
+        yield return new WaitForSeconds(0.05f);
         if (Grenade) // 수류탄 피격 시 넉백
         {
             if (CurrentHp <= 0) 
             {
+                Debug.Log("폭사");
+                isChase = false;
+                nav.enabled = false; // 사망 시 리액션을 위해 nav를 false로 변경
+                animator.SetTrigger("doDie");
                 Mat.color = Color.gray;
-                gameObject.layer = 14; // 죽으면 EnemyDead로 레이어 변경 
+                gameObject.layer = 14; // 죽으면 EnemyDead로 레이어 변경
+                rigid.freezeRotation = false; // 회전방지 해제
+                rigid.AddForce(DamageVec * 2, ForceMode.Impulse);
+                rigid.AddTorque(DamageVec * 0, ForceMode.Impulse); // Torque : 회전력(회전하는 힘)
                 Destroy(gameObject, 3);
+                Debug.Log(DamageVec);
             }
             else
                 Mat.color = Color.white;
+            rigid.freezeRotation = false; // 회전방지 해제
+            isChase = false;
+            nav.enabled = false; // 사망 시 리액션을 위해 nav를 false로 변경
             DamageVec += Vector3.up * 2.5f;
             rigid.freezeRotation = false; // 회전방지 해제
             rigid.AddForce(DamageVec * 5, ForceMode.Impulse);
@@ -97,6 +108,7 @@ public class Enemy : MonoBehaviour
             else // 피격으로 사망 시 넉백
             {
                 isChase = false;
+                nav.enabled = false; // 사망 시 리액션을 위해 nav를 false로 변경
                 animator.SetTrigger("doDie");
                 Mat.color = Color.gray;
                 gameObject.layer = 14; // 죽으면 EnemyDead로 레이어 변경 
@@ -114,7 +126,10 @@ public class Enemy : MonoBehaviour
 
     void FreezeVelocity() // 물리 충돌로 nav에 영향이 가지 않도록 하는 함수
     {
-        rigid.angularVelocity = Vector3.zero;
-        rigid.velocity = Vector3.zero;
+        if (isChase)
+        {
+            rigid.angularVelocity = Vector3.zero;
+            rigid.velocity = Vector3.zero;
+        }
     }
 }
