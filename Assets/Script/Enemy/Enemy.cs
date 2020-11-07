@@ -106,4 +106,15 @@ public class Enemy : MonoBehaviour
             }
         }
     }
+
+    private void FixedUpdate()
+    {
+        FreezeVelocity();
+    }
+
+    void FreezeVelocity() // 물리 충돌로 nav에 영향이 가지 않도록 하는 함수
+    {
+        rigid.angularVelocity = Vector3.zero;
+        rigid.velocity = Vector3.zero;
+    }
 }

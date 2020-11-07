@@ -274,14 +274,13 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        FreezeVelocity();
+        회전방지();
         StopToWall();
     }
 
-    void FreezeVelocity()
+    void 회전방지()
     {
         rigidbody.angularVelocity = Vector3.zero; // angularVelocity : 물리회전속도
-        rigidbody.velocity = Vector3.zero;
     }
 
     void StopToWall()
