@@ -760,6 +760,7 @@ MonoBehaviour:
   MaxHP: 100
   CurrentHp: 100
   Target: {fileID: 1559496320}
+  isChase: 0
 --- !u!65 &224041386
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -8,7 +8,7 @@ public class Enemy : MonoBehaviour
     public int MaxHP;
     public int CurrentHp;
     public Transform Target;
-    public bool isChase; // chase : 추적
+    public bool isChase; // chase : 추적, 추적기능과 물리설정의 조건 역할
 
     BoxCollider box;
     Rigidbody rigid;
@@ -70,53 +70,49 @@ public class Enemy : MonoBehaviour
     {
         Mat.color = Color.red;
         DamageVec = DamageVec.normalized; // normalized : 백터의 방향은 같지만 크기는 1.0을 반환함
-        DamageVec += Vector3.up * 0.5f; // 더 큰 리액션을 위해 Vector.y값을 높임
-        yield return new WaitForSeconds(0.05f);
         if (Grenade) // 수류탄 피격 시 넉백
         {
-            if (CurrentHp <= 0) 
+            if (CurrentHp > 0)
             {
-                Debug.Log("폭사");
                 isChase = false;
-                nav.enabled = false; // 사망 시 리액션을 위해 nav를 false로 변경
-                animator.SetTrigger("doDie");
-                Mat.color = Color.gray;
-                gameObject.layer = 14; // 죽으면 EnemyDead로 레이어 변경
-                rigid.freezeRotation = false; // 회전방지 해제
-                rigid.AddForce(DamageVec * 2, ForceMode.Impulse);
-                rigid.AddTorque(DamageVec * 0, ForceMode.Impulse); // Torque : 회전력(회전하는 힘)
-                Destroy(gameObject, 3);
-                Debug.Log(DamageVec);
+                rigid.AddForce(DamageVec * 8, ForceMode.Impulse);
+                yield return new WaitForSeconds(0.2f);
+                isChase = true;
+                Mat.color = Color.white;
             }
             else
-                Mat.color = Color.white;
-            rigid.freezeRotation = false; // 회전방지 해제
-            isChase = false;
-            nav.enabled = false; // 사망 시 리액션을 위해 nav를 false로 변경
-            DamageVec += Vector3.up * 2.5f;
-            rigid.freezeRotation = false; // 회전방지 해제
-            rigid.AddForce(DamageVec * 5, ForceMode.Impulse);
-            rigid.AddTorque(DamageVec * 15, ForceMode.Impulse); // Torque : 회전력(회전하는 힘)
+            {
+                EnemyDie();
+                DamageVec += Vector3.up * 3f;
+                rigid.AddForce(DamageVec * 5, ForceMode.Impulse);
+                rigid.AddTorque(DamageVec * 15, ForceMode.Impulse); // Torque : 회전력(회전하는 힘)
+             }
         }
         else // 피격 시 넉백
         {
             if(CurrentHp > 0)
             {
-                Mat.color = Color.white;
                 rigid.AddForce(DamageVec * Random.Range(1f, 2f), ForceMode.Impulse);
+                yield return new WaitForSeconds(0.2f);
+                Mat.color = Color.white;
             }
             else // 피격으로 사망 시 넉백
             {
-                isChase = false;
-                nav.enabled = false; // 사망 시 리액션을 위해 nav를 false로 변경
-                animator.SetTrigger("doDie");
-                Mat.color = Color.gray;
-                gameObject.layer = 14; // 죽으면 EnemyDead로 레이어 변경 
+                EnemyDie();
                 rigid.AddForce(DamageVec * Random.Range(7f, 11f), ForceMode.Impulse);
-
-                Destroy(gameObject, 3);
             }
         }
+    }
+
+    void EnemyDie()
+    {
+        rigid.freezeRotation = false; // 회전방지 해제
+        isChase = false;
+        nav.enabled = false; // 사망 시 리액션을 위해 nav를 false로 변경
+        animator.SetTrigger("doDie");
+        Mat.color = Color.gray;
+        gameObject.layer = 14; // 죽으면 EnemyDead로 레이어 변경 
+        Destroy(gameObject, 3);
     }
 
     private void FixedUpdate()
