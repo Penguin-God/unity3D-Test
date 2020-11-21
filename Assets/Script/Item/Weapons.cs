@@ -58,23 +58,36 @@ public class Weapons : MonoBehaviour
     IEnumerator Shot()
     {
         // 1. 총알발사, Instantiate(생성할 오브젝트, 생성위치, 오브젝트각도) : 게임오브젝트생성
-        GameObject 발사할총알 = Instantiate(총알, 총알발사위치.position, 총알발사위치.rotation); // 총알 생성
-        발사할총알.transform.SetParent(BulletBox.transform); // 생성된 GameObject를 하이라키 창에서 생성될 위치를 가지고있는 오브젝트에 상속시킴
-        Rigidbody BulletRigid = 발사할총알.GetComponent<Rigidbody>(); // 총알의 리지드바디를 가져옴
+        GameObject shotBullet = InstantiateObject(총알, 총알발사위치);
+        Rigidbody BulletRigid = ReturnRigid(shotBullet);
         BulletRigid.velocity = 총알발사위치.forward * 50; // forward : Z축  총알발사위치부터 z축으로 50의 속도로 총알이 날라가게 함
-        yield return null;
 
         // 2. 탄피배출
-        GameObject 배출할탄피 = Instantiate(탄피, 탄피배출위치.position, 탄피배출위치.rotation); // 탄피 생성
-        배출할탄피.transform.SetParent(BulletBox.transform);
-        Rigidbody BulletCaseRigid = 배출할탄피.GetComponent<Rigidbody>(); 
-        Vector3 CaseVec = 탄피배출위치.forward * Random.Range(-3f, -1.5f) + Vector3.up * Random.Range(3f, 1.5f); // 탄피가 생성위치에서 얼마나 튈지 설정
+        GameObject shot_BulletCase = InstantiateObject(탄피, 탄피배출위치);
+        Rigidbody CaseRigid = ReturnRigid(shot_BulletCase);
+        Vector3 caseVec = 탄피배출위치.forward * Random.Range(-3f, -1.5f) + Vector3.up * Random.Range(3f, 1.5f); // 탄피가 생성위치에서 얼마나 튈지 설정
         // Z축의 반대쪽에 힘을주기위해 forward에 -값을 곱하고 탄피가 튀는것을 좀 더 느낌있게 보여주기 위해서 Vector.up의 양수값을 더함
+        CaseRigid.AddForce(caseVec, ForceMode.Impulse); // 위에서 설정한 백터값만큼 탄피에 힘을 줌
 
-        BulletCaseRigid.AddForce(CaseVec, ForceMode.Impulse); // 위에서 설정한 백터값만큼 탄피에 힘을 줌
+        yield return new WaitForSeconds(5f); // 발사 후 5초가 지나도 총알이 있으면 삭제
+        RemoveBullet(shotBullet);
+    }
 
-        yield return new WaitForSeconds(5f); // 5초가 지나도 총알이 있으면 삭제
-        if (발사할총알) 
-            Destroy(발사할총알);
+    GameObject InstantiateObject(GameObject gameobject, Transform transform)
+    {
+        GameObject Object = Instantiate(gameobject, transform.position, transform.rotation); // 오브젝트 생성
+        Object.transform.SetParent(BulletBox.transform); // 생성된 GameObject를 하이라키 창에서 생성될 위치를 가지고있는 오브젝트에 상속시킴
+        return Object;
+    }
+
+    Rigidbody ReturnRigid(GameObject gameObject)
+    {
+        return gameObject.GetComponent<Rigidbody>(); 
+    }
+
+    void RemoveBullet(GameObject Bullet)
+    {
+        if (Bullet != null)
+            Destroy(Bullet);
     }
 }
