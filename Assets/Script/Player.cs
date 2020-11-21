@@ -263,8 +263,8 @@ public class Player : MonoBehaviour
 
     void ReloadOut()
     {
-        int ReloadAmmo = 보유총알 > Weapons.Max총알 ? Weapons.Max총알 : 보유총알; // 총알 보유상태에 따라 충전할 총알의 수를 정함
-        Weapons.장전된총알 = ReloadAmmo; // Weapons script의 변수에 총알을 더함
+        int ReloadAmmo = 보유총알 > Weapons.maxBullet ? Weapons.maxBullet : 보유총알; // 총알 보유상태에 따라 충전할 총알의 수를 정함
+        Weapons.inBullet = ReloadAmmo; // Weapons script의 변수에 총알을 더함
         보유총알 -= ReloadAmmo;
         isReload = false;
         speed *= 2;

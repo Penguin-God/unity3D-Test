@@ -297,14 +297,14 @@ MonoBehaviour:
   type: 0
   Damage: 90
   "\uACF5\uC18D": 0.8
-  "Max\uCD1D\uC54C": 0
-  "\uC7A5\uC804\uB41C\uCD1D\uC54C": 0
+  inBullet: 0
+  maxBullet: 0
   AttackRange: {fileID: 57862366}
   trailEffect: {fileID: 658644348}
-  "\uCD1D\uC54C\uBC1C\uC0AC\uC704\uCE58": {fileID: 0}
-  "\uCD1D\uC54C": {fileID: 0}
-  "\uD0C4\uD53C\uBC30\uCD9C\uC704\uCE58": {fileID: 0}
-  "\uD0C4\uD53C": {fileID: 0}
+  Bullet: {fileID: 0}
+  shotBullet_transform: {fileID: 0}
+  bulletCase: {fileID: 0}
+  shotCase_transform: {fileID: 0}
   BulletBox: {fileID: 0}
 --- !u!65 &57862366
 BoxCollider:
@@ -2246,16 +2246,15 @@ MonoBehaviour:
   type: 1
   Damage: 0
   "\uACF5\uC18D": 0.4
-  "Max\uCD1D\uC54C": 12
-  "\uC7A5\uC804\uB41C\uCD1D\uC54C": 12
+  inBullet: 12
+  maxBullet: 12
   AttackRange: {fileID: 0}
   trailEffect: {fileID: 0}
-  "\uCD1D\uC54C\uBC1C\uC0AC\uC704\uCE58": {fileID: 1089952440}
-  "\uCD1D\uC54C": {fileID: 9046983176165101768, guid: a59a815dcf6887842b27581ebe47f0db,
+  Bullet: {fileID: 9046983176165101768, guid: a59a815dcf6887842b27581ebe47f0db, type: 3}
+  shotBullet_transform: {fileID: 1089952440}
+  bulletCase: {fileID: 7501567258168897539, guid: d9bbd0016d8aa254bb58457d1b3a53dd,
     type: 3}
-  "\uD0C4\uD53C\uBC30\uCD9C\uC704\uCE58": {fileID: 163406894}
-  "\uD0C4\uD53C": {fileID: 7501567258168897539, guid: d9bbd0016d8aa254bb58457d1b3a53dd,
-    type: 3}
+  shotCase_transform: {fileID: 163406894}
   BulletBox: {fileID: 1547267850}
 --- !u!4 &1180768944 stripped
 Transform:
@@ -2897,7 +2896,7 @@ MonoBehaviour:
   "\uC218\uB958\uD0C4Object": {fileID: 8816250269653105110, guid: 50ab6495f2d02814ba74da69ecf23267,
     type: 3}
   followCamera: {fileID: 963194227}
-  "\uBCF4\uC720\uCD1D\uC54C": 0
+  "\uBCF4\uC720\uCD1D\uC54C": 100
   "Max\uCD1D\uC54C": 300
   coin: 0
   MaxCoin: 10000
@@ -3559,16 +3558,15 @@ MonoBehaviour:
   type: 1
   Damage: 0
   "\uACF5\uC18D": 0.15
-  "Max\uCD1D\uC54C": 30
-  "\uC7A5\uC804\uB41C\uCD1D\uC54C": 30
+  inBullet: 30
+  maxBullet: 30
   AttackRange: {fileID: 0}
   trailEffect: {fileID: 0}
-  "\uCD1D\uC54C\uBC1C\uC0AC\uC704\uCE58": {fileID: 1089952440}
-  "\uCD1D\uC54C": {fileID: 8286419232159302559, guid: ee35223a89c5b3d438e2014c3651c6b5,
+  Bullet: {fileID: 8286419232159302559, guid: ee35223a89c5b3d438e2014c3651c6b5, type: 3}
+  shotBullet_transform: {fileID: 1089952440}
+  bulletCase: {fileID: 7501567258168897539, guid: d9bbd0016d8aa254bb58457d1b3a53dd,
     type: 3}
-  "\uD0C4\uD53C\uBC30\uCD9C\uC704\uCE58": {fileID: 1709217166}
-  "\uD0C4\uD53C": {fileID: 7501567258168897539, guid: d9bbd0016d8aa254bb58457d1b3a53dd,
-    type: 3}
+  shotCase_transform: {fileID: 1709217166}
   BulletBox: {fileID: 1547267850}
 --- !u!1 &2140566028
 GameObject:
