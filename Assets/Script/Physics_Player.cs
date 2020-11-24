@@ -1,14 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SocialPlatforms;
 
 public class Physics_Player : MonoBehaviour
 {
-    public float speed;
+    public float speed = 15;
+    private float maxSpeed = 30;
     public Camera followCamera;
 
-    // 상태확인
+    // 상태확인 변수
     public bool isJump;
     bool isDodje;
     public bool isMelee;
@@ -57,8 +57,17 @@ public class Physics_Player : MonoBehaviour
         else
             MoveVec = new Vector3(xAxis, 0, hAxis).normalized; // normalized : 방향 값이 1로 보정된 백터(저걸 안하면 대각선 이동 시 평소보다 더 빠르게 이동함)
 
-        if (!isBorder) // 벽과 닿을때 Vector3.zero로 만들어 버리면 회전도 못해서 아예정지해 버리기 때문에 트랜스폼에 백터를 더해서 이동하는 것만 제한함
+        if (!isBorder)
+        {
             transform.position += MoveVec * speed * (WalkKey ? 0.3f : 1f) * Time.deltaTime; // Time.dataTime : 안넣으면 프레임당 움직임 넣으면 초당 움직임
+            // 가속도
+            if (speed < maxSpeed && MoveVec != Vector3.zero)
+            {
+                speed += 0.05f;
+            }
+            else if (MoveVec == Vector3.zero)
+                speed = 15;
+        }
 
         // 애니메이션
         animator.SetBool("IsRun", MoveVec != Vector3.zero); // Vector3.zero = Vector3(0, 0, 0); 즉 모든 Vector값이 0이 아니면 "IsRun"은 true
