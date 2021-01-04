@@ -25,12 +25,13 @@ public class Player : MonoBehaviour
     int EquipObjcetIndex = -1; // 보유중인 무기 숫자
 
     // 상태확인
-    public bool isJump;
-    bool isDodje;
-    bool isSwap;
-    bool isReload;
-    public bool isMelee;
+    public bool isJump; // 점프 중이면 true
+    bool isDodje; // 구르는 중이면 true
+    bool isSwap; // 무기 바꾸는 중이면 true
+    bool isReload; // 장전 중이면 true
+    public bool isMelee; // 근접 공격 중이면 true
     bool isBorder; // 벽에 닿으면 true
+    bool isdontDamage; // 대미지 입은 후 무적 시간 중에 true
 
 
     // 키입력
@@ -55,6 +56,7 @@ public class Player : MonoBehaviour
 
     Animator animator;
     new Rigidbody rigidbody;
+    MeshRenderer[] meshs; // 플레이어의 모든 매쉬 랜더러를 가져오기 위해 []사용
 
     GameObject ItemObject;
     Weapons Weapons; 
@@ -63,6 +65,7 @@ public class Player : MonoBehaviour
     {
         rigidbody = GetComponent<Rigidbody>();
         animator = GetComponentInChildren<Animator>(); // Animator 컴포넌트가 Player의 자식에게 있기 때문에 GetComponentInChildren<>을 사용
+        meshs = GetComponentsInChildren<MeshRenderer>(); // compenents : s붙여서 여러개 가져옴
     }
 
     void Update()
@@ -341,6 +344,30 @@ public class Player : MonoBehaviour
             }
             Destroy(other.gameObject); // 아이템 먹고 보유량 올라간 후에 먹은 아이템 삭제
         }
+        else if(other.tag == "EnemyAttack")
+        {
+            if (!isdontDamage)
+            {
+                총알삭제 EnemyAttack = other.GetComponent<총알삭제>();
+                playerhp -= EnemyAttack.Damage;
+                StartCoroutine(OnDamage());
+            }
+        }
+
+        IEnumerator OnDamage() // 몬스터한테 피격 시
+        {
+            isdontDamage = true;
+            foreach (MeshRenderer mesh in meshs)
+            {
+                mesh.material.color = Color.gray;
+            }
+            yield return new WaitForSeconds(1f);
+            foreach (MeshRenderer mesh in meshs)
+            {
+                mesh.material.color = Color.white;
+            }
+            isdontDamage = false;
+        } 
     }
 
     private void OnTriggerStay(Collider other) // OnTriggerStay : 트리거가 다른(이 프로젝트는 Player)Collider 에 계속 닿아있는 동안 "거의"매 프레임 호출됨

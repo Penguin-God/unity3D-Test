@@ -11,6 +11,7 @@ TagManager:
   - Melee
   - "\uCD1D\uC54C"
   - Enemy
+  - EnemyAttack
   layers:
   - Default
   - TransparentFX
@@ -27,7 +28,7 @@ TagManager:
   - "\uBCBD"
   - Enemy
   - EnemyDead
-  - 
+  - EnemyAttack
   - 
   - 
   - 
