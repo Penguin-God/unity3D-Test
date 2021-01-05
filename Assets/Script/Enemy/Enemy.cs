@@ -24,22 +24,24 @@ public class Enemy : MonoBehaviour
         nav = GetComponent<NavMeshAgent>();
         animator = GetComponentInChildren<Animator>();
 
-        Invoke("SetChase", 2);
+        Invoke("SetChase", 2); 
     }
-
-    private void Update()
-    {
-        if(isChase)
-            nav.SetDestination(Target.position); // 도착할 목표의 위치를 지정하는 함수
-    }
-
     void SetChase()
     {
         isChase = true;
         animator.SetBool("isWalk", true);
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void Update()
+    {
+        if (nav.enabled)
+        {
+            nav.SetDestination(Target.position); // 도착할 목표의 위치를 지정하는 함수
+            nav.isStopped = !isChase; // true일 때 정지
+        }
+    }
+
+    private void OnTriggerEnter(Collider other) // 몬스터가 플레이어한터 피격 당함
     {
         if(other.tag == "Melee")
         {
@@ -59,14 +61,15 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void HitByGrenade(Vector3 BoomVec)
+    public void HitByGrenade(Vector3 BoomVec) // 수류탄 공격 받을 시
     {
         CurrentHp -= 50;
         Vector3 DamageVec = this.transform.position - BoomVec;
         StartCoroutine(OnDamage(DamageVec, true));
     }
 
-    IEnumerator OnDamage(Vector3 DamageVec, bool Grenade = false) // 받은 백터값을 조정해 넉백을 줌
+    // 이 코루틴 나중에 나눠야 함
+    IEnumerator OnDamage(Vector3 DamageVec, bool Grenade = false) // 받은 백터값을 조정해 넉백을 줌 
     {
         Mat.color = Color.red;
         DamageVec = DamageVec.normalized; // normalized : 백터의 방향은 같지만 크기는 1.0을 반환함
