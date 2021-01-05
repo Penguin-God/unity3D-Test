@@ -344,7 +344,7 @@ public class Player : MonoBehaviour
             }
             Destroy(other.gameObject); // 아이템 먹고 보유량 올라간 후에 먹은 아이템 삭제
         }
-        else if(other.tag == "EnemyAttack")
+        else if(other.tag == "EnemyAttack") // 몬스터 피격
         {
             if (!isdontDamage)
             {
@@ -354,7 +354,7 @@ public class Player : MonoBehaviour
             }
         }
 
-        IEnumerator OnDamage() // 몬스터한테 피격 시
+        IEnumerator OnDamage() // 무적 판정 및 플레이어 색깔 변화
         {
             isdontDamage = true;
             foreach (MeshRenderer mesh in meshs)
