@@ -51,7 +51,7 @@ public class Enemy : MonoBehaviour
             Vector3 DamageVec = this.transform.position - other.transform.position; // 몬스터 포지션 - 입장에서 맞은방향 계산
             DamageEffect(DamageVec);
         }
-        else if(other.tag == "총알")
+        else if(other.tag == "총알") 
         {
             총알삭제 총알 = other.GetComponent<총알삭제>();
             CurrentHp -= 총알.Damage;
@@ -107,12 +107,14 @@ public class Enemy : MonoBehaviour
     {
         if (CurrentHp > 0)
         {
+            Debug.Log("aa");
             rigid.AddForce(DamageVec * Random.Range(1f, 2f), ForceMode.Impulse);
             yield return new WaitForSeconds(0.2f);
             Mat.color = Color.white;
         }
         else // 피격으로 사망 시 넉백
         {
+            yield return new WaitForSeconds(0.15f); // 위에 if{code}에서 0.2f차이로 color가 white가 되는 버그 방지용 Wait
             EnemyDie();
             rigid.AddForce(DamageVec * Random.Range(7f, 11f), ForceMode.Impulse);
         }
@@ -125,8 +127,8 @@ public class Enemy : MonoBehaviour
         isChase = false;
         nav.enabled = false; // 사망 시 리액션을 위해 nav를 false로 변경
         animator.SetTrigger("doDie");
+        gameObject.layer = 14; // 죽으면 EnemyDead로 레이어 변경
         Mat.color = Color.gray;
-        gameObject.layer = 14; // 죽으면 EnemyDead로 레이어 변경 
         Destroy(gameObject, 3);
     }
 
