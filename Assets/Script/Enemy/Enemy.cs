@@ -49,15 +49,15 @@ public class Enemy : MonoBehaviour
             CurrentHp -= weapon.Damage;
 
             Vector3 DamageVec = this.transform.position - other.transform.position; // 몬스터 포지션 - 입장에서 맞은방향 계산
-            StartCoroutine(OnDamage(DamageVec));
+            DamageEffect(DamageVec);
         }
         else if(other.tag == "총알")
         {
             총알삭제 총알 = other.GetComponent<총알삭제>();
             CurrentHp -= 총알.Damage;
             Vector3 DamageVec = this.transform.position - other.transform.position;
-            Destroy(other.gameObject);
-            StartCoroutine(OnDamage(DamageVec));
+            Destroy(other.gameObject); 
+            DamageEffect(DamageVec);
         }
     }
 
@@ -65,47 +65,59 @@ public class Enemy : MonoBehaviour
     {
         CurrentHp -= 50;
         Vector3 DamageVec = this.transform.position - BoomVec;
-        StartCoroutine(OnDamage(DamageVec, true));
+        DamageEffect(DamageVec, true);
     }
 
+
     // 이 코루틴 나중에 나눠야 함
-    IEnumerator OnDamage(Vector3 DamageVec, bool Grenade = false) // 받은 백터값을 조정해 넉백을 줌 
+    void DamageEffect(Vector3 DamageVec, bool Grenade = false) // 피격시 넉백 및 색깔변화
     {
         Mat.color = Color.red;
         DamageVec = DamageVec.normalized; // normalized : 백터의 방향은 같지만 크기는 1.0을 반환함
         if (Grenade) // 수류탄 피격 시 넉백
         {
-            if (CurrentHp > 0)
-            {
-                isChase = false;
-                rigid.AddForce(DamageVec * 8, ForceMode.Impulse);
-                yield return new WaitForSeconds(0.2f);
-                isChase = true;
-                Mat.color = Color.white;
-            }
-            else
-            {
-                EnemyDie();
-                DamageVec += Vector3.up * 3f;
-                rigid.AddForce(DamageVec * 5, ForceMode.Impulse);
-                rigid.AddTorque(DamageVec * 15, ForceMode.Impulse); // Torque : 회전력(회전하는 힘)
-             }
+            StartCoroutine(HitByGrenade_Effect(DamageVec));
         }
-        else // 피격 시 넉백
+        else // 근접 혹은 원거리 공격 피격 시 넉백
         {
-            if(CurrentHp > 0)
-            {
-                rigid.AddForce(DamageVec * Random.Range(1f, 2f), ForceMode.Impulse);
-                yield return new WaitForSeconds(0.2f);
-                Mat.color = Color.white;
-            }
-            else // 피격으로 사망 시 넉백
-            {
-                EnemyDie();
-                rigid.AddForce(DamageVec * Random.Range(7f, 11f), ForceMode.Impulse);
-            }
+            StartCoroutine(NormalAttack_Effect(DamageVec));
         }
     }
+
+    IEnumerator HitByGrenade_Effect(Vector3 DamageVec) // 수류탄 이펙트
+    {
+        if (CurrentHp > 0)
+        {
+            isChase = false;
+            rigid.AddForce(DamageVec * 8, ForceMode.Impulse);
+            yield return new WaitForSeconds(0.2f);
+            isChase = true;
+            Mat.color = Color.white;
+        }
+        else
+        {
+            EnemyDie();
+            DamageVec += Vector3.up * 3f;
+            rigid.AddForce(DamageVec * 5, ForceMode.Impulse);
+            rigid.AddTorque(DamageVec * 15, ForceMode.Impulse); // Torque : 회전력(회전하는 힘)
+        }
+    }
+
+    IEnumerator NormalAttack_Effect(Vector3 DamageVec) // 근접 혹은 원거리 공격 피격 시 이펙트
+    {
+        if (CurrentHp > 0)
+        {
+            rigid.AddForce(DamageVec * Random.Range(1f, 2f), ForceMode.Impulse);
+            yield return new WaitForSeconds(0.2f);
+            Mat.color = Color.white;
+        }
+        else // 피격으로 사망 시 넉백
+        {
+            EnemyDie();
+            rigid.AddForce(DamageVec * Random.Range(7f, 11f), ForceMode.Impulse);
+        }
+    }
+
 
     void EnemyDie()
     {
@@ -117,6 +129,7 @@ public class Enemy : MonoBehaviour
         gameObject.layer = 14; // 죽으면 EnemyDead로 레이어 변경 
         Destroy(gameObject, 3);
     }
+
 
     private void FixedUpdate()
     {
