@@ -5,12 +5,13 @@ using UnityEngine.AI; // NavMeshAgent를 사용하기 위함
 
 public class Enemy : MonoBehaviour
 {
-    public int MaxHP;
+    int MaxHP;
     public int CurrentHp;
     public Transform Target;
     public bool isChase; // chase : 추적, 추적기능과 물리설정의 조건 역할
+    public bool isAttack;
+    public BoxCollider meleeCollider;
 
-    BoxCollider box;
     Rigidbody rigid;
     Material Mat;
     NavMeshAgent nav;
@@ -18,7 +19,6 @@ public class Enemy : MonoBehaviour
 
     private void Awake()
     {
-        box = GetComponent<BoxCollider>();
         rigid = GetComponent<Rigidbody>();
         Mat = GetComponentInChildren<MeshRenderer>().material; // Material은 MeshRenderer에서 가져와야 됨
         nav = GetComponent<NavMeshAgent>();
@@ -43,21 +43,25 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter(Collider other) // 몬스터가 플레이어한터 피격 당함
     {
-        if(other.tag == "Melee")
+        if(this.gameObject.layer != 14)
         {
-            Weapons weapon = other.GetComponent<Weapons>();
-            CurrentHp -= weapon.Damage;
+            if (other.tag == "Melee")
+            {
+                // Debug.Log("aa"); 두번 맞는 버그 수정해야됨
+                Weapons weapon = other.GetComponent<Weapons>();
+                CurrentHp -= weapon.Damage;
 
-            Vector3 DamageVec = this.transform.position - other.transform.position; // 몬스터 포지션 - 입장에서 맞은방향 계산
-            DamageEffect(DamageVec);
-        }
-        else if(other.tag == "총알") 
-        {
-            총알삭제 총알 = other.GetComponent<총알삭제>();
-            CurrentHp -= 총알.Damage;
-            Vector3 DamageVec = this.transform.position - other.transform.position;
-            Destroy(other.gameObject); 
-            DamageEffect(DamageVec);
+                Vector3 DamageVec = this.transform.position - other.transform.position; // 몬스터 포지션 - 입장에서 맞은방향 계산
+                DamageEffect(DamageVec);
+            }
+            else if (other.tag == "총알")
+            {
+                총알삭제 총알 = other.GetComponent<총알삭제>();
+                CurrentHp -= 총알.Damage;
+                Vector3 DamageVec = this.transform.position - other.transform.position;
+                Destroy(other.gameObject);
+                DamageEffect(DamageVec);
+            }
         }
     }
 
@@ -107,7 +111,6 @@ public class Enemy : MonoBehaviour
     {
         if (CurrentHp > 0)
         {
-            Debug.Log("aa");
             rigid.AddForce(DamageVec * Random.Range(1f, 2f), ForceMode.Impulse);
             yield return new WaitForSeconds(0.2f);
             Mat.color = Color.white;
@@ -136,6 +139,7 @@ public class Enemy : MonoBehaviour
     private void FixedUpdate()
     {
         FreezeVelocity();
+        Targeting();
     }
 
     void FreezeVelocity() // 물리 충돌로 nav에 영향이 가지 않도록 하는 함수
@@ -145,5 +149,33 @@ public class Enemy : MonoBehaviour
             rigid.angularVelocity = Vector3.zero;
             rigid.velocity = Vector3.zero;
         }
+    }
+
+    void Targeting()
+    {
+        float targetRadius = 1.5f;
+        float targetRange = 2.5f;
+
+        RaycastHit[] rayHits = Physics.SphereCastAll(transform.position, targetRadius, transform.forward, targetRange, LayerMask.GetMask("Player"));
+
+        if (rayHits.Length > 0 && !isAttack) StartCoroutine(Attack());
+    }
+
+    IEnumerator Attack()
+    {
+        isChase = false; // 공격 시 정지
+        isAttack = true;
+        animator.SetBool("isAttack", true);
+
+        yield return new WaitForSeconds(0.5f);
+        meleeCollider.enabled = true;
+
+        yield return new WaitForSeconds(0.7f);
+        meleeCollider.enabled = false;
+
+        yield return new WaitForSeconds(0.5f);
+        isChase = true;
+        isAttack = false;
+        animator.SetBool("isAttack", false);
     }
 }
