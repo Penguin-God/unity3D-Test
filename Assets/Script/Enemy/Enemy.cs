@@ -5,8 +5,10 @@ using UnityEngine.AI; // NavMeshAgent를 사용하기 위함
 
 public class Enemy : MonoBehaviour
 {
-    int MaxHP;
+    public enum Type { Normal, Charge, AD };
+    public Type enemyType;
     public int CurrentHp;
+    int MaxHP;
     public Transform Target;
     public bool isChase; // chase : 추적, 추적기능과 물리설정의 조건 역할
     public bool isAttack;
@@ -153,8 +155,22 @@ public class Enemy : MonoBehaviour
 
     void Targeting()
     {
-        float targetRadius = 1.5f;
-        float targetRange = 2.5f;
+        float targetRadius = 0f;
+        float targetRange = 0f;
+
+        switch (enemyType) // Enemy Type에 따라 다른 크기의 Ray부여
+        {
+            case Type.Normal:
+                targetRadius = 1.5f;
+                targetRange = 2.5f;
+                break;
+            case Type.Charge:
+                targetRadius = 1f;
+                targetRange = 14f;
+                break;
+            case Type.AD:
+                break;
+        }
 
         RaycastHit[] rayHits = Physics.SphereCastAll(transform.position, targetRadius, transform.forward, targetRange, LayerMask.GetMask("Player"));
 
@@ -167,13 +183,29 @@ public class Enemy : MonoBehaviour
         isAttack = true;
         animator.SetBool("isAttack", true);
 
-        yield return new WaitForSeconds(0.5f);
-        meleeCollider.enabled = true;
+        switch (enemyType)
+        {
+            case Type.Normal:
+                yield return new WaitForSeconds(0.5f);
+                meleeCollider.enabled = true;
 
-        yield return new WaitForSeconds(0.7f);
-        meleeCollider.enabled = false;
+                yield return new WaitForSeconds(0.7f);
+                meleeCollider.enabled = false;
 
-        yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(0.5f);
+                break;
+            case Type.Charge:
+                yield return new WaitForSeconds(0.1f);
+                rigid.AddForce(transform.forward * 20, ForceMode.Impulse);
+                meleeCollider.enabled = true;
+                yield return new WaitForSeconds(0.5f);
+                rigid.velocity = Vector3.zero;
+                meleeCollider.enabled = false;
+                yield return new WaitForSeconds(2f);
+                break;
+            case Type.AD:
+                break;
+        }
         isChase = true;
         isAttack = false;
         animator.SetBool("isAttack", false);
