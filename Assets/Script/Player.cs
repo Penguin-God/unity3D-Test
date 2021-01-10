@@ -350,6 +350,8 @@ public class Player : MonoBehaviour
             {
                 총알삭제 EnemyAttack = other.GetComponent<총알삭제>();
                 playerhp -= EnemyAttack.Damage;
+                if (other.GetComponent<Rigidbody>() != null) // 맞은 공격이 Rigidbody가 있는 미사일 공격이면 미사일 삭제
+                    Destroy(other.gameObject);
                 StartCoroutine(OnDamage());
             }
         }

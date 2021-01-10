@@ -13,6 +13,7 @@ public class Enemy : MonoBehaviour
     public bool isChase; // chase : 추적, 추적기능과 물리설정의 조건 역할
     public bool isAttack;
     public BoxCollider meleeCollider;
+    public GameObject Missile;
 
     Rigidbody rigid;
     Material Mat;
@@ -169,6 +170,8 @@ public class Enemy : MonoBehaviour
                 targetRange = 14f;
                 break;
             case Type.AD:
+                targetRadius = 0.5f;
+                targetRange = 25f;
                 break;
         }
 
@@ -204,6 +207,12 @@ public class Enemy : MonoBehaviour
                 yield return new WaitForSeconds(2f);
                 break;
             case Type.AD:
+                yield return new WaitForSeconds(0.5f);
+                GameObject instant_Missile = Instantiate(Missile, transform.position, transform.rotation); // 오브젝트 생성
+                Rigidbody missile_Rigid = instant_Missile.GetComponent<Rigidbody>();
+                missile_Rigid.velocity = transform.forward * 20;
+
+                yield return new WaitForSeconds(2f);
                 break;
         }
         isChase = true;
