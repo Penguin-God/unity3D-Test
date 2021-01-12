@@ -20,6 +20,8 @@ public class Enemy : MonoBehaviour
     NavMeshAgent nav;
     Animator animator;
 
+    Coroutine coroutine; // 중지시킬 코루틴을 변수에 담음
+
     private void Awake()
     {
         rigid = GetComponent<Rigidbody>();
@@ -50,7 +52,6 @@ public class Enemy : MonoBehaviour
         {
             if (other.tag == "Melee")
             {
-                // Debug.Log("aa"); 두번 맞는 버그 수정해야됨
                 Weapons weapon = other.GetComponent<Weapons>();
                 CurrentHp -= weapon.Damage;
 
@@ -76,9 +77,9 @@ public class Enemy : MonoBehaviour
     }
 
 
-    // 이 코루틴 나중에 나눠야 함
     void DamageEffect(Vector3 DamageVec, bool Grenade = false) // 피격시 넉백 및 색깔변화
     {
+
         Mat.color = Color.red;
         DamageVec = DamageVec.normalized; // normalized : 백터의 방향은 같지만 크기는 1.0을 반환함
         if (Grenade) // 수류탄 피격 시 넉백
@@ -87,7 +88,7 @@ public class Enemy : MonoBehaviour
         }
         else // 근접 혹은 원거리 공격 피격 시 넉백
         {
-            StartCoroutine(NormalAttack_Effect(DamageVec));
+            coroutine = StartCoroutine(NormalAttack_Effect(DamageVec)); // 나중에 코루틴을 멈추기 위해 변수에 담음
         }
     }
 
@@ -120,7 +121,7 @@ public class Enemy : MonoBehaviour
         }
         else // 피격으로 사망 시 넉백
         {
-            yield return new WaitForSeconds(0.15f); // 위에 if{code}에서 0.2f차이로 color가 white가 되는 버그 방지용 Wait
+            StopCoroutine(coroutine); // else코드 실행 후 위에 if 코드에서 0.2f Wait후 Color가 White가 되는 버그가 있어서 coroutine중지로 버그 방지 
             EnemyDie();
             rigid.AddForce(DamageVec * Random.Range(7f, 11f), ForceMode.Impulse);
         }
@@ -142,7 +143,8 @@ public class Enemy : MonoBehaviour
     private void FixedUpdate()
     {
         FreezeVelocity();
-        Targeting();
+        if(gameObject.layer == 13)
+            Targeting();
     }
 
     void FreezeVelocity() // 물리 충돌로 nav에 영향이 가지 않도록 하는 함수
