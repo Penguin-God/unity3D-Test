@@ -295,7 +295,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1559496317}
   type: 0
-  Damage: 90
+  Damage: 40
   "\uACF5\uC18D": 0.8
   inBullet: 0
   maxBullet: 0
