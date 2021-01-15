@@ -6,10 +6,11 @@ public class 총알삭제 : MonoBehaviour
 {
     public int Damage;
     public bool isMelee; // 근접 공격 범위는 삭제되는 버그 방지용 변수
+    public bool isRock;
 
     private void OnCollisionEnter(Collision collision) // 바닥과 닿았을 때 3초뒤에 삭제
     {
-        if (collision.gameObject.tag == "바닥")
+        if (!isRock && collision.gameObject.tag == "바닥")
             Destroy(gameObject, 3);
     }
 
