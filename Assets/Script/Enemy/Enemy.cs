@@ -5,10 +5,10 @@ using UnityEngine.AI; // NavMeshAgent를 사용하기 위함
 
 public class Enemy : MonoBehaviour
 {
-    public enum Type { Normal, Charge, AD };
+    public enum Type { Normal, Charge, AD, Boss };
     public Type enemyType;
+    public int MaxHP;
     public int CurrentHp;
-    int MaxHP;
     public Transform Target;
     public bool isChase; // chase : 추적, 추적기능과 물리설정의 조건 역할
     public bool isAttack;
@@ -16,7 +16,7 @@ public class Enemy : MonoBehaviour
     public GameObject Missile;
 
     Rigidbody rigid;
-    Material Mat;
+    MeshRenderer[] meshs;
     NavMeshAgent nav;
     Animator animator;
 
@@ -25,7 +25,7 @@ public class Enemy : MonoBehaviour
     private void Awake()
     {
         rigid = GetComponent<Rigidbody>();
-        Mat = GetComponentInChildren<MeshRenderer>().material; // Material은 MeshRenderer에서 가져와야 됨
+        meshs = GetComponentsInChildren<MeshRenderer>(); // Material은 MeshRenderer에서 가져와야 됨
         nav = GetComponent<NavMeshAgent>();
         animator = GetComponentInChildren<Animator>();
 
@@ -39,7 +39,7 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        if (nav.enabled)
+        if (nav.enabled && enemyType != Type.Boss)
         {
             nav.SetDestination(Target.position); // 도착할 목표의 위치를 지정하는 함수
             nav.isStopped = !isChase; // true일 때 정지
@@ -79,8 +79,8 @@ public class Enemy : MonoBehaviour
 
     void DamageEffect(Vector3 DamageVec, bool Grenade = false) // 피격시 넉백 및 색깔변화
     {
-
-        Mat.color = Color.red;
+        foreach(MeshRenderer mesh in meshs) // 모든 메테리얼의 색깔 변화
+            mesh.material.color = Color.red;
         DamageVec = DamageVec.normalized; // normalized : 백터의 방향은 같지만 크기는 1.0을 반환함
         if (Grenade) // 수류탄 피격 시 넉백
         {
@@ -100,7 +100,8 @@ public class Enemy : MonoBehaviour
             rigid.AddForce(DamageVec * 8, ForceMode.Impulse);
             yield return new WaitForSeconds(0.2f);
             isChase = true;
-            Mat.color = Color.white;
+            foreach (MeshRenderer mesh in meshs)
+                mesh.material.color = Color.white;
         }
         else
         {
@@ -117,7 +118,8 @@ public class Enemy : MonoBehaviour
         {
             rigid.AddForce(DamageVec * Random.Range(1f, 2f), ForceMode.Impulse);
             yield return new WaitForSeconds(0.2f);
-            Mat.color = Color.white;
+            foreach (MeshRenderer mesh in meshs)
+                mesh.material.color = Color.white;
         }
         else // 피격으로 사망 시 넉백
         {
@@ -135,15 +137,16 @@ public class Enemy : MonoBehaviour
         nav.enabled = false; // 사망 시 리액션을 위해 nav를 false로 변경
         animator.SetTrigger("doDie");
         gameObject.layer = 14; // 죽으면 EnemyDead로 레이어 변경
-        Mat.color = Color.gray;
-        Destroy(gameObject, 3);
+        foreach (MeshRenderer mesh in meshs)
+            mesh.material.color = Color.gray;
+        if (enemyType != Type.Boss) Destroy(gameObject, 3);
     }
 
 
     private void FixedUpdate()
     {
         FreezeVelocity();
-        if(gameObject.layer == 13)
+        if(gameObject.layer == 13 && enemyType != Type.Boss)
             Targeting();
     }
 
