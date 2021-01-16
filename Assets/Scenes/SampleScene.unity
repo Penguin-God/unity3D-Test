@@ -807,6 +807,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyType: 0
+  MaxHP: 0
   CurrentHp: 50
   Target: {fileID: 1559496320}
   isChase: 0
@@ -1821,7 +1822,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1683845362}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &947968672 stripped
 GameObject:
@@ -1880,6 +1881,31 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
+--- !u!114 &947968676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 947968672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d829280af6573cb42b9ab705085ef52c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyType: 3
+  MaxHP: 222
+  CurrentHp: 222
+  Target: {fileID: 1559496320}
+  isChase: 0
+  isAttack: 0
+  meleeCollider: {fileID: 7756958545235509968, guid: fed151100bf9cff4f9dbd05aec05be40,
+    type: 3}
+  Missile: {fileID: 2956288761213471267, guid: 9b29d19858867324c9e4b6512ef69ad1, type: 3}
+  bossMissile: {fileID: 6534328421282395613, guid: fed151100bf9cff4f9dbd05aec05be40,
+    type: 3}
+  missilePortA: {fileID: 916538963}
+  missilePortB: {fileID: 954865095}
 --- !u!1 &954865094
 GameObject:
   m_ObjectHideFlags: 0
@@ -1908,7 +1934,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1683845362}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &963194225
 GameObject:
@@ -3456,6 +3482,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyType: 1
+  MaxHP: 0
   CurrentHp: 80
   Target: {fileID: 1559496320}
   isChase: 0
@@ -4408,6 +4435,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyType: 2
+  MaxHP: 0
   CurrentHp: 70
   Target: {fileID: 1559496320}
   isChase: 0

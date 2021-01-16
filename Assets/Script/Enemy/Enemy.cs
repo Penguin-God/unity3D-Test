@@ -15,17 +15,17 @@ public class Enemy : MonoBehaviour
     public BoxCollider meleeCollider;
     public GameObject Missile;
 
-    Rigidbody rigid;
-    MeshRenderer[] meshs;
-    NavMeshAgent nav;
-    Animator animator;
+    protected Rigidbody rigid;
+    protected MeshRenderer[] meshs;
+    protected NavMeshAgent nav;
+    protected Animator animator;
 
     Coroutine coroutine; // 중지시킬 코루틴을 변수에 담음
 
     private void Awake()
     {
         rigid = GetComponent<Rigidbody>();
-        meshs = GetComponentsInChildren<MeshRenderer>(); // Material은 MeshRenderer에서 가져와야 됨
+        meshs = GetComponentsInChildren<MeshRenderer>(); 
         nav = GetComponent<NavMeshAgent>();
         animator = GetComponentInChildren<Animator>();
 
