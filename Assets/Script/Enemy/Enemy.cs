@@ -15,6 +15,7 @@ public class Enemy : MonoBehaviour
     public BoxCollider meleeCollider;
     public GameObject Missile;
 
+    protected bool isDead;
     protected Rigidbody rigid;
     protected MeshRenderer[] meshs;
     protected NavMeshAgent nav;
@@ -48,7 +49,7 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter(Collider other) // 몬스터가 플레이어한터 피격 당함
     {
-        if(this.gameObject.layer != 14)
+        if(!isDead)
         {
             if (other.tag == "Melee")
             {
@@ -137,6 +138,7 @@ public class Enemy : MonoBehaviour
         nav.enabled = false; // 사망 시 리액션을 위해 nav를 false로 변경
         animator.SetTrigger("doDie");
         gameObject.layer = 14; // 죽으면 EnemyDead로 레이어 변경
+        isDead = true;
         foreach (MeshRenderer mesh in meshs)
             mesh.material.color = Color.gray;
         if (enemyType != Type.Boss) Destroy(gameObject, 3);
@@ -146,7 +148,7 @@ public class Enemy : MonoBehaviour
     private void FixedUpdate()
     {
         FreezeVelocity();
-        if(gameObject.layer == 13 && enemyType != Type.Boss)
+        if(!isDead && enemyType != Type.Boss)
             Targeting();
     }
 

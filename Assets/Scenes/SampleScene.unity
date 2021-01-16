@@ -365,7 +365,7 @@ BoxCollider:
   m_GameObject: {fileID: 79610017}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 3.7, y: 0.5, z: 3.5}
   m_Center: {x: 0, y: 0.5, z: 0}
@@ -1899,8 +1899,7 @@ MonoBehaviour:
   Target: {fileID: 1559496320}
   isChase: 0
   isAttack: 0
-  meleeCollider: {fileID: 7756958545235509968, guid: fed151100bf9cff4f9dbd05aec05be40,
-    type: 3}
+  meleeCollider: {fileID: 79610019}
   Missile: {fileID: 2956288761213471267, guid: 9b29d19858867324c9e4b6512ef69ad1, type: 3}
   bossMissile: {fileID: 6534328421282395613, guid: fed151100bf9cff4f9dbd05aec05be40,
     type: 3}
