@@ -28,6 +28,12 @@ public class Boss : Enemy
 
     private void Update()
     {
+        if (isDead)
+        {
+            StopAllCoroutines();
+            return;
+        }
+
         if (isLook)
         {
             float h = Input.GetAxisRaw("Horizontal");
