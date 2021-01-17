@@ -337,7 +337,7 @@ GameObject:
   - component: {fileID: 79610019}
   - component: {fileID: 79610020}
   m_Layer: 15
-  m_Name: GameObject
+  m_Name: JumpAttack Collider
   m_TagString: EnemyAttack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

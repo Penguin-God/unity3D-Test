@@ -109,4 +109,10 @@ public class Boss : Enemy
         nav.isStopped = true;
         StartCoroutine(Pattern());
     }
+
+    private void FixedUpdate()
+    {
+        rigid.angularVelocity = Vector3.zero;
+        rigid.velocity = Vector3.zero;
+    }
 }

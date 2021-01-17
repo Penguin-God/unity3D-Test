@@ -350,24 +350,24 @@ public class Player : MonoBehaviour
             {
                 총알삭제 EnemyAttack = other.GetComponent<총알삭제>();
                 playerhp -= EnemyAttack.Damage;
-                if (other.GetComponent<Rigidbody>() != null) // 맞은 공격이 Rigidbody가 있는 미사일 공격이면 미사일 삭제
-                    Destroy(other.gameObject);
-                StartCoroutine(OnDamage());
+                bool isBossAttack = other.name == "JumpAttack Collider";
+                StartCoroutine(OnDamage(isBossAttack));
             }
+
+            if (other.GetComponent<Rigidbody>() != null) // 맞은 공격이 Rigidbody가 있는 미사일 공격이면 미사일 삭제 (없는 건 콜라이던데 콜라이더는 없애면 안됨)
+                Destroy(other.gameObject);
         }
 
-        IEnumerator OnDamage() // 무적 판정 및 플레이어 색깔 변화
+        IEnumerator OnDamage(bool isBoss) // 무적 판정 및 플레이어 색깔 변화
         {
             isdontDamage = true;
-            foreach (MeshRenderer mesh in meshs)
-            {
-                mesh.material.color = Color.yellow;
-            }
+            if (isBoss) rigidbody.AddForce(transform.forward * -25, ForceMode.Impulse);
+
+            foreach (MeshRenderer mesh in meshs) mesh.material.color = Color.yellow;
             yield return new WaitForSeconds(1f);
-            foreach (MeshRenderer mesh in meshs)
-            {
-                mesh.material.color = Color.white;
-            }
+            foreach (MeshRenderer mesh in meshs) mesh.material.color = Color.white;
+
+            if (isBoss) rigidbody.velocity = Vector3.zero;
             isdontDamage = false;
         } 
     }
