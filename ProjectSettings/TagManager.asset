@@ -12,6 +12,7 @@ TagManager:
   - "\uCD1D\uC54C"
   - Enemy
   - EnemyAttack
+  - Shop
   layers:
   - Default
   - TransparentFX

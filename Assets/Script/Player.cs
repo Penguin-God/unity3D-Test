@@ -75,7 +75,7 @@ public class Player : MonoBehaviour
         PlayerMove();
         PlayerTurn();
         Jump();
-        GetItem();
+        Interation();
         WeaponSwap();
         Attack();
         Reload();
@@ -192,7 +192,7 @@ public class Player : MonoBehaviour
     }
 
 
-    void GetItem()
+    void Interation()
     {
         if(GetItemKey && ItemObject != null) // Item오브젝트에 닿아있을 때 E키 입력시 아이템 획득
         {
@@ -202,6 +202,11 @@ public class Player : MonoBehaviour
                 int weaponIndex = item.value;
                 무기보유[weaponIndex] = true;
                 Destroy(ItemObject);
+            }
+            else if(ItemObject.tag == "Shop")
+            {
+                Shop shop = ItemObject.GetComponent<Shop>();
+                shop.Enter(this); // this는 자기 자신
             }
         }
     }
@@ -374,7 +379,7 @@ public class Player : MonoBehaviour
 
     private void OnTriggerStay(Collider other) // OnTriggerStay : 트리거가 다른(이 프로젝트는 Player)Collider 에 계속 닿아있는 동안 "거의"매 프레임 호출됨
     {
-        if(other.tag == "무기") // 무기에 콜라이더에 닿아있을 때
+        if(other.tag == "무기" || other.tag == "Shop") // 무기나 상점 입구에 콜라이더가 닿고 있을 때
         {
             ItemObject = other.gameObject;
         }
@@ -382,9 +387,14 @@ public class Player : MonoBehaviour
 
     private void OnTriggerExit(Collider other) // OnTriggerExit : Collider가 /other/의 트리거에 닿는 것을 중지했을 때 호출됩니다.
     {
-        if (other.tag == "무기") // 무기 콜라이더에서 벗어났을때
+        if (other.tag == "무기" || other.tag == "Shop") // 무기 콜라이더에서, 상점 존에서 벗어났을때
         {
             ItemObject = null;
+            if(other.tag == "Shop")
+            {
+                Shop shop = other.GetComponent<Shop>();
+                shop.Exit();
+            }
         }
     }
 }
