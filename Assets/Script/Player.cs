@@ -46,6 +46,7 @@ public class Player : MonoBehaviour
     bool AttackDown;
     bool GrenadeDown;
     bool ReloadDown;
+    public bool isShop;
 
     // 근접공격 관련 변수
     bool MeleeReady = true; 
@@ -207,13 +208,14 @@ public class Player : MonoBehaviour
             {
                 Shop shop = ItemObject.GetComponent<Shop>();
                 shop.Enter(this); // this는 자기 자신
+                isShop = true;
             }
         }
     }
 
     void 수류탄투척()
     {
-        if (수류탄 == 0 || isMelee || AttackDown || isReload || isSwap)
+        if (수류탄 == 0 || isMelee || AttackDown || isReload || isSwap || isShop)
             return;
 
         if (GrenadeDown)
@@ -243,7 +245,7 @@ public class Player : MonoBehaviour
         // Time.datatime : 지난 프레임이 완료되는 데 까지 걸리는시간을 나타내며 단위는 초를사용(Update함수에서 1프레임이 아닌 1초당 어떤 행동을 하고 싶을 때 델타타임을 곱함)
         MeleeDelay += Time.deltaTime; // Melee에 매 프레임 소비한 시간을 더함
         MeleeReady = Weapons.공속 < MeleeDelay; // 공격한 후 지정한 공속보다 시간이 더 지나면 다시 공격할 수 있음
-        if(AttackDown && MeleeReady && !isSwap && !isDodje && !isReload )
+        if(AttackDown && MeleeReady && !isSwap && !isDodje && !isReload && !isShop)
         {
             Weapons.Use();
             if (Weapons.type == Weapons.Type.Melee) // 장착한 무기에 따라 다른 애니메이션 실행
@@ -256,7 +258,7 @@ public class Player : MonoBehaviour
 
     void Reload()
     {
-        if (보유총알 == 0 || Weapons == null || Weapons.type == Weapons.Type.Melee || isReload)
+        if (보유총알 == 0 || Weapons == null || Weapons.type == Weapons.Type.Melee || isReload || isShop)
             return;
 
         if(ReloadDown && !isDodje && !isSwap && MeleeReady)
@@ -394,6 +396,7 @@ public class Player : MonoBehaviour
             {
                 Shop shop = other.GetComponent<Shop>();
                 shop.Exit();
+                isShop = false;
             }
         }
     }
