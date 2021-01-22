@@ -171,7 +171,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 4
-  value: 0
+  value: 2
+  "\uC7A5\uCC29\uBB34\uAE30": 0
 --- !u!1 &8573926867605434541
 GameObject:
   m_ObjectHideFlags: 0

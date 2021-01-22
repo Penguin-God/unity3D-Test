@@ -93,6 +93,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 4
   value: 0
+  "\uC7A5\uCC29\uBB34\uAE30": 0
 --- !u!1 &1443515060713408409
 GameObject:
   m_ObjectHideFlags: 0
