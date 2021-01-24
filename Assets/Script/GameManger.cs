@@ -39,4 +39,19 @@ public class GameManger : MonoBehaviour
     public RectTransform bossHpGroup;
     public RectTransform bossHpBar;
 
+    private void Awake()
+    {
+        bestScoreTxt.text = string.Format("{0:n0}", PlayerPrefs.GetInt("MaxScore"));
+    }
+
+    public void GameStart()
+    {
+        menuCamera.SetActive(false);
+        gameCamera.SetActive(true);
+
+        menuPanel.SetActive(false);
+        gamePanel.SetActive(true);
+
+        player.gameObject.SetActive(true);
+    }
 }
