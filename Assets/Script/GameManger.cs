@@ -68,7 +68,7 @@ public class GameManger : MonoBehaviour
         int playHour = (int)(playTime / 3600);
         int playMin = (int)((playTime - playHour * 3600) / 60) ;
         int playSceond = (int)(playTime % 60);
-        playTimeTxt.text = string.Format("{0:00}", playHour) + " : " + string.Format("{0:00}", playMin) + " : " + string.Format("{0:00}", playSceond);
+        playTimeTxt.text = string.Format("{0:00}", playHour) + ":" + string.Format("{0:00}", playMin) + ":" + string.Format("{0:00}", playSceond);
 
         // 플레이어 상태 UI
         playerHpTxt.text = player.playerhp + " / " + player.maxHp;
@@ -92,6 +92,6 @@ public class GameManger : MonoBehaviour
         currnt_ADEnemyTxt.text = currnt_ADEnemy.ToString();
 
         // 보스 체력 UI
-        bossHpBar.localScale = new Vector3(boss.CurrentHp / boss.MaxHP, 1, 1);
+        bossHpBar.localScale = new Vector3((float)boss.CurrentHp / boss.MaxHP, 1, 1);
     }
 }
