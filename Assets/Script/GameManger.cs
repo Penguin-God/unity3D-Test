@@ -54,4 +54,44 @@ public class GameManger : MonoBehaviour
 
         player.gameObject.SetActive(true);
     }
+
+    private void Update()
+    {
+        if (isBattle) playTime += Time.deltaTime;
+    }
+
+    private void LateUpdate() // Update()가 끝난 후 호출되는 생명주기 (UI작업할 때 유용)
+    {
+        // 인게임 UI
+        scoreTxt.text = string.Format("{0:n0}", player.score);
+        stageTxt.text = "STAGE " + stage;
+        int playHour = (int)(playTime / 3600);
+        int playMin = (int)((playTime - playHour * 3600) / 60) ;
+        int playSceond = (int)(playTime % 60);
+        playTimeTxt.text = string.Format("{0:00}", playHour) + " : " + string.Format("{0:00}", playMin) + " : " + string.Format("{0:00}", playSceond);
+
+        // 플레이어 상태 UI
+        playerHpTxt.text = player.playerhp + " / " + player.maxHp;
+        playerCoinTxt.text = string.Format("{0:n0}", player.coin);
+        if (player.Weapons == null)
+            playerAmmoTxt.text = "- / " + player.Max총알;
+        else if(player.Weapons.type == Weapons.Type.Melee)
+            playerAmmoTxt.text = "- / " + player.Max총알;
+        else if (player.Weapons.type == Weapons.Type.Range)
+            playerAmmoTxt.text = player.보유총알 + " / " + player.Max총알;
+
+        // 무기 유무 UI
+        Weapon1_Image.color = new Color(1, 1, 1, player.무기보유[0] ? 1 : 0);
+        Weapon2_Image.color = new Color(1, 1, 1, player.무기보유[1] ? 1 : 0);
+        Weapon3_Image.color = new Color(1, 1, 1, player.무기보유[2] ? 1 : 0);
+        grenade_Image.color = new Color(1, 1, 1, player.수류탄 > 0 ? 1 : 0);
+
+        // 몬스터 수 UI
+        currnt_NomalEnemyTxt.text = currnt_NomalEnemy.ToString();
+        currnt_ChargeEnemyTxt.text = currnt_ChargeEnemy.ToString();
+        currnt_ADEnemyTxt.text = currnt_ADEnemy.ToString();
+
+        // 보스 체력 UI
+        bossHpBar.localScale = new Vector3(boss.CurrentHp / boss.MaxHP, 1, 1);
+    }
 }

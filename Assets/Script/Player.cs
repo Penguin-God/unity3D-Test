@@ -18,9 +18,11 @@ public class Player : MonoBehaviour
     public int coin;
     public int MaxCoin;
     public int playerhp;
+    public int maxHp;
     public int MaxPlayerhp;
     public int 수류탄;
     public int Max수류탄;
+    public int score;
 
     int EquipObjcetIndex = -1; // 보유중인 무기 숫자
 
@@ -60,7 +62,7 @@ public class Player : MonoBehaviour
     MeshRenderer[] meshs; // 플레이어의 모든 매쉬 랜더러를 가져오기 위해 []사용
 
     GameObject ItemObject;
-    Weapons Weapons; 
+    public Weapons Weapons;
 
     private void Awake()
     {

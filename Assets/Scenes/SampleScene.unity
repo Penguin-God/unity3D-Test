@@ -28710,17 +28710,20 @@ MonoBehaviour:
   "\uC218\uB958\uD0C4Object": {fileID: 8816250269653105110, guid: 50ab6495f2d02814ba74da69ecf23267,
     type: 3}
   followCamera: {fileID: 963194227}
-  "\uBCF4\uC720\uCD1D\uC54C": 100
-  "Max\uCD1D\uC54C": 300
-  coin: 10000
+  "\uBCF4\uC720\uCD1D\uC54C": 15
+  "Max\uCD1D\uC54C": 150
+  coin: 1000
   MaxCoin: 10000
   playerhp: 100
+  maxHp: 100
   MaxPlayerhp: 100
   "\uC218\uB958\uD0C4": 0
   "Max\uC218\uB958\uD0C4": 4
+  score: 0
   isJump: 0
   isMelee: 0
   isShop: 0
+  Weapons: {fileID: 0}
 --- !u!136 &1559496318
 CapsuleCollider:
   m_ObjectHideFlags: 0
