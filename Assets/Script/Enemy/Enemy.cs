@@ -9,11 +9,13 @@ public class Enemy : MonoBehaviour
     public Type enemyType;
     public int MaxHP;
     public int CurrentHp;
-    public Transform Target;
+    public Transform target;
     public bool isChase; // chase : 추적, 추적기능과 물리설정의 조건 역할
     public bool isAttack;
     public BoxCollider meleeCollider;
     public GameObject Missile;
+    public int score;
+    public GameObject[] coin;
 
     protected bool isDead;
     protected Rigidbody rigid;
@@ -30,7 +32,8 @@ public class Enemy : MonoBehaviour
         nav = GetComponent<NavMeshAgent>();
         animator = GetComponentInChildren<Animator>();
 
-        Invoke("SetChase", 2); 
+        Invoke("SetChase", 2);
+        target = GameObject.Find("Player").GetComponent<Transform>(); // 프리팹에 연결되는 객체는 무조건 프리팹 내부에 있는 오브젝트여야 하므로 그냥 Find로 넣음
     }
     void SetChase()
     {
@@ -42,7 +45,7 @@ public class Enemy : MonoBehaviour
     {
         if (nav.enabled && enemyType != Type.Boss)
         {
-            nav.SetDestination(Target.position); // 도착할 목표의 위치를 지정하는 함수
+            nav.SetDestination(target.position); // 도착할 목표의 위치를 지정하는 함수
             nav.isStopped = !isChase; // true일 때 정지
         }
     }
@@ -141,7 +144,13 @@ public class Enemy : MonoBehaviour
         isDead = true;
         foreach (MeshRenderer mesh in meshs)
             mesh.material.color = Color.gray;
-        if (enemyType != Type.Boss) Destroy(gameObject, 3);
+        // 점수 상승
+        Player player = target.GetComponent<Player>();
+        player.score += score;
+        // 코인 드랍
+        int randomCoin = Random.Range(0, 3);
+        Instantiate(coin[randomCoin], transform.position, Quaternion.identity); // Quaternion.identit : 이 Quaternion은 회전 없음을 의미 완벽하게 월드 좌표 축 또는 부모의 축으로 정렬됨
+        Destroy(gameObject, 3);
     }
 
 

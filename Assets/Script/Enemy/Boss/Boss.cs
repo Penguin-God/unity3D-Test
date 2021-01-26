@@ -23,6 +23,7 @@ public class Boss : Enemy
         animator = GetComponentInChildren<Animator>();
 
         nav.isStopped = true;
+        target = GameObject.Find("Player").GetComponent<Transform>(); 
         StartCoroutine(Pattern());
     }
 
@@ -39,7 +40,7 @@ public class Boss : Enemy
             float h = Input.GetAxisRaw("Horizontal");
             float v = Input.GetAxisRaw("Vertical");
             lookVec = new Vector3(h, 0, v) * 5;
-            transform.LookAt(Target.position + lookVec);
+            transform.LookAt(target.position + lookVec);
         }
         else
             nav.SetDestination(tauntVec);
@@ -71,12 +72,12 @@ public class Boss : Enemy
         yield return new WaitForSeconds(0.2f);
         GameObject instantMissileA = Instantiate(this.bossMissile, missilePortA.position, missilePortA.rotation);
         BossMissile bossmissileA = instantMissileA.GetComponent<BossMissile>();
-        bossmissileA.target = Target;
+        bossmissileA.target = target;
 
         yield return new WaitForSeconds(0.3f);
         GameObject instantMissileB = Instantiate(this.bossMissile, missilePortB.position, missilePortB.rotation);
         BossMissile bossmissileB = instantMissileB.GetComponent<BossMissile>();
-        bossmissileB.target = Target;
+        bossmissileB.target = target;
 
         yield return new WaitForSeconds(2f);
         StartCoroutine(Pattern());
@@ -92,7 +93,7 @@ public class Boss : Enemy
     }
     IEnumerator JumpAttack()
     {
-        tauntVec = Target.position + lookVec;
+        tauntVec = target.position + lookVec;
         animator.SetTrigger("doTaunt");
         boxCollider.enabled = false;
         isLook = false;
