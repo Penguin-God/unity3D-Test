@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameManger : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
     public GameObject menuCamera;
     public GameObject gameCamera;
@@ -39,6 +39,10 @@ public class GameManger : MonoBehaviour
     public RectTransform bossHpGroup;
     public RectTransform bossHpBar;
 
+    public GameObject itemShop;
+    public GameObject weaponShop;
+    public GameObject stageStartZone;
+
     private void Awake()
     {
         bestScoreTxt.text = string.Format("{0:n0}", PlayerPrefs.GetInt("MaxScore"));
@@ -53,6 +57,33 @@ public class GameManger : MonoBehaviour
         gamePanel.SetActive(true);
 
         player.gameObject.SetActive(true);
+    }
+
+    public void StageStart()
+    {
+        itemShop.SetActive(false);
+        weaponShop.SetActive(false);
+        stageStartZone.SetActive(false);
+
+        isBattle = true;
+        StartCoroutine(Battle());
+    }
+
+    public void StageEnd()
+    {
+        player.transform.position = Vector3.up * 2;
+        isBattle = false;
+
+        itemShop.SetActive(true);
+        weaponShop.SetActive(true);
+        stageStartZone.SetActive(true);
+        stage++;
+    }
+
+    IEnumerator Battle()
+    {
+        yield return new WaitForSeconds(5f);
+        StageEnd();
     }
 
     private void Update()
