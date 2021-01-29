@@ -179,7 +179,7 @@ public class Player : MonoBehaviour
             if(Weapons != null) // 무기 교체 전에 착용중인 무기 안보이게하기
                 Weapons.gameObject.SetActive(false);
 
-            EquipObjcetIndex = WeaponIndex; // 조건에 맞을때 작동을 안하기 위해 값을 넣어줌
+            EquipObjcetIndex = WeaponIndex; // return 조건에 맞을때 작동을 안하기 위해 값을 넣어줌
             Weapons = 무기[WeaponIndex].GetComponent<Weapons>(); // Weapons에 현재 장착중인 무기의 Weapons script를 넣음
             Weapons.gameObject.SetActive(true); // 장착한 무기 보여줌
             animator.SetTrigger("WeaponSwap");

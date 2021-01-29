@@ -2,7 +2,7 @@
 I. 플레이어 이동 및 transform.LookAt을 이용한 이동 방향에 따른 오브젝트 방향 전환(Player Script)
 II. 카메라 이동(FollowCamera Script) - Update() { transform.position = player.transform.position + Vector3 변수 } 코드를 작성하여 플레이어를 따라다님
 
-2강 - 점프와 회피 
+2강 - 점프와 회피
 1. 점프(Player Script) - 가만히 있을 때 space 입력 시 RigidBody.AddForce(Vector3 * float형 변수)를 이용하여 위로 올리면서 점프 애니메이션 실행 그 후 RigidBody compenent 중력에 의해 떨어지다가  바닥에 닿을 시 OnCollsionEnter() { code } 를 이용하여 착지 애니메이션 실행
 2. 구르기(Player Script) - 움직이고 있을 때 space 입력 시 움직이던 방향으로 이동(이때 속도 증가)하면서 애니메이션 작동 
 
