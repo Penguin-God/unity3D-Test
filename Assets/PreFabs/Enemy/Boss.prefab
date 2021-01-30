@@ -243,7 +243,7 @@ MonoBehaviour:
   enemyType: 3
   MaxHP: 222
   CurrentHp: 222
-  target: {fileID: 4273948439918945620, guid: d16f74ee13c85984c9e0e5bf02525a31, type: 3}
+  target: {fileID: 0}
   isChase: 0
   isAttack: 0
   meleeCollider: {fileID: 890471121364290412}

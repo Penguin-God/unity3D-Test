@@ -24,6 +24,7 @@ public class Enemy : MonoBehaviour
     protected Animator animator;
 
     Coroutine coroutine; // 중지시킬 코루틴을 변수에 담음
+    public GameManager gameManager;
 
     private void Awake()
     {
@@ -149,10 +150,30 @@ public class Enemy : MonoBehaviour
         player.score += score;
         // 코인 드랍
         int randomCoin = Random.Range(0, 3);
+
+        SubtrackEnemyCount();
         Instantiate(coin[randomCoin], transform.position, Quaternion.identity); // Quaternion.identit : 이 Quaternion은 회전 없음을 의미 완벽하게 월드 좌표 축 또는 부모의 축으로 정렬됨
         Destroy(gameObject, 3);
     }
 
+    void SubtrackEnemyCount()
+    {
+        switch (enemyType)
+        {
+            case Type.Normal:
+                gameManager.current_NomalEnemy--;
+                break;
+            case Type.Charge:
+                gameManager.current_ChargeEnemy--;
+                break;
+            case Type.AD:
+                gameManager.current_ADEnemy--;
+                break;
+            case Type.Boss:
+                gameManager.current_Boss--;
+                break;
+        }
+    }
 
     private void FixedUpdate()
     {
