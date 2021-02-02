@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class GameManager : MonoBehaviour
     public GameObject gameCamera;
     public GameObject menuPanel;
     public GameObject gamePanel;
+    public GameObject gameOverPanel;
 
     public Player player;
     public Boss boss;
@@ -31,6 +33,8 @@ public class GameManager : MonoBehaviour
     public Text currnt_NomalEnemyTxt;
     public Text currnt_ChargeEnemyTxt;
     public Text currnt_ADEnemyTxt;
+    public Text currentScoreTxt;
+    public Text bestTxt;
 
     public Image Weapon1_Image;
     public Image Weapon2_Image;
@@ -74,6 +78,25 @@ public class GameManager : MonoBehaviour
 
         isBattle = true;
         StartCoroutine(InBattle());
+    }
+
+    public void GameOver()
+    {
+        gamePanel.SetActive(false);
+        gameOverPanel.SetActive(true);
+        currentScoreTxt.text = scoreTxt.text;
+
+        int maxScore = PlayerPrefs.GetInt("MaxScore");
+        if(player.score > maxScore)
+        {
+            bestTxt.gameObject.SetActive(true);
+            PlayerPrefs.SetInt("MaxScoer", player.score);
+        }
+    }
+
+    public void ReStart()
+    {
+        SceneManager.LoadScene(0);
     }
 
     public void StageEnd()
@@ -156,20 +179,20 @@ public class GameManager : MonoBehaviour
         playTimeTxt.text = string.Format("{0:00}", playHour) + ":" + string.Format("{0:00}", playMin) + ":" + string.Format("{0:00}", playSceond);
 
         // 플레이어 상태 UI
-        playerHpTxt.text = player.playerhp + " / " + player.maxHp;
-        playerCoinTxt.text = string.Format("{0:n0}", player.coin);
+        playerHpTxt.text = player.currentPlayerHp + " / " + player.maxPlayerHp;
+        playerCoinTxt.text = string.Format("{0:n0}", player.currentCoin);
         if (player.Weapons == null)
-            playerAmmoTxt.text = "- / " + player.Max총알;
+            playerAmmoTxt.text = "- / " + player.maxAmmo;
         else if(player.Weapons.type == Weapons.Type.Melee)
-            playerAmmoTxt.text = "- / " + player.Max총알;
+            playerAmmoTxt.text = "- / " + player.maxAmmo;
         else if (player.Weapons.type == Weapons.Type.Range)
-            playerAmmoTxt.text = player.보유총알 + " / " + player.Max총알;
+            playerAmmoTxt.text = player.currentAmmo + " / " + player.maxAmmo;
 
         // 무기 유무 UI
         Weapon1_Image.color = new Color(1, 1, 1, player.무기보유[0] ? 1 : 0);
         Weapon2_Image.color = new Color(1, 1, 1, player.무기보유[1] ? 1 : 0);
         Weapon3_Image.color = new Color(1, 1, 1, player.무기보유[2] ? 1 : 0);
-        grenade_Image.color = new Color(1, 1, 1, player.수류탄 > 0 ? 1 : 0);
+        grenade_Image.color = new Color(1, 1, 1, player.currentGrenade > 0 ? 1 : 0);
 
         // 몬스터 수 UI
         currnt_NomalEnemyTxt.text = current_NomalEnemy.ToString();

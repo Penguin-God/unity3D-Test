@@ -26,7 +26,7 @@ public class Player : MonoBehaviour
 
     int EquipObjcetIndex = -1; // 보유중인 무기 숫자
 
-    // 상태확인
+    // 상태 변수
     public bool isJump; // 점프 중이면 true
     bool isDodje; // 구르는 중이면 true
     bool isSwap; // 무기 바꾸는 중이면 true
@@ -34,6 +34,7 @@ public class Player : MonoBehaviour
     public bool isMelee; // 근접 공격 중이면 true
     bool isBorder; // 벽에 닿으면 true
     bool isdontDamage; // 대미지 입은 후 무적 시간 중에 true
+    bool isDead;
 
 
     // 키입력
@@ -109,7 +110,7 @@ public class Player : MonoBehaviour
         else
             MoveVec = new Vector3(xAxis, 0, hAxis).normalized; // normalized : 방향 값이 1로 보정된 백터(저걸 안하면 대각선 이동 시 평소보다 더 빠르게 이동함)
 
-       if ((AttackDown || !MeleeReady) && !isJump && !isDodje) // 공격중일 때는 이동 못함  단 점프나 닷지중일 때는 이동가능
+       if ((AttackDown || !MeleeReady) && !isJump && !isDodje || isDead) // 공격중일 때는 이동 못함  단 점프나 닷지중일 때는 이동가능
                 MoveVec = Vector3.zero;
 
         if (!isBorder) // 벽과 닿을때 Vector3.zero로 만들어 버리면 회전도 못해서 아예정지해 버리기 때문에 트랜스폼에 백터를 더해서 이동하는 것만 제한함
@@ -126,7 +127,7 @@ public class Player : MonoBehaviour
         transform.LookAt(transform.position + MoveVec); // LookAt() :  백터가 지정한 방향으로 회전시켜주는 함수 
 
         // 마우스에 클릭에 의한 회전
-        if (AttackDown && !isDodje && Weapons != null && !isJump && !isMelee) 
+        if (AttackDown && !isDodje && Weapons != null && !isJump && !isMelee && !isDead) 
         {
             Ray CameraRay = followCamera.ScreenPointToRay(Input.mousePosition); // 카메라에서 마우스 누른곳에 Ray를 쏨
             RaycastHit rayHit;
@@ -141,7 +142,7 @@ public class Player : MonoBehaviour
 
     void Dodge() // 회피(구르기)
     {
-        if (JumpKey && !isJump && !isDodje && MoveVec != Vector3.zero && !isReload) // 움직이고 있을떄만 구르기 사용
+        if (JumpKey && !isJump && !isDodje && MoveVec != Vector3.zero && !isReload && !isDead) // 움직이고 있을떄만 구르기 사용
         {
             DodgeVector = MoveVec;
             speed *= 2;
@@ -174,7 +175,7 @@ public class Player : MonoBehaviour
         if (SwapWeapon2) WeaponIndex = 1;
         if (SwapWeapon3) WeaponIndex = 2;
 
-        if ((SwapWeapon1 || SwapWeapon2 || SwapWeapon3) && !isDodje && !isMelee && !isReload) // 공격중일 때 스왑하면 들고있는 무기관련함수가 캔슬되서 공격중에 스왑막음
+        if ((SwapWeapon1 || SwapWeapon2 || SwapWeapon3) && !isDodje && !isMelee && !isReload && !isDead) // 공격중일 때 스왑하면 들고있는 무기관련함수가 캔슬되서 공격중에 스왑막음
         {
             if(Weapons != null) // 무기 교체 전에 착용중인 무기 안보이게하기
                 Weapons.gameObject.SetActive(false);
@@ -217,7 +218,7 @@ public class Player : MonoBehaviour
 
     void 수류탄투척()
     {
-        if (수류탄 == 0 || isMelee || AttackDown || isReload || isSwap || isShop)
+        if (currentGrenade == 0 || isMelee || AttackDown || isReload || isSwap || isShop || isDead)
             return;
 
         if (GrenadeDown)
@@ -234,8 +235,8 @@ public class Player : MonoBehaviour
                 RigidGrenade.AddForce(nextVec, ForceMode.Impulse);
                 RigidGrenade.AddTorque(Vector3.back * 5, ForceMode.Impulse);
 
-                수류탄--;
-                보유수류탄[수류탄].SetActive(false);
+                currentGrenade--;
+                보유수류탄[currentGrenade].SetActive(false);
             }
         }
     }
@@ -247,7 +248,7 @@ public class Player : MonoBehaviour
         // Time.datatime : 지난 프레임이 완료되는 데 까지 걸리는시간을 나타내며 단위는 초를사용(Update함수에서 1프레임이 아닌 1초당 어떤 행동을 하고 싶을 때 델타타임을 곱함)
         MeleeDelay += Time.deltaTime; // Melee에 매 프레임 소비한 시간을 더함
         MeleeReady = Weapons.공속 < MeleeDelay; // 공격한 후 지정한 공속보다 시간이 더 지나면 다시 공격할 수 있음
-        if(AttackDown && MeleeReady && !isSwap && !isDodje && !isReload && !isShop)
+        if(AttackDown && MeleeReady && !isSwap && !isDodje && !isReload && !isShop && !isDead)
         {
             Weapons.Use();
             if (Weapons.type == Weapons.Type.Melee) // 장착한 무기에 따라 다른 애니메이션 실행
@@ -260,7 +261,7 @@ public class Player : MonoBehaviour
 
     void Reload()
     {
-        if (보유총알 == 0 || Weapons == null || Weapons.type == Weapons.Type.Melee || isReload || isShop)
+        if (currentAmmo == 0 || Weapons == null || Weapons.type == Weapons.Type.Melee || isReload || isShop || isDead)
             return;
 
         if(ReloadDown && !isDodje && !isSwap && MeleeReady)
@@ -276,9 +277,9 @@ public class Player : MonoBehaviour
     void ReloadOut()
     {
         int deficientAmmo = Weapons.inBullet != 0 ? Weapons.maxBullet - Weapons.inBullet : Weapons.maxBullet;
-        int inAmmo = 보유총알 > deficientAmmo ? deficientAmmo : 보유총알; // 총알 보유상태에 따라 충전할 총알의 수를 정함
+        int inAmmo = currentAmmo > deficientAmmo ? deficientAmmo : currentAmmo; // 총알 보유상태에 따라 충전할 총알의 수를 정함
         Weapons.inBullet += inAmmo; // Weapons script의 변수에 총알을 더함
-        보유총알 -= inAmmo;
+        currentAmmo -= inAmmo;
         isReload = false;
         speed *= 2;
     }
@@ -304,7 +305,7 @@ public class Player : MonoBehaviour
 
     void Jump()
     {
-        if (JumpKey && !isJump && MoveVec == Vector3.zero && MeleeReady) // 가만히 있을때만 점프가능
+        if (JumpKey && !isJump && MoveVec == Vector3.zero && MeleeReady && !isDead) // 가만히 있을때만 점프가능
         {
             // .AddForce(힘, 유형) : Rigidbody에 힘을 추가한다   Impulse : 질량을 사용하여 리지드 바디에 순간적인 힘 임펄스를 추가
             rigidbody.AddForce(Vector3.up * 13, ForceMode.Impulse); // 편집 -> 프로젝트 세팅-> 물리에가면 중력값 조정 가능
@@ -331,35 +332,35 @@ public class Player : MonoBehaviour
             switch (item.type)
             {
                 case Item.Type.Ammo:
-                    보유총알 += item.value;
-                    if (보유총알 > Max총알)
-                        보유총알 = Max총알;
+                    currentAmmo += item.value;
+                    if (currentAmmo > maxAmmo)
+                        currentAmmo = maxAmmo;
                     break;
                 case Item.Type.Coin:
-                    coin += item.value;
-                    if (coin > MaxCoin)
-                        coin = MaxCoin;
+                    currentCoin += item.value;
+                    if (currentCoin > maxCoin)
+                        currentCoin = maxCoin;
                     break;
                 case Item.Type.Heart:
-                    playerhp += item.value;
-                    if (playerhp > MaxPlayerhp)
-                        playerhp = MaxPlayerhp;
+                    currentPlayerHp += item.value;
+                    if (currentPlayerHp > maxPlayerHp)
+                        currentPlayerHp = maxPlayerHp;
                     break;
                 case Item.Type.수류탄:
-                    if (수류탄 == Max수류탄)
+                    if (currentGrenade == maxGrenade)
                         return;
-                    보유수류탄[수류탄].SetActive(true); // 더하기 전에 활성화 시키는 거라서 -1 안해도 됨
-                    수류탄 += item.value;
+                    보유수류탄[currentGrenade].SetActive(true); // 더하기 전에 활성화 시키는 거라서 -1 안해도 됨
+                    currentGrenade += item.value;
                     break;
             }
             Destroy(other.gameObject); // 아이템 먹고 보유량 올라간 후에 먹은 아이템 삭제
         }
         else if(other.tag == "EnemyAttack") // 몬스터 피격
         {
-            if (!isdontDamage)
+            if (!isdontDamage && !isDead)
             {
                 총알삭제 EnemyAttack = other.GetComponent<총알삭제>();
-                playerhp -= EnemyAttack.Damage;
+                currentPlayerHp -= EnemyAttack.Damage;
                 bool isBossAttack = other.name == "JumpAttack Collider";
                 StartCoroutine(OnDamage(isBossAttack));
             }
@@ -367,19 +368,28 @@ public class Player : MonoBehaviour
             if (other.GetComponent<Rigidbody>() != null) // 맞은 공격이 Rigidbody가 있는 미사일 공격이면 미사일 삭제 (없는 건 콜라이던데 콜라이더는 없애면 안됨)
                 Destroy(other.gameObject);
         }
+    }
 
-        IEnumerator OnDamage(bool isBoss) // 무적 판정 및 플레이어 색깔 변화
-        {
-            isdontDamage = true;
-            if (isBoss) rigidbody.AddForce(transform.forward * -25, ForceMode.Impulse);
+    void PlayerDead()
+    {
+        animator.SetTrigger("DoDie");
+        isDead = true;
+        gameManger.GameOver();
+    }
 
-            foreach (MeshRenderer mesh in meshs) mesh.material.color = Color.yellow;
-            yield return new WaitForSeconds(1f);
-            foreach (MeshRenderer mesh in meshs) mesh.material.color = Color.white;
+    IEnumerator OnDamage(bool isBoss) // 무적 판정 및 플레이어 색깔 변화
+    {
+        if (currentPlayerHp < 0 && !isDead) PlayerDead();
 
-            if (isBoss) rigidbody.velocity = Vector3.zero;
-            isdontDamage = false;
-        } 
+        isdontDamage = true;
+        if (isBoss) rigidbody.AddForce(transform.forward * -25, ForceMode.Impulse);
+
+        foreach (MeshRenderer mesh in meshs) mesh.material.color = Color.yellow;
+        yield return new WaitForSeconds(1f);
+        foreach (MeshRenderer mesh in meshs) mesh.material.color = Color.white;
+
+        if (isBoss) rigidbody.velocity = Vector3.zero;
+        isdontDamage = false;
     }
 
     private void OnTriggerStay(Collider other) // OnTriggerStay : 트리거가 다른(이 프로젝트는 Player)Collider 에 계속 닿아있는 동안 "거의"매 프레임 호출됨
