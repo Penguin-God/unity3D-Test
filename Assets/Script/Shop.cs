@@ -31,14 +31,14 @@ public class Shop : MonoBehaviour
     public void Buy(int index)
     {
         int Price = itemPrice[index];
-        if (Price > enterPlayer.coin)
+        if (Price > enterPlayer.currentCoin)
         {
             StopCoroutine(DontBuy());
             StartCoroutine(DontBuy());
         }
         else
         {
-            enterPlayer.coin -= Price;
+            enterPlayer.currentCoin -= Price;
             Vector3 RandomVec = Vector3.right * Random.Range(-3, 3) + Vector3.forward * Random.Range(-3, 3);
             Instantiate(itemObject[index], itemPos[index].position + RandomVec, itemPos[index].rotation);
         }

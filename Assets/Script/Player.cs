@@ -12,16 +12,16 @@ public class Player : MonoBehaviour
     public GameObject[] 보유수류탄;
     public GameObject 수류탄Object;
     public Camera followCamera;
+    public GameManager gameManger;
 
-    public int 보유총알;
-    public int Max총알;
-    public int coin;
-    public int MaxCoin;
-    public int playerhp;
-    public int maxHp;
-    public int MaxPlayerhp;
-    public int 수류탄;
-    public int Max수류탄;
+    public int currentAmmo;
+    public int maxAmmo;
+    public int currentCoin;
+    public int maxCoin;
+    public int currentPlayerHp;
+    public int maxPlayerHp;
+    public int currentGrenade;
+    public int maxGrenade;
     public int score;
 
     int EquipObjcetIndex = -1; // 보유중인 무기 숫자
