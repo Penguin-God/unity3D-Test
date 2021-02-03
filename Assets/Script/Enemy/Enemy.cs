@@ -86,6 +86,7 @@ public class Enemy : MonoBehaviour
     {
         foreach(MeshRenderer mesh in meshs) // 모든 메테리얼의 색깔 변화
             mesh.material.color = Color.red;
+
         DamageVec = DamageVec.normalized; // normalized : 백터의 방향은 같지만 크기는 1.0을 반환함
         if (Grenade) // 수류탄 피격 시 넉백
         {
@@ -99,6 +100,7 @@ public class Enemy : MonoBehaviour
 
     IEnumerator HitByGrenade_Effect(Vector3 DamageVec) // 수류탄 이펙트
     {
+        Debug.Log("isGrende");
         if (CurrentHp > 0)
         {
             isChase = false;
@@ -123,8 +125,7 @@ public class Enemy : MonoBehaviour
         {
             rigid.AddForce(DamageVec * Random.Range(1f, 2f), ForceMode.Impulse);
             yield return new WaitForSeconds(0.2f);
-            foreach (MeshRenderer mesh in meshs)
-                mesh.material.color = Color.white;
+            foreach (MeshRenderer mesh in meshs) mesh.material.color = Color.white;
         }
         else // 피격으로 사망 시 넉백
         {
@@ -145,6 +146,7 @@ public class Enemy : MonoBehaviour
         isDead = true;
         foreach (MeshRenderer mesh in meshs)
             mesh.material.color = Color.gray;
+
         // 점수 상승
         Player player = target.GetComponent<Player>();
         player.score += score;
@@ -152,11 +154,11 @@ public class Enemy : MonoBehaviour
         int randomCoin = Random.Range(0, 3);
 
         SubtrackEnemyCount();
-        Instantiate(coin[randomCoin], transform.position, Quaternion.identity); // Quaternion.identit : 이 Quaternion은 회전 없음을 의미 완벽하게 월드 좌표 축 또는 부모의 축으로 정렬됨
+        //Instantiate(coin[randomCoin], transform.position, Quaternion.identity); // Quaternion.identit : 이 Quaternion은 회전 없음을 의미 완벽하게 월드 좌표 축 또는 부모의 축으로 정렬됨
         Destroy(gameObject, 3);
     }
 
-    void SubtrackEnemyCount()
+    void SubtrackEnemyCount() // 적 카운트 빼기
     {
         switch (enemyType)
         {
