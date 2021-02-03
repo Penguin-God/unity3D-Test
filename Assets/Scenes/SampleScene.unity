@@ -27198,8 +27198,9 @@ MonoBehaviour:
   current_ADEnemy: 0
   current_Boss: 0
   isBattle: 0
+  menuScoreTxt: {fileID: 1541278457}
   bestScoreTxt: {fileID: 1541278457}
-  scoreTxt: {fileID: 1588096284}
+  inGameScoreTxt: {fileID: 1588096284}
   stageTxt: {fileID: 1891668027}
   playTimeTxt: {fileID: 619293710}
   playerHpTxt: {fileID: 389907434}
@@ -52976,7 +52977,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 1325135152
+  m_Text: 0
 --- !u!222 &1541278458
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -53192,7 +53193,7 @@ MonoBehaviour:
   gameManger: {fileID: 568325212}
   currentAmmo: 30
   maxAmmo: 150
-  currentCoin: 2000
+  currentCoin: 10000
   maxCoin: 10000
   currentPlayerHp: 100
   maxPlayerHp: 100
@@ -53594,7 +53595,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 232413541
+  m_Text: 0
 --- !u!222 &1588096285
 CanvasRenderer:
   m_ObjectHideFlags: 0

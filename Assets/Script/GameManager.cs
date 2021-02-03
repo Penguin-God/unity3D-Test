@@ -23,8 +23,9 @@ public class GameManager : MonoBehaviour
     public int current_Boss;
     public bool isBattle;
 
+    public Text menuScoreTxt;
     public Text bestScoreTxt;
-    public Text scoreTxt;
+    public Text inGameScoreTxt;
     public Text stageTxt;
     public Text playTimeTxt;
     public Text playerHpTxt;
@@ -56,6 +57,9 @@ public class GameManager : MonoBehaviour
     {
         bestScoreTxt.text = string.Format("{0:n0}", PlayerPrefs.GetInt("MaxScore"));
         respawnEnemyList = new List<int>();
+
+        if (!PlayerPrefs.HasKey("MaxScore")) PlayerPrefs.SetInt("MaxScore", 0);
+        menuScoreTxt.text = string.Format("{0:n0}", PlayerPrefs.GetInt("MaxScore"));
     }
 
     public void GameStart()
@@ -84,10 +88,10 @@ public class GameManager : MonoBehaviour
     {
         gamePanel.SetActive(false);
         gameOverPanel.SetActive(true);
-        currentScoreTxt.text = scoreTxt.text;
+        currentScoreTxt.text = inGameScoreTxt.text;
 
-        int maxScore = PlayerPrefs.GetInt("MaxScore");
-        if(player.score > maxScore)
+        int maxScore = PlayerPrefs.GetInt("MaxScore"); 
+        if(player.score > maxScore) // 최고점수 갱신
         {
             bestTxt.gameObject.SetActive(true);
             PlayerPrefs.SetInt("MaxScoer", player.score);
@@ -171,7 +175,7 @@ public class GameManager : MonoBehaviour
     private void LateUpdate() // Update()가 끝난 후 호출되는 생명주기 (UI작업할 때 유용)
     {
         // 인게임 UI
-        scoreTxt.text = string.Format("{0:n0}", player.score);
+        inGameScoreTxt.text = string.Format("{0:n0}", player.score);
         stageTxt.text = "STAGE " + stage;
         int playHour = (int)(playTime / 3600);
         int playMin = (int)((playTime - playHour * 3600) / 60) ;
