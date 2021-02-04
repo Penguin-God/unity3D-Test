@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6946861067247076741}
   - component: {fileID: 1056655805080172253}
   - component: {fileID: 3445140100205238462}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Mesh Object
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -90,7 +90,7 @@ GameObject:
   - component: {fileID: 4121690350492637740}
   - component: {fileID: 4121690350492637742}
   - component: {fileID: 4121690350492637741}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Particle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4843,9 +4843,10 @@ GameObject:
   m_Component:
   - component: {fileID: 3872786869560261685}
   - component: {fileID: 4121690349502031861}
+  - component: {fileID: 590137390946389691}
   - component: {fileID: 4121690349502031862}
   - component: {fileID: 4121690349502031860}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Coin Silver
   m_TagString: "\uC544\uC774\uD15C"
   m_Icon: {fileID: 0}
@@ -4884,6 +4885,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!135 &590137390946389691
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4536593287105996431}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!135 &4121690349502031862
 SphereCollider:
   m_ObjectHideFlags: 0

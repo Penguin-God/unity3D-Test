@@ -101,7 +101,7 @@ MonoBehaviour:
   enemyType: 2
   MaxHP: 70
   CurrentHp: 70
-  target: {fileID: 4273948439918945620, guid: d16f74ee13c85984c9e0e5bf02525a31, type: 3}
+  target: {fileID: 0}
   isChase: 0
   isAttack: 0
   meleeCollider: {fileID: 0}
@@ -111,6 +111,7 @@ MonoBehaviour:
   - {fileID: 4221642962447888518, guid: a3c9ffa0a4ad8df4c841b17e39327fe2, type: 3}
   - {fileID: 4536593287105996431, guid: 39029673b442b5544ae05c40ba5ca0d2, type: 3}
   - {fileID: 8768883501060662408, guid: 11045320b03d8184ebaef94d33d8e050, type: 3}
+  gameManager: {fileID: 0}
 --- !u!95 &1150325100592968235
 Animator:
   serializedVersion: 3

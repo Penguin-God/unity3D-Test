@@ -154,7 +154,7 @@ public class Enemy : MonoBehaviour
         int randomCoin = Random.Range(0, 3);
 
         SubtrackEnemyCount();
-        //Instantiate(coin[randomCoin], transform.position, Quaternion.identity); // Quaternion.identit : 이 Quaternion은 회전 없음을 의미 완벽하게 월드 좌표 축 또는 부모의 축으로 정렬됨
+        Instantiate(coin[randomCoin], transform.position, Quaternion.identity); // Quaternion.identit : 이 Quaternion은 회전 없음을 의미 완벽하게 월드 좌표 축 또는 부모의 축으로 정렬됨
         Destroy(gameObject, 3);
     }
 
