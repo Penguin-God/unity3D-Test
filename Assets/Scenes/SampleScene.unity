@@ -27198,8 +27198,7 @@ MonoBehaviour:
   current_ADEnemy: 0
   current_Boss: 0
   isBattle: 0
-  menuScoreTxt: {fileID: 1541278457}
-  bestScoreTxt: {fileID: 1541278457}
+  menuBestScoreTxt: {fileID: 1541278457}
   inGameScoreTxt: {fileID: 1588096284}
   stageTxt: {fileID: 1891668027}
   playTimeTxt: {fileID: 619293710}
