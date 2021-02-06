@@ -24,7 +24,7 @@ public class Player : MonoBehaviour
     public int maxGrenade;
     public int score;
 
-    int EquipObjcetIndex = -1; // 보유중인 무기 숫자
+    public int EquipObjcetIndex = -1; // 보유중인 무기 숫자
 
     // 상태 변수
     public bool isJump; // 점프 중이면 true

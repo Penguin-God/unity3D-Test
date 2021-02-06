@@ -24,7 +24,6 @@ public class GameManager : MonoBehaviour
     public bool isBattle;
 
     public Text menuBestScoreTxt;
-    //public Text bestScoreTxt;
     public Text inGameScoreTxt;
     public Text stageTxt;
     public Text playTimeTxt;
@@ -41,6 +40,9 @@ public class GameManager : MonoBehaviour
     public Image Weapon2_Image;
     public Image Weapon3_Image;
     public Image grenade_Image;
+
+    public Text Weapon2_CurrentAmmo;
+    public Text Weapon3_CurrentAmmo;
 
     public RectTransform bossHpGroup;
     public RectTransform bossHpBar;
@@ -184,18 +186,64 @@ public class GameManager : MonoBehaviour
         // 플레이어 상태 UI
         playerHpTxt.text = player.currentPlayerHp + " / " + player.maxPlayerHp;
         playerCoinTxt.text = string.Format("{0:n0}", player.currentCoin);
+
         if (player.Weapons == null)
+        {
             playerAmmoTxt.text = "- / " + player.maxAmmo;
+            Weapon2_CurrentAmmo.gameObject.SetActive(false);
+            Weapon3_CurrentAmmo.gameObject.SetActive(false);
+        }
         else if(player.Weapons.type == Weapons.Type.Melee)
+        {
             playerAmmoTxt.text = "- / " + player.maxAmmo;
+            Weapon2_CurrentAmmo.gameObject.SetActive(false);
+            Weapon3_CurrentAmmo.gameObject.SetActive(false);
+        }
         else if (player.Weapons.type == Weapons.Type.Range)
+        {
             playerAmmoTxt.text = player.currentAmmo + " / " + player.maxAmmo;
+            
+            // 현재 총알 장전 수 UI
+            Weapons weapons = player.무기[player.EquipObjcetIndex].GetComponent<Weapons>();
+            if (player.EquipObjcetIndex == 1)
+            {
+                Weapon2_CurrentAmmo.gameObject.SetActive(true);
+                Weapon2_CurrentAmmo.text = weapons.inBullet + " / " + weapons.maxBullet;
+                Weapon3_CurrentAmmo.gameObject.SetActive(false);
+            }
+            else
+            {
+                Weapon3_CurrentAmmo.gameObject.SetActive(true);
+                Weapon3_CurrentAmmo.text = weapons.inBullet + " / " + weapons.maxBullet;
+                Weapon2_CurrentAmmo.gameObject.SetActive(false);
+            }
+        }
 
         // 무기 유무 UI
         Weapon1_Image.color = new Color(1, 1, 1, player.무기보유[0] ? 1 : 0);
         Weapon2_Image.color = new Color(1, 1, 1, player.무기보유[1] ? 1 : 0);
         Weapon3_Image.color = new Color(1, 1, 1, player.무기보유[2] ? 1 : 0);
         grenade_Image.color = new Color(1, 1, 1, player.currentGrenade > 0 ? 1 : 0);
+
+        // 무기 총알 장전 수
+        //if(player.Weapons && player.Weapons.type == Weapons.Type.Range)
+        //{
+        //    Weapons weapons = player.무기[player.EquipObjcetIndex].GetComponent<Weapons>();
+        //    if (player.EquipObjcetIndex == 1)
+        //        Debug.Log("aa");
+        //    else
+        //    {
+        //        Weapon3_CurrentAmmo.gameObject.SetActive(true);
+        //        Weapon3_CurrentAmmo.text = weapons.inBullet + " / " + weapons.maxBullet;
+        //    }
+        //}
+        //else
+        //{
+        //    Weapon2_CurrentAmmo.gameObject.SetActive(false);
+        //    Weapon3_CurrentAmmo.gameObject.SetActive(false);
+        //}
+
+
 
         // 몬스터 수 UI
         currnt_NomalEnemyTxt.text = current_NomalEnemy.ToString();
