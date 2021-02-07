@@ -5481,7 +5481,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1559496317}
-  type: 0
+  weaponsType: 0
   Damage: 40
   "\uACF5\uC18D": 0.8
   inBullet: 0
@@ -40345,7 +40345,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1559496317}
-  type: 1
+  weaponsType: 1
   Damage: 0
   "\uACF5\uC18D": 0.4
   inBullet: 12
@@ -76618,7 +76618,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1559496317}
-  type: 1
+  weaponsType: 1
   Damage: 0
   "\uACF5\uC18D": 0.15
   inBullet: 30

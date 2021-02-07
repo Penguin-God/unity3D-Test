@@ -5,8 +5,8 @@ using UnityEngine;
 public class Weapons : MonoBehaviour
 {
     public Player player;
-    public enum Type { Melee, Range};
-    public Type type;
+    public enum WeaponsType { Melee, Range}; // enum 열거형 : 상수 숫자들을 보다 의미있는 단어로 표현하여 프로그램을 읽기 쉽게 해준 것
+    public WeaponsType weaponsType;
     public int Damage;
     public float 공속;
     public int inBullet;
@@ -31,9 +31,9 @@ public class Weapons : MonoBehaviour
 
     public void Use()
     {
-        if (type == Type.Melee)
+        if (weaponsType == WeaponsType.Melee)
             StartCoroutine("Melee");
-        else if (type == Type.Range && 0 < inBullet && !player.isJump)
+        else if (weaponsType == WeaponsType.Range && 0 < inBullet && !player.isJump)
         {
             inBullet--;
             StartCoroutine("Shot");

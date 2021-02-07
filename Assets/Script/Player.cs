@@ -245,13 +245,15 @@ public class Player : MonoBehaviour
     {
         if (Weapons == null)
             return;
+
         // Time.datatime : 지난 프레임이 완료되는 데 까지 걸리는시간을 나타내며 단위는 초를사용(Update함수에서 1프레임이 아닌 1초당 어떤 행동을 하고 싶을 때 델타타임을 곱함)
         MeleeDelay += Time.deltaTime; // Melee에 매 프레임 소비한 시간을 더함
         MeleeReady = Weapons.공속 < MeleeDelay; // 공격한 후 지정한 공속보다 시간이 더 지나면 다시 공격할 수 있음
+
         if(AttackDown && MeleeReady && !isSwap && !isDodje && !isReload && !isShop && !isDead)
         {
             Weapons.Use();
-            if (Weapons.type == Weapons.Type.Melee) // 장착한 무기에 따라 다른 애니메이션 실행
+            if (Weapons.weaponsType == Weapons.WeaponsType.Melee) // 장착한 무기에 따라 다른 애니메이션 실행
                 animator.SetTrigger("DoSwing");
             else if(!isJump)
                 animator.SetTrigger(EquipObjcetIndex == 1 ? "DoShot" : "DoMachineGunShot");
@@ -261,7 +263,7 @@ public class Player : MonoBehaviour
 
     void Reload()
     {
-        if (currentAmmo == 0 || Weapons == null || Weapons.type == Weapons.Type.Melee || isReload || isShop || isDead)
+        if (currentAmmo == 0 || Weapons == null || Weapons.weaponsType == Weapons.WeaponsType.Melee || isReload || isShop || isDead)
             return;
 
         if(ReloadDown && !isDodje && !isSwap && MeleeReady)
