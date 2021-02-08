@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class 총알삭제 : MonoBehaviour
+public class Bullet : MonoBehaviour
 {
     public int Damage;
     public bool isMelee; // 근접 공격 범위는 삭제되는 버그 방지용 변수

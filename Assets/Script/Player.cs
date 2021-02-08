@@ -131,7 +131,7 @@ public class Player : MonoBehaviour
         {
             Ray CameraRay = followCamera.ScreenPointToRay(Input.mousePosition); // 카메라에서 마우스 누른곳에 Ray를 쏨
             RaycastHit rayHit;
-            if (Physics.Raycast(CameraRay, out rayHit, 100)) // out : ray에 닿은 물체를 리턴함
+            if (Physics.Raycast(CameraRay, out rayHit, 100)) // out : return처럼 반환값을 주어진 변수에 저장함 : 여기서는 CameraRay에 닿은 물체를 저장함
             {
                 Vector3 nextVec = rayHit.point; // 마우스를 클릭한 지점에서 현재 플레이어 위치를 뺀 값을 넣음
                 nextVec.y = 0; // y축으로도 도는거 방지
@@ -278,7 +278,7 @@ public class Player : MonoBehaviour
 
     void ReloadOut()
     {
-        int deficientAmmo = Weapons.inBullet != 0 ? Weapons.maxBullet - Weapons.inBullet : Weapons.maxBullet;
+        int deficientAmmo = Weapons.inBullet != 0 ? Weapons.maxBullet - Weapons.inBullet : Weapons.maxBullet; // 현재 장전해야할 총알 수
         int inAmmo = currentAmmo > deficientAmmo ? deficientAmmo : currentAmmo; // 총알 보유상태에 따라 충전할 총알의 수를 정함
         Weapons.inBullet += inAmmo; // Weapons script의 변수에 총알을 더함
         currentAmmo -= inAmmo;
@@ -361,7 +361,7 @@ public class Player : MonoBehaviour
         {
             if (!isdontDamage && !isDead)
             {
-                총알삭제 EnemyAttack = other.GetComponent<총알삭제>();
+                Bullet EnemyAttack = other.GetComponent<Bullet>();
                 currentPlayerHp -= EnemyAttack.Damage;
                 bool isBossAttack = other.name == "JumpAttack Collider";
                 StartCoroutine(OnDamage(isBossAttack));

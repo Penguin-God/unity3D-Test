@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BossRock : 총알삭제
+public class BossRock : Bullet
 {
     Rigidbody rigid;
     float angularPower = 2f; // 회전파워 
