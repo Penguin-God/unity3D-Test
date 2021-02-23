@@ -100,7 +100,6 @@ public class Enemy : MonoBehaviour
 
     IEnumerator HitByGrenade_Effect(Vector3 DamageVec) // 수류탄 이펙트
     {
-        Debug.Log("isGrende");
         if (CurrentHp > 0)
         {
             isChase = false;

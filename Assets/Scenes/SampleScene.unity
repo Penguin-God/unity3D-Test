@@ -20870,7 +20870,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\uCCB4 \uB825"
+  m_Text: "\uC218\uB958\uD0C4"
 --- !u!222 &232823249
 CanvasRenderer:
   m_ObjectHideFlags: 0

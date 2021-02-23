@@ -21,11 +21,12 @@ public class GrenadeBoom : MonoBehaviour
         MashObj.SetActive(false);
         EffectObj.SetActive(true);
 
-        RaycastHit[] rayHits = Physics.SphereCastAll(this.transform.position, 10, Vector3.up, 0f, LayerMask.GetMask("Enemy")); // 구 모양의 Ray를 쏨
+        RaycastHit[] rayHits = Physics.SphereCastAll(this.transform.position, 10, Vector3.up, 10f, LayerMask.GetMask("Enemy")); // 구 모양의 Ray를 쏨
         foreach(RaycastHit hitObjs in rayHits)
         {
             hitObjs.transform.GetComponent<Enemy>().HitByGrenade(this.transform.position);
         }
+        Destroy(this.gameObject, 5);
     }
 
     private void OnDrawGizmos() // Boom 코루틴에 있는 ray 씬에 그리는 함수

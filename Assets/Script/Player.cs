@@ -35,7 +35,7 @@ public class Player : MonoBehaviour
     bool isBorder; // 벽에 닿으면 true
     bool isdontDamage; // 대미지 입은 후 무적 시간 중에 true
     bool isDead;
-
+    public bool isShop;
 
     // 키입력
     private float hAxis;
@@ -49,7 +49,6 @@ public class Player : MonoBehaviour
     bool AttackDown;
     bool GrenadeDown;
     bool ReloadDown;
-    public bool isShop;
 
     // 근접공격 관련 변수
     bool MeleeReady = true; 
