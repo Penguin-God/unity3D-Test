@@ -47,7 +47,7 @@ public class Enemy : MonoBehaviour
         if (nav.enabled && enemyType != Type.Boss)
         {
             nav.SetDestination(target.position); // 도착할 목표의 위치를 지정하는 함수
-            nav.isStopped = !isChase; // true일 때 정지
+            nav.isStopped = !isChase; // isChase가 true일 때 정지
         }
     }
 

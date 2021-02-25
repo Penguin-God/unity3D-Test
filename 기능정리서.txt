@@ -64,6 +64,10 @@ layer 설정
 HitByGrenade(this.transform.position) 피격함수 사용 피격함수에 현재 위치를 인수로 건네 Enemy의 위치에서 수류탄 위치를 빼서 넉백을 줄 백터 방향값을 구하고 DamageEffect() 함수에
 isGrenade = false 라는 bool 인수를 추가해 만약 true일 시 수류탄과 관련된 피격 데미지와 넉백을 줌
 
+11강 - 목표를 추적하는 AI 만들기
+1. 네비게이션(Nav Mash Agent component) - nav.SetDestination(목표 Vector)를 업데이트에서 사용하고 경로가 되는 바탕인 NavMash 설정하기(window -> AI -> 내비게이션) 이때 지형이 정적체크가 되어야 함 또한 충돌시 속도가 영향을 받기 때문에 속도와 회전속도를 Vector3.zero로 만듬
+2. 애니메이션(Enemy Script) - Awake()에 Invoke()에 2초 후에 nav추적과 걷기 애니메이션을 활성화시키고 죽을 때 사망 애니메이션과 nav를 false로 설정해서 추적을 그만하게 함 
+
 주의사항 
 프리펩 public object변수는 object가 프리펩화 되어 있어야 사용이 가능함 프리펩화 되어있지 않다면 script에서 Find를 이용하는 등의 방법으로 변수를 인스턴스화 시켜야함
 Button의 내비게이션이 켜져있으면 키보드 입력 시에도 버튼이 동작하는 경우가 있어 마우스 입력만 받고 싶다면 None으로 설정해야함
