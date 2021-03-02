@@ -28,6 +28,7 @@ public class Enemy : MonoBehaviour
 
     public SphereCollider detectArea;
     bool isFigth;
+    public GameObject Bang;
 
     private void Awake()
     {
@@ -78,9 +79,10 @@ public class Enemy : MonoBehaviour
 
         if(other.gameObject.name == "Player")
         {
-            SetChase()
+            SetChase();
             isFigth = true;
             detectArea.enabled = false;
+            Bang.SetActive(true);
         }
     }
 
@@ -230,6 +232,7 @@ public class Enemy : MonoBehaviour
 
     IEnumerator Attack()
     {
+        Bang.SetActive(false); // 위에 느낌표 제거
         isChase = false; // 공격 시 정지
         isAttack = true;
         animator.SetBool("isAttack", true);
