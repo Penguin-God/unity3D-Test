@@ -149,6 +149,7 @@ public class Enemy : MonoBehaviour
 
     void EnemyDie()
     {
+        Bang.SetActive(false);
         rigid.freezeRotation = false; // 회전방지 해제
         isChase = false;
         nav.enabled = false; // 사망 시 리액션을 위해 nav를 false로 변경
