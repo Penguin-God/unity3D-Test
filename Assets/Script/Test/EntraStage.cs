@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class EntraStage : MonoBehaviour
 {
-    public Transform[] RespawnEnemyPositions;
-    public GameObject[] RespawnEnemys;
+    public Transform[] respawnEnemyPositions;
+    public GameObject[] respawnEnemys;
 
     void EnemyRespawn()
     {
-        for(int i = 0; i < RespawnEnemyPositions.Length; i++)
+        for(int i = 0; i < respawnEnemyPositions.Length; i++)
         {
-            int random = Random.Range(0, RespawnEnemys.Length);
-            Instantiate(RespawnEnemys[random], RespawnEnemyPositions[i].position, RespawnEnemyPositions[i].rotation);
+            int random = Random.Range(0, respawnEnemys.Length);
+            Instantiate(respawnEnemys[random], respawnEnemyPositions[i].position, respawnEnemyPositions[i].rotation);
         }
     }
 

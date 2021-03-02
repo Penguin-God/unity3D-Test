@@ -26,6 +26,9 @@ public class Enemy : MonoBehaviour
     Coroutine coroutine; // 중지시킬 코루틴을 변수에 담음
     public GameManager gameManager;
 
+    public SphereCollider detectArea;
+    bool isFigth;
+
     private void Awake()
     {
         rigid = GetComponent<Rigidbody>();
@@ -33,7 +36,7 @@ public class Enemy : MonoBehaviour
         nav = GetComponent<NavMeshAgent>();
         animator = GetComponentInChildren<Animator>();
 
-        Invoke("SetChase", 2);
+        //Invoke("SetChase", 2);
         target = GameObject.Find("Player").GetComponent<Transform>(); // 프리팹에 연결되는 객체는 무조건 프리팹 내부에 있는 오브젝트여야 하므로 그냥 Find로 넣음
     }
     void SetChase()
@@ -53,7 +56,7 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter(Collider other) // 몬스터가 플레이어한터 피격 당함
     {
-        if(!isDead)
+        if(!isDead && isFigth)
         {
             if (other.tag == "Melee")
             {
@@ -71,6 +74,13 @@ public class Enemy : MonoBehaviour
                 Destroy(other.gameObject);
                 DamageEffect(DamageVec);
             }
+        }
+
+        if(other.gameObject.name == "Player")
+        {
+            SetChase()
+            isFigth = true;
+            detectArea.enabled = false;
         }
     }
 
