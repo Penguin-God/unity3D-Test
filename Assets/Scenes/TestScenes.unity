@@ -23375,6 +23375,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   respawnEnemyPositions: []
   respawnEnemys: []
+  Player: {fileID: 0}
+  enterPosition: {x: 0, y: 0, z: 0}
 --- !u!65 &1042641890
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -28476,6 +28478,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   respawnEnemyPositions: []
   respawnEnemys: []
+  Player: {fileID: 2012587659}
+  enterPosition: {x: -200, y: 3, z: -200}
 --- !u!135 &1119296900
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -28484,7 +28488,7 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1119296898}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 4
@@ -49635,7 +49639,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2012587657}
   m_LocalRotation: {x: 0, y: 0.92387956, z: 0, w: 0.38268343}
-  m_LocalPosition: {x: -204.6, y: 2, z: -204.6}
+  m_LocalPosition: {x: -12.1, y: 5, z: -12.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 599830021}

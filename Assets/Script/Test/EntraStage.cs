@@ -6,6 +6,8 @@ public class EntraStage : MonoBehaviour
 {
     public Transform[] respawnEnemyPositions;
     public GameObject[] respawnEnemys;
+    public Transform Player;
+    public Vector3 enterPosition;
 
     void EnemyRespawn()
     {
@@ -16,11 +18,17 @@ public class EntraStage : MonoBehaviour
         }
     }
 
+    void ChangePosition()
+    {
+        Player.position = enterPosition;
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.name == "Player")
         {
             EnemyRespawn();
+            ChangePosition();
         }
     }
 }
