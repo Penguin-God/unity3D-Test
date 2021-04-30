@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 9046983176165101771}
   - component: {fileID: 9046983176165101775}
   m_Layer: 10
-  m_Name: "\uD578\uB4DC\uAC74 \uCD1D\uC54C"
+  m_Name: "\uD578\uB4DC\uAC74 \uCD1D\uC54C \uC774\uD399\uD2B8"
   m_TagString: "\uCD1D\uC54C"
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -83,7 +83,7 @@ TrailRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.5
+        value: 0.51441956
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -182,3 +182,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Damage: 25
+  isMelee: 0
+  isRock: 0

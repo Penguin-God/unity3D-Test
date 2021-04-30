@@ -26,9 +26,9 @@ public class Enemy : MonoBehaviour
     Coroutine coroutine; // 중지시킬 코루틴을 변수에 담음
     public GameManager gameManager;
 
-    public SphereCollider detectArea;
-    bool isFigth;
-    public GameObject Bang;
+    //public SphereCollider detectArea;
+    //bool isFigth;
+    //public GameObject Bang;
 
     private void Awake()
     {
@@ -37,8 +37,10 @@ public class Enemy : MonoBehaviour
         nav = GetComponent<NavMeshAgent>();
         animator = GetComponentInChildren<Animator>();
 
-        //Invoke("SetChase", 2);
-        target = GameObject.Find("Player").GetComponent<Transform>(); // 프리팹에 연결되는 객체는 무조건 프리팹 내부에 있는 오브젝트여야 하므로 그냥 Find로 넣음
+        Invoke("SetChase", 2);
+
+        // 프리팹에 연결되는 객체는 무조건 프리팹 내부에 있는 오브젝트여야 하므로 그냥 Find로 넣음
+        target = GameObject.Find("Player").GetComponent<Transform>(); 
     }
     void SetChase()
     {
@@ -57,7 +59,7 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter(Collider other) // 몬스터가 플레이어한터 피격 당함
     {
-        if(!isDead && isFigth)
+        if(!isDead)
         {
             if (other.tag == "Melee")
             {
@@ -80,9 +82,9 @@ public class Enemy : MonoBehaviour
         if(other.gameObject.name == "Player")
         {
             SetChase();
-            isFigth = true;
-            detectArea.enabled = false;
-            Bang.SetActive(true);
+            //isFigth = true;
+            //detectArea.enabled = false;
+            //Bang.SetActive(true);
         }
     }
 
@@ -149,7 +151,7 @@ public class Enemy : MonoBehaviour
 
     void EnemyDie()
     {
-        Bang.SetActive(false);
+        //Bang.SetActive(false);
         rigid.freezeRotation = false; // 회전방지 해제
         isChase = false;
         nav.enabled = false; // 사망 시 리액션을 위해 nav를 false로 변경
@@ -233,7 +235,7 @@ public class Enemy : MonoBehaviour
 
     IEnumerator Attack()
     {
-        Bang.SetActive(false); // 위에 느낌표 제거
+        //Bang.SetActive(false); // 위에 느낌표 제거
         isChase = false; // 공격 시 정지
         isAttack = true;
         animator.SetBool("isAttack", true);
