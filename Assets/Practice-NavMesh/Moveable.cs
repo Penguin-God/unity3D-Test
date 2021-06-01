@@ -18,7 +18,10 @@ public class Moveable : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            nav.SetDestination(target.position);
+            Debug.DrawRay(transform.position, target.position - transform.position, Color.green, 30f);
+            Physics.Raycast(transform.position, target.position - transform.position, out RaycastHit targetHit, 30f);
+            nav.SetDestination(targetHit.point);
+            //nav.SetDestination(target.position);
         }
     }
 }
