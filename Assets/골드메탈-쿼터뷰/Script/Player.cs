@@ -107,15 +107,15 @@ public class Player : MonoBehaviour
         if (isDodje) // 구르기나 공격중에는 행동 전 백터값으로 직진함
             MoveVec = DodgeVector;
         else
-            MoveVec = new Vector3(xAxis, 0, hAxis).normalized; // normalized : 방향 값이 1로 보정된 백터(저걸 안하면 대각선 이동 시 평소보다 더 빠르게 이동함)
+            MoveVec = new Vector3(xAxis, 0, hAxis).normalized; // normalized : 백터의 크기가 1로 보정된 백터(저걸 안하면 대각선 이동 시 평소보다 더 빠르게 이동함)
 
-       if ((AttackDown || !MeleeReady) && !isJump && !isDodje || isDead) // 공격중일 때는 이동 못함  단 점프나 닷지중일 때는 이동가능
-                MoveVec = Vector3.zero;
+        if ((AttackDown || !MeleeReady) && !isJump && !isDodje || isDead) // 공격중일 때는 이동 못함  단 점프나 닷지중일 때는 이동가능
+            MoveVec = Vector3.zero;
 
         if (!isBorder) // 벽과 닿을때 Vector3.zero로 만들어 버리면 회전도 못해서 아예정지해 버리기 때문에 트랜스폼에 백터를 더해서 이동하는 것만 제한함
             transform.position += MoveVec * speed * (WalkKey ? 0.3f : 1f) * Time.deltaTime; // Time.dataTime : 안넣으면 프레임당 움직임 넣으면 초당 움직임
 
-        // 애니메이션
+        //애니메이션
         animator.SetBool("IsRun", MoveVec != Vector3.zero); // Vector3.zero = Vector3(0, 0, 0); 즉 모든 Vector값이 0이 아니면 "IsRun"은 true
         animator.SetBool("IsWalk", WalkKey);
     }

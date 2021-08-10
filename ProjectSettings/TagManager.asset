@@ -13,6 +13,7 @@ TagManager:
   - Enemy
   - EnemyAttack
   - Shop
+  - Tower
   layers:
   - Default
   - TransparentFX

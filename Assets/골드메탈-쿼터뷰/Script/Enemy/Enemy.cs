@@ -151,7 +151,6 @@ public class Enemy : MonoBehaviour
 
     void EnemyDie()
     {
-        //Bang.SetActive(false);
         rigid.freezeRotation = false; // 회전방지 해제
         isChase = false;
         nav.enabled = false; // 사망 시 리액션을 위해 nav를 false로 변경
@@ -262,9 +261,18 @@ public class Enemy : MonoBehaviour
                 break;
             case Type.AD:
                 yield return new WaitForSeconds(0.5f);
-                GameObject instant_Missile = Instantiate(Missile, transform.position, transform.rotation); // 오브젝트 생성
+
+
+                // 자신의 위치로부터 target의 위치까지 가는 방향 백터를 구함
+                Vector3 direction = (target.position - transform.position).normalized;
+                // 총알 생성
+                GameObject instant_Missile = Instantiate(Missile, transform.position, 
+                    Quaternion.LookRotation(direction)); 
+                // 총알의 방향과 속도 설정
                 Rigidbody missile_Rigid = instant_Missile.GetComponent<Rigidbody>();
-                missile_Rigid.velocity = transform.forward * 20;
+                missile_Rigid.velocity = direction * 20;
+
+
 
                 yield return new WaitForSeconds(2f);
                 break;
