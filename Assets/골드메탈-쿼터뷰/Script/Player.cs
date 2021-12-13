@@ -115,6 +115,8 @@ public class Player : MonoBehaviour
         if (!isBorder) // 벽과 닿을때 Vector3.zero로 만들어 버리면 회전도 못해서 아예정지해 버리기 때문에 트랜스폼에 백터를 더해서 이동하는 것만 제한함
             transform.position += MoveVec * speed * (WalkKey ? 0.3f : 1f) * Time.deltaTime; // Time.dataTime : 안넣으면 프레임당 움직임 넣으면 초당 움직임
 
+        if (isBorder) Debug.Log("1");
+
         //애니메이션
         animator.SetBool("IsRun", MoveVec != Vector3.zero); // Vector3.zero = Vector3(0, 0, 0); 즉 모든 Vector값이 0이 아니면 "IsRun"은 true
         animator.SetBool("IsWalk", WalkKey);
@@ -301,7 +303,7 @@ public class Player : MonoBehaviour
     void StopToWall()
     {
         Debug.DrawRay(transform.position, transform.forward * 3, Color.green); // Debug.DrawRay(시작점, 쏘는방향 * 길이, 색깔); : Scene 내에서 Ray를 보여주는 함수
-        isBorder = Physics.Raycast(transform.position, transform.forward, 3, LayerMask.GetMask("벽")); // Raycast(시작점, 쏘는방향, 길이, 가져올오브젝트레이어) : Ray를 쏘아 닿는 오브젝트를 감지하는 함수  
+        isBorder = Physics.Raycast(transform.position, transform.forward, 3, 1 << 12); // Raycast(시작점, 쏘는방향, 길이, 가져올오브젝트레이어) : Ray를 쏘아 닿는 오브젝트를 감지하는 함수  
     }
 
     void Jump()
