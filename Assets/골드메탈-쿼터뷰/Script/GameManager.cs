@@ -12,10 +12,12 @@ public class GameManager : MonoBehaviour
     public GameObject gamePanel;
     public GameObject gameOverPanel;
 
-    public Player player;
+    [SerializeField] PlayerData playerData;
+    //public Player player;
     public Boss boss;
 
     public int stage;
+    public int score;
     public float playTime;
     public int current_NomalEnemy;
     public int current_ChargeEnemy;
@@ -57,6 +59,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        playerData.Death.AddListener(GameOver);
         respawnEnemyList = new List<int>();
 
         if (!PlayerPrefs.HasKey("MaxScore")) PlayerPrefs.SetInt("MaxScore", 0);
@@ -71,7 +74,7 @@ public class GameManager : MonoBehaviour
         menuPanel.SetActive(false);
         gamePanel.SetActive(true);
 
-        player.gameObject.SetActive(true);
+        //player.gameObject.SetActive(true);
     }
 
     public void StageStart()
@@ -92,10 +95,10 @@ public class GameManager : MonoBehaviour
         currentScoreTxt.text = inGameScoreTxt.text;
 
         int maxScore = PlayerPrefs.GetInt("MaxScore"); 
-        if(player.score > maxScore) // 최고점수 갱신
+        if(score > maxScore) // 최고점수 갱신
         {
             bestTxt.gameObject.SetActive(true);
-            PlayerPrefs.SetInt("MaxScore", player.score);
+            PlayerPrefs.SetInt("MaxScore", score);
         }
     }
 
@@ -106,7 +109,7 @@ public class GameManager : MonoBehaviour
 
     public void StageEnd()
     {
-        player.transform.position = Vector3.up * 2;
+        //player.transform.position = Vector3.up * 2;
         isBattle = false;
         enemyRespawnZone[0].parent.gameObject.SetActive(false);
 
@@ -176,7 +179,7 @@ public class GameManager : MonoBehaviour
     private void LateUpdate() // Update()가 끝난 후 호출되는 생명주기 (UI작업할 때 유용)
     {
         // 인게임 UI
-        inGameScoreTxt.text = string.Format("{0:n0}", player.score);
+        inGameScoreTxt.text = string.Format("{0:n0}", score);
         stageTxt.text = "STAGE " + stage;
         int playHour = (int)(playTime / 3600);
         int playMin = (int)((playTime - playHour * 3600) / 60) ;
@@ -184,46 +187,46 @@ public class GameManager : MonoBehaviour
         playTimeTxt.text = string.Format("{0:00}", playHour) + ":" + string.Format("{0:00}", playMin) + ":" + string.Format("{0:00}", playSceond);
 
         // 플레이어 상태 UI
-        playerHpTxt.text = player.currentPlayerHp + " / " + player.maxPlayerHp;
-        playerCoinTxt.text = string.Format("{0:n0}", player.currentCoin);
+        playerHpTxt.text = playerData.CurrentHp + " / " + playerData.MaxHp;
+        //playerCoinTxt.text = string.Format("{0:n0}", player.currentCoin);
 
-        if (player.Weapons == null)
-        {
-            playerAmmoTxt.text = "- / " + player.maxAmmo;
-            Weapon2_CurrentAmmo.gameObject.SetActive(false);
-            Weapon3_CurrentAmmo.gameObject.SetActive(false);
-        }
-        else if(player.Weapons.weaponsType == Weapons.WeaponsType.Melee)
-        {
-            playerAmmoTxt.text = "- / " + player.maxAmmo;
-            Weapon2_CurrentAmmo.gameObject.SetActive(false);
-            Weapon3_CurrentAmmo.gameObject.SetActive(false);
-        }
-        else if (player.Weapons.weaponsType == Weapons.WeaponsType.Range)
-        {
-            playerAmmoTxt.text = player.currentAmmo + " / " + player.maxAmmo;
+        //if (player.Weapons == null)
+        //{
+        //    playerAmmoTxt.text = "- / " + player.maxAmmo;
+        //    Weapon2_CurrentAmmo.gameObject.SetActive(false);
+        //    Weapon3_CurrentAmmo.gameObject.SetActive(false);
+        //}
+        //else if(player.Weapons.weaponsType == Weapons.WeaponsType.Melee)
+        //{
+        //    playerAmmoTxt.text = "- / " + player.maxAmmo;
+        //    Weapon2_CurrentAmmo.gameObject.SetActive(false);
+        //    Weapon3_CurrentAmmo.gameObject.SetActive(false);
+        //}
+        //else if (player.Weapons.weaponsType == Weapons.WeaponsType.Range)
+        //{
+        //    playerAmmoTxt.text = player.currentAmmo + " / " + player.maxAmmo;
             
-            // 현재 총알 장전 수 UI
-            Weapons weapons = player.무기[player.EquipObjcetIndex].GetComponent<Weapons>();
-            if (player.EquipObjcetIndex == 1)
-            {
-                Weapon2_CurrentAmmo.gameObject.SetActive(true);
-                Weapon2_CurrentAmmo.text = weapons.inBullet + " / " + weapons.maxBullet;
-                Weapon3_CurrentAmmo.gameObject.SetActive(false);
-            }
-            else
-            {
-                Weapon3_CurrentAmmo.gameObject.SetActive(true);
-                Weapon3_CurrentAmmo.text = weapons.inBullet + " / " + weapons.maxBullet;
-                Weapon2_CurrentAmmo.gameObject.SetActive(false);
-            }
-        }
+        //    // 현재 총알 장전 수 UI
+        //    Weapons weapons = player.무기[player.EquipObjcetIndex].GetComponent<Weapons>();
+        //    if (player.EquipObjcetIndex == 1)
+        //    {
+        //        Weapon2_CurrentAmmo.gameObject.SetActive(true);
+        //        Weapon2_CurrentAmmo.text = weapons.inBullet + " / " + weapons.maxBullet;
+        //        Weapon3_CurrentAmmo.gameObject.SetActive(false);
+        //    }
+        //    else
+        //    {
+        //        Weapon3_CurrentAmmo.gameObject.SetActive(true);
+        //        Weapon3_CurrentAmmo.text = weapons.inBullet + " / " + weapons.maxBullet;
+        //        Weapon2_CurrentAmmo.gameObject.SetActive(false);
+        //    }
+        //}
 
-        // 무기 유무 UI
-        Weapon1_Image.color = new Color(1, 1, 1, player.무기보유[0] ? 1 : 0);
-        Weapon2_Image.color = new Color(1, 1, 1, player.무기보유[1] ? 1 : 0);
-        Weapon3_Image.color = new Color(1, 1, 1, player.무기보유[2] ? 1 : 0);
-        grenade_Image.color = new Color(1, 1, 1, player.currentGrenade > 0 ? 1 : 0);
+        //// 무기 유무 UI
+        //Weapon1_Image.color = new Color(1, 1, 1, player.무기보유[0] ? 1 : 0);
+        //Weapon2_Image.color = new Color(1, 1, 1, player.무기보유[1] ? 1 : 0);
+        //Weapon3_Image.color = new Color(1, 1, 1, player.무기보유[2] ? 1 : 0);
+        //grenade_Image.color = new Color(1, 1, 1, player.currentGrenade > 0 ? 1 : 0);
 
         // 몬스터 수 UI
         currnt_NomalEnemyTxt.text = current_NomalEnemy.ToString();

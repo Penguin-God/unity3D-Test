@@ -5,6 +5,7 @@ using UnityEngine.SocialPlatforms;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField] PlayerData data;
     public float speed;
     // 아이템 관련 변수
     public GameObject[] 무기;
@@ -12,7 +13,7 @@ public class Player : MonoBehaviour
     public GameObject[] 보유수류탄;
     public GameObject 수류탄Object;
     public Camera followCamera;
-    public GameManager gameManger;
+    //public GameManager gameManger;
 
     public int currentAmmo;
     public int maxAmmo;
@@ -22,7 +23,7 @@ public class Player : MonoBehaviour
     public int maxPlayerHp;
     public int currentGrenade;
     public int maxGrenade;
-    public int score;
+    //public int score;
 
     public int EquipObjcetIndex = -1; // 보유중인 무기 숫자
 
@@ -51,8 +52,9 @@ public class Player : MonoBehaviour
     bool ReloadDown;
 
     // 근접공격 관련 변수
-    bool MeleeReady = true; 
-    float MeleeDelay = 0.5f; // 처음 무기를 장착한 순간부터 MeleeDelay += Time.datatime코드가 실행되서 순간적으로 MeleeReady가 false가 되어 이동을 못하게 되므로 기초값을 공속보다 높게 조정함 
+    bool MeleeReady = true;
+    // 처음 무기를 장착한 순간부터 MeleeDelay += Time.datatime코드가 실행되서 순간적으로 MeleeReady가 false가 되어 이동을 못하게 되므로 기초값을 공속보다 높게 조정함 
+    float MeleeDelay = 0.5f; 
 
     Vector3 MoveVec;
     Vector3 DodgeVector;
@@ -69,6 +71,9 @@ public class Player : MonoBehaviour
         rigidbody = GetComponent<Rigidbody>();
         animator = GetComponentInChildren<Animator>(); // Animator 컴포넌트가 Player의 자식에게 있기 때문에 GetComponentInChildren<>을 사용
         meshs = GetComponentsInChildren<MeshRenderer>(); // compenents : s붙여서 여러개 가져옴
+
+        data.OnDamageEvent.AddListener( (bool _isBoss) => StartCoroutine(OnDamage(_isBoss)) );
+        data.Death.AddListener(PlayerDead);
     }
 
     void Update()
@@ -365,7 +370,7 @@ public class Player : MonoBehaviour
                 Bullet EnemyAttack = other.GetComponent<Bullet>();
                 currentPlayerHp -= EnemyAttack.Damage;
                 bool isBossAttack = other.name == "JumpAttack Collider";
-                StartCoroutine(OnDamage(isBossAttack));
+                
             }
 
             if (other.GetComponent<Rigidbody>() != null) // 맞은 공격이 Rigidbody가 있는 미사일 공격이면 미사일 삭제 (없는 건 콜라이던데 콜라이더는 없애면 안됨)
@@ -377,7 +382,7 @@ public class Player : MonoBehaviour
     {
         animator.SetTrigger("DoDie");
         isDead = true;
-        gameManger.GameOver();
+        //gameManger.GameOver();
     }
 
     IEnumerator OnDamage(bool isBoss) // 무적 판정 및 플레이어 색깔 변화

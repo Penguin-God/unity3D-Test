@@ -42,6 +42,7 @@ public class Enemy : MonoBehaviour
         // 프리팹에 연결되는 객체는 무조건 프리팹 내부에 있는 오브젝트여야 하므로 그냥 Find로 넣음
         target = GameObject.Find("Player").GetComponent<Transform>(); 
     }
+
     void SetChase()
     {
         isChase = true;
@@ -125,7 +126,7 @@ public class Enemy : MonoBehaviour
         }
         else
         {
-            EnemyDie();
+            Die();
             DamageVec += Vector3.up * 3f;
             rigid.AddForce(DamageVec * 5, ForceMode.Impulse);
             rigid.AddTorque(DamageVec * 15, ForceMode.Impulse); // Torque : 회전력(회전하는 힘)
@@ -143,13 +144,13 @@ public class Enemy : MonoBehaviour
         else // 피격으로 사망 시 넉백
         {
             StopCoroutine(coroutine); // else코드 실행 후 위에 if 코드에서 0.2f Wait후 Color가 White가 되는 버그가 있어서 coroutine중지로 버그 방지 
-            EnemyDie();
+            Die();
             rigid.AddForce(DamageVec * Random.Range(7f, 11f), ForceMode.Impulse);
         }
     }
 
 
-    void EnemyDie()
+    void Die()
     {
         rigid.freezeRotation = false; // 회전방지 해제
         isChase = false;
@@ -157,17 +158,16 @@ public class Enemy : MonoBehaviour
         animator.SetTrigger("doDie");
         gameObject.layer = 14; // 죽으면 EnemyDead로 레이어 변경
         isDead = true;
-        foreach (MeshRenderer mesh in meshs)
-            mesh.material.color = Color.gray;
+        foreach (MeshRenderer mesh in meshs) mesh.material.color = Color.gray;
 
         // 점수 상승
-        Player player = target.GetComponent<Player>();
-        player.score += score;
+        gameManager.score += score;
         // 코인 드랍
         int randomCoin = Random.Range(0, 3);
 
         SubtrackEnemyCount();
-        Instantiate(coin[randomCoin], transform.position + Vector3.up, Quaternion.identity); // Quaternion.identit : 이 Quaternion은 회전 없음을 의미 완벽하게 월드 좌표 축 또는 부모의 축으로 정렬됨
+        // Quaternion.identity : 이 Quaternion은 회전 없음을 의미 완벽하게 월드 좌표 축 또는 부모의 축으로 정렬됨
+        Instantiate(coin[randomCoin], transform.position + Vector3.up, Quaternion.identity);
         Destroy(gameObject, 3);
     }
 
