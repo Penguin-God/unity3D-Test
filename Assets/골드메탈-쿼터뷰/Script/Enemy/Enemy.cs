@@ -36,7 +36,6 @@ public class Enemy : MonoBehaviour
         meshs = GetComponentsInChildren<MeshRenderer>(); 
         nav = GetComponent<NavMeshAgent>();
         animator = GetComponentInChildren<Animator>();
-
         Invoke("SetChase", 2);
 
         // 프리팹에 연결되는 객체는 무조건 프리팹 내부에 있는 오브젝트여야 하므로 그냥 Find로 넣음
@@ -244,10 +243,8 @@ public class Enemy : MonoBehaviour
             case Type.Normal:
                 yield return new WaitForSeconds(0.5f);
                 meleeCollider.enabled = true;
-
                 yield return new WaitForSeconds(0.7f);
                 meleeCollider.enabled = false;
-
                 yield return new WaitForSeconds(0.5f);
                 break;
             case Type.Charge:
@@ -261,8 +258,6 @@ public class Enemy : MonoBehaviour
                 break;
             case Type.AD:
                 yield return new WaitForSeconds(0.5f);
-
-
                 // 자신의 위치로부터 target의 위치까지 가는 방향 백터를 구함
                 Vector3 direction = (target.position - transform.position).normalized;
                 // 총알 생성
@@ -271,12 +266,10 @@ public class Enemy : MonoBehaviour
                 // 총알의 방향과 속도 설정
                 Rigidbody missile_Rigid = instant_Missile.GetComponent<Rigidbody>();
                 missile_Rigid.velocity = direction * 20;
-
-
-
                 yield return new WaitForSeconds(2f);
                 break;
         }
+
         isChase = true;
         isAttack = false;
         animator.SetBool("isAttack", false);

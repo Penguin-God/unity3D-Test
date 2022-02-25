@@ -6,6 +6,7 @@ using UnityEngine.Events;
 [CreateAssetMenu(fileName = "Player Data", menuName = "Scriptable Object/Player Data")]
 public class PlayerData : ScriptableObject
 {
+    // 체력
     [SerializeField] int maxHp;
     public int MaxHp => maxHp;
 
@@ -21,11 +22,25 @@ public class PlayerData : ScriptableObject
         if (currentHp <= 0) OnDeath();
     }
 
-    public UnityEvent Death;
+    public void RestoreHeath(int _newHeath)
+    {
+        currentHp += _newHeath;
+    }
+
+
+
+    // 사망
+    public UnityEvent DeathEvent;
+
+    [SerializeField] bool isDead = false;
+    public bool IsDead => isDead;
     void OnDeath()
     {
-        if (Death != null) Death.Invoke();
+        isDead = true;
+        if (DeathEvent != null) DeathEvent.Invoke();
     }
+
+
 
     // 경험치
     [SerializeField] int currentLV;

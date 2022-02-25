@@ -12,3 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74979c3a6e7b9a846803f4d4bb8665eb, type: 3}
   m_Name: Player Data
   m_EditorClassIdentifier: 
+  maxHp: 0
+  currentHp: 0
+  DeathEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  isDead: 0
+  currentLV: 0
+  maxXp: 0
+  currentXp: 0

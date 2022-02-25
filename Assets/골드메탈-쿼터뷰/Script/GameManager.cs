@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     public GameObject gameOverPanel;
 
     [SerializeField] PlayerData playerData;
-    //public Player player;
+    public Player player;
     public Boss boss;
 
     public int stage;
@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        playerData.Death.AddListener(GameOver);
+        playerData.DeathEvent.AddListener(GameOver);
         respawnEnemyList = new List<int>();
 
         if (!PlayerPrefs.HasKey("MaxScore")) PlayerPrefs.SetInt("MaxScore", 0);
@@ -188,45 +188,45 @@ public class GameManager : MonoBehaviour
 
         // 플레이어 상태 UI
         playerHpTxt.text = playerData.CurrentHp + " / " + playerData.MaxHp;
-        //playerCoinTxt.text = string.Format("{0:n0}", player.currentCoin);
+        playerCoinTxt.text = string.Format("{0:n0}", player.currentCoin);
 
-        //if (player.Weapons == null)
-        //{
-        //    playerAmmoTxt.text = "- / " + player.maxAmmo;
-        //    Weapon2_CurrentAmmo.gameObject.SetActive(false);
-        //    Weapon3_CurrentAmmo.gameObject.SetActive(false);
-        //}
-        //else if(player.Weapons.weaponsType == Weapons.WeaponsType.Melee)
-        //{
-        //    playerAmmoTxt.text = "- / " + player.maxAmmo;
-        //    Weapon2_CurrentAmmo.gameObject.SetActive(false);
-        //    Weapon3_CurrentAmmo.gameObject.SetActive(false);
-        //}
-        //else if (player.Weapons.weaponsType == Weapons.WeaponsType.Range)
-        //{
-        //    playerAmmoTxt.text = player.currentAmmo + " / " + player.maxAmmo;
-            
-        //    // 현재 총알 장전 수 UI
-        //    Weapons weapons = player.무기[player.EquipObjcetIndex].GetComponent<Weapons>();
-        //    if (player.EquipObjcetIndex == 1)
-        //    {
-        //        Weapon2_CurrentAmmo.gameObject.SetActive(true);
-        //        Weapon2_CurrentAmmo.text = weapons.inBullet + " / " + weapons.maxBullet;
-        //        Weapon3_CurrentAmmo.gameObject.SetActive(false);
-        //    }
-        //    else
-        //    {
-        //        Weapon3_CurrentAmmo.gameObject.SetActive(true);
-        //        Weapon3_CurrentAmmo.text = weapons.inBullet + " / " + weapons.maxBullet;
-        //        Weapon2_CurrentAmmo.gameObject.SetActive(false);
-        //    }
-        //}
+        if (player.Weapons == null)
+        {
+            playerAmmoTxt.text = "- / " + player.maxAmmo;
+            Weapon2_CurrentAmmo.gameObject.SetActive(false);
+            Weapon3_CurrentAmmo.gameObject.SetActive(false);
+        }
+        else if (player.Weapons.weaponsType == Weapons.WeaponsType.Melee)
+        {
+            playerAmmoTxt.text = "- / " + player.maxAmmo;
+            Weapon2_CurrentAmmo.gameObject.SetActive(false);
+            Weapon3_CurrentAmmo.gameObject.SetActive(false);
+        }
+        else if (player.Weapons.weaponsType == Weapons.WeaponsType.Range)
+        {
+            playerAmmoTxt.text = player.currentAmmo + " / " + player.maxAmmo;
 
-        //// 무기 유무 UI
-        //Weapon1_Image.color = new Color(1, 1, 1, player.무기보유[0] ? 1 : 0);
-        //Weapon2_Image.color = new Color(1, 1, 1, player.무기보유[1] ? 1 : 0);
-        //Weapon3_Image.color = new Color(1, 1, 1, player.무기보유[2] ? 1 : 0);
-        //grenade_Image.color = new Color(1, 1, 1, player.currentGrenade > 0 ? 1 : 0);
+            // 현재 총알 장전 수 UI
+            Weapons weapons = player.무기[player.EquipObjcetIndex].GetComponent<Weapons>();
+            if (player.EquipObjcetIndex == 1)
+            {
+                Weapon2_CurrentAmmo.gameObject.SetActive(true);
+                Weapon2_CurrentAmmo.text = weapons.inBullet + " / " + weapons.maxBullet;
+                Weapon3_CurrentAmmo.gameObject.SetActive(false);
+            }
+            else
+            {
+                Weapon3_CurrentAmmo.gameObject.SetActive(true);
+                Weapon3_CurrentAmmo.text = weapons.inBullet + " / " + weapons.maxBullet;
+                Weapon2_CurrentAmmo.gameObject.SetActive(false);
+            }
+        }
+
+        // 무기 유무 UI
+        Weapon1_Image.color = new Color(1, 1, 1, player.무기보유[0] ? 1 : 0);
+        Weapon2_Image.color = new Color(1, 1, 1, player.무기보유[1] ? 1 : 0);
+        Weapon3_Image.color = new Color(1, 1, 1, player.무기보유[2] ? 1 : 0);
+        grenade_Image.color = new Color(1, 1, 1, player.currentGrenade > 0 ? 1 : 0);
 
         // 몬스터 수 UI
         currnt_NomalEnemyTxt.text = current_NomalEnemy.ToString();

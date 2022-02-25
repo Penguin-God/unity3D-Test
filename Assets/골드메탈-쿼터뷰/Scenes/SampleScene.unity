@@ -27190,9 +27190,11 @@ MonoBehaviour:
   menuPanel: {fileID: 1659795551}
   gamePanel: {fileID: 258310208}
   gameOverPanel: {fileID: 1770686543}
+  playerData: {fileID: 11400000, guid: 18a66a4eaca2e6c4bbfe11b1270e263f, type: 2}
   player: {fileID: 1559496317}
   boss: {fileID: 0}
   stage: 1
+  score: 0
   playTime: 0
   current_NomalEnemy: 0
   current_ChargeEnemy: 0
@@ -53334,6 +53336,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5244399a487eab14fbb04593a2c6a5b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data: {fileID: 11400000, guid: 18a66a4eaca2e6c4bbfe11b1270e263f, type: 2}
   speed: 15
   "\uBB34\uAE30":
   - {fileID: 57862363}
@@ -53348,7 +53351,6 @@ MonoBehaviour:
   "\uC218\uB958\uD0C4Object": {fileID: 8816250269653105110, guid: 50ab6495f2d02814ba74da69ecf23267,
     type: 3}
   followCamera: {fileID: 963194227}
-  gameManger: {fileID: 568325212}
   currentAmmo: 30
   maxAmmo: 150
   currentCoin: 10000
@@ -53357,7 +53359,6 @@ MonoBehaviour:
   maxPlayerHp: 100
   currentGrenade: 0
   maxGrenade: 4
-  score: 0
   EquipObjcetIndex: -1
   isJump: 0
   isMelee: 0

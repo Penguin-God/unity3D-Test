@@ -73,7 +73,7 @@ public class Player : MonoBehaviour
         meshs = GetComponentsInChildren<MeshRenderer>(); // compenents : s붙여서 여러개 가져옴
 
         data.OnDamageEvent.AddListener( (bool _isBoss) => StartCoroutine(OnDamage(_isBoss)) );
-        data.Death.AddListener(PlayerDead);
+        data.DeathEvent.AddListener(PlayerDead);
     }
 
     void Update()
@@ -119,8 +119,6 @@ public class Player : MonoBehaviour
 
         if (!isBorder) // 벽과 닿을때 Vector3.zero로 만들어 버리면 회전도 못해서 아예정지해 버리기 때문에 트랜스폼에 백터를 더해서 이동하는 것만 제한함
             transform.position += MoveVec * speed * (WalkKey ? 0.3f : 1f) * Time.deltaTime; // Time.dataTime : 안넣으면 프레임당 움직임 넣으면 초당 움직임
-
-        if (isBorder) Debug.Log("1");
 
         //애니메이션
         animator.SetBool("IsRun", MoveVec != Vector3.zero); // Vector3.zero = Vector3(0, 0, 0); 즉 모든 Vector값이 0이 아니면 "IsRun"은 true
@@ -367,14 +365,13 @@ public class Player : MonoBehaviour
         {
             if (!isdontDamage && !isDead)
             {
+                bool isBossAttack = other.name == "JumpAttack Collider";
                 Bullet EnemyAttack = other.GetComponent<Bullet>();
                 currentPlayerHp -= EnemyAttack.Damage;
-                bool isBossAttack = other.name == "JumpAttack Collider";
                 
             }
-
-            if (other.GetComponent<Rigidbody>() != null) // 맞은 공격이 Rigidbody가 있는 미사일 공격이면 미사일 삭제 (없는 건 콜라이던데 콜라이더는 없애면 안됨)
-                Destroy(other.gameObject);
+            // 맞은 공격이 Rigidbody가 있는 미사일 공격이면 미사일 삭제 (리지드바기 없는 건 근접 공격인데 그러면 몬스터가 사라짐)
+            if (other.GetComponent<Rigidbody>() != null) Destroy(other.gameObject);
         }
     }
 
@@ -392,12 +389,17 @@ public class Player : MonoBehaviour
         isdontDamage = true;
         if (isBoss) rigidbody.AddForce(transform.forward * -25, ForceMode.Impulse);
 
-        foreach (MeshRenderer mesh in meshs) mesh.material.color = Color.yellow;
+        ChangeColor(Color.yellow);
         yield return new WaitForSeconds(1f);
-        foreach (MeshRenderer mesh in meshs) mesh.material.color = Color.white;
+        ChangeColor(Color.white);
 
         if (isBoss) rigidbody.velocity = Vector3.zero;
         isdontDamage = false;
+    }
+
+    void ChangeColor(Color _color)
+    {
+        foreach (MeshRenderer mesh in meshs) mesh.material.color = _color;
     }
 
     private void OnTriggerStay(Collider other) // OnTriggerStay : 트리거가 다른(이 프로젝트는 Player)Collider 에 계속 닿아있는 동안 "거의"매 프레임 호출됨
